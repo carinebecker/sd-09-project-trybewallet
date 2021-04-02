@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Col, Button } from 'reactstrap';
 import { setEmail } from '../actions';
 
 class Login extends React.Component {
@@ -51,38 +51,42 @@ class Login extends React.Component {
     return (
       <section>
         <h1>Login</h1>
-        <label htmlFor="email-input">
-          Email:
-          <input
-            type="email"
-            data-testid="email-input"
-            name="email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-
-        <label htmlFor="password-input">
-          Senha:
-          <input
-            type="password"
-            data-testid="password-input"
-            name="password"
-            value={ password }
-            onChange={ this.handleChange }
-          />
-        </label>
-
-        <Link to="/carteira">
-          <Button
-            type="button"
-            color={ colorButon }
-            disabled={ isNotValidated }
-            onClick={ () => addEmail(email) }
-          >
-            Entrar
-          </Button>
-        </Link>
+        <Form>
+          <FormGroup>
+            <Col sm={ 2 }>
+              <Label htmlFor="email-input">Email:</Label>
+              <Input
+                type="email"
+                data-testid="email-input"
+                name="email"
+                value={ email }
+                onChange={ this.handleChange }
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup>
+            <Col sm={ 2 }>
+              <Label htmlFor="password-input">Senha:</Label>
+              <Input
+                type="password"
+                data-testid="password-input"
+                name="password"
+                value={ password }
+                onChange={ this.handleChange }
+              />
+            </Col>
+          </FormGroup>
+          <Link to="/carteira">
+            <Button
+              type="button"
+              color={ colorButon }
+              disabled={ isNotValidated }
+              onClick={ () => addEmail(email) }
+            >
+              Entrar
+            </Button>
+          </Link>
+        </Form>
       </section>
     );
   }
