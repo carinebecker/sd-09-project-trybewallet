@@ -1,11 +1,11 @@
 import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import Header from '../components/Header';
 import { setExpenses } from '../actions';
 import getExchangeRatesAPI from '../services/exchangeRate';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -182,7 +182,7 @@ class Wallet extends React.Component {
             Adicionar despesa
           </Button>
         </Form>
-        <Link to="/" style={ { fontSize: '30px' } }>Voltar</Link>
+        <ExpensesTable />
       </section>
     );
   }
