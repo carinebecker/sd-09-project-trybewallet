@@ -1,7 +1,8 @@
 import React from 'react';
-import { arrayOf, objectOf } from 'prop-types';
+import { arrayOf, objectOf, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, Button } from 'reactstrap';
+import { deleteExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
   render() {
@@ -9,7 +10,7 @@ class ExpensesTable extends React.Component {
       'Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda', 'Câmbio utilizado',
       'Valor convertido', 'Moeda de conversão', 'Editar/Excluir',
     ];
-    const { expenses } = this.props;
+    const { expenses, delExpense } = this.props;
     return (
       <Table striped>
         <thead>
@@ -35,7 +36,14 @@ class ExpensesTable extends React.Component {
                   <td>Real</td>
                   <td>
                     <Button type="button" color="primary">Editar</Button>
-                    <Button type="button" color="danger">Excluir</Button>
+                    <Button
+                      type="button"
+                      data-testid="delete-btn"
+                      color="danger"
+                      onClick={ () => delExpense(expense) }
+                    >
+                      Excluir
+                    </Button>
                   </td>
                 </tr>
               );
@@ -51,8 +59,13 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  delExpense: (expense) => dispatch(deleteExpense(expense)),
+});
+
 ExpensesTable.propTypes = {
   expenses: arrayOf(objectOf),
+  delExpense: func,
 }.isRequired;
 
-export default connect(mapStateToProps)(ExpensesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
