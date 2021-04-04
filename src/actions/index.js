@@ -23,8 +23,11 @@ export const setEmail = (email) => ({ type: LOGIN, email });
 //   }
 // };
 
-export const EXPENSES = 'EXPENSES';
-export const setExpenses = (expenses) => ({ type: EXPENSES, expenses });
+export const SAVE_EXPENSES = 'EXPENSES';
+export const saveExpenses = (expenses) => ({ type: SAVE_EXPENSES, expenses });
 
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const deleteExpense = (expense) => ({ type: DELETE_EXPENSE, expense });
+
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const editExpense = (expense) => ({ type: EDIT_EXPENSE, expense });

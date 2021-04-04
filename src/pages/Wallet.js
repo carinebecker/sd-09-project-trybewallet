@@ -3,7 +3,7 @@ import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import Header from '../components/Header';
-import { setExpenses } from '../actions';
+import { saveExpenses, editExpense } from '../actions';
 import getExchangeRatesAPI from '../services/exchangeRate';
 import ExpensesTable from '../components/ExpensesTable';
 
@@ -20,6 +20,7 @@ class Wallet extends React.Component {
     this.renderTag = this.renderTag.bind(this);
     this.createExpenses = this.createExpenses.bind(this);
     this.clearFields = this.clearFields.bind(this);
+    this.getExpense = this.getExpense.bind(this);
 
     this.state = {
       id: 0,
@@ -44,11 +45,9 @@ class Wallet extends React.Component {
     }
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+  getExpense(edExpense) {
+    const { id, value, description, currency, method, tag, exchangeRates } = edExpense;
+    this.setState({ id, value, description, currency, method, tag, exchangeRates });
   }
 
   createExpenses() {
@@ -59,6 +58,13 @@ class Wallet extends React.Component {
     }));
     addExpenses(this.state);
     this.clearFields();
+  }
+
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
   }
 
   clearFields() {
@@ -164,6 +170,7 @@ class Wallet extends React.Component {
   }
 
   render() {
+    const { edtExpense } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <section>
@@ -181,8 +188,15 @@ class Wallet extends React.Component {
           >
             Adicionar despesa
           </Button>
+          <Button
+            type="button"
+            color="secondary"
+            onClick={ () => edtExpense(this.state) }
+          >
+            Editar despesa
+          </Button>
         </Form>
-        <ExpensesTable />
+        <ExpensesTable getExpense={ this.getExpense } />
       </section>
     );
   }
@@ -193,11 +207,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addExpenses: (state) => dispatch(setExpenses(state)),
+  addExpenses: (state) => dispatch(saveExpenses(state)),
+  edtExpense: (state) => dispatch(editExpense(state)),
 });
 
 Wallet.propTypes = {
   addExpenses: func.isRequired,
+  edtExpense: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

@@ -5,12 +5,58 @@ import { Table, Button } from 'reactstrap';
 import { deleteExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderTableRows = this.renderTableRows.bind(this);
+  }
+
+  renderTableRows() {
+    const { expenses, delExpense, getExpense } = this.props;
+    return (
+      expenses.map((expense) => {
+        const { id, description, tag, method, currency, value,
+          exchangeRates } = expense;
+        const { name, ask } = exchangeRates[currency];
+        return (
+          <tr key={ id }>
+            <td>{ description }</td>
+            <td>{ tag }</td>
+            <td>{ method }</td>
+            <td>{ value }</td>
+            <td>{ name }</td>
+            <td>{ parseFloat(ask).toFixed(2) }</td>
+            <td>{ parseFloat(ask * value).toFixed(2) }</td>
+            <td>Real</td>
+            <td>
+              <Button
+                type="button"
+                data-testid="edit-btn"
+                color="primary"
+                onClick={ () => getExpense(expense) }
+              >
+                Editar
+              </Button>
+
+              <Button
+                type="button"
+                data-testid="delete-btn"
+                color="danger"
+                onClick={ () => delExpense(expense) }
+              >
+                Excluir
+              </Button>
+            </td>
+          </tr>
+        );
+      })
+    );
+  }
+
   render() {
     const titleTable = [
       'Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda', 'Câmbio utilizado',
       'Valor convertido', 'Moeda de conversão', 'Editar/Excluir',
     ];
-    const { expenses, delExpense } = this.props;
     return (
       <Table striped>
         <thead>
@@ -19,36 +65,7 @@ class ExpensesTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {
-            expenses.map((expense) => {
-              const { id, description, tag, method, currency, value,
-                exchangeRates } = expense;
-              const { name, ask } = exchangeRates[currency];
-              return (
-                <tr key={ id }>
-                  <td>{ description }</td>
-                  <td>{ tag }</td>
-                  <td>{ method }</td>
-                  <td>{ value }</td>
-                  <td>{ name }</td>
-                  <td>{ parseFloat(ask).toFixed(2) }</td>
-                  <td>{ parseFloat(ask * value).toFixed(2) }</td>
-                  <td>Real</td>
-                  <td>
-                    <Button type="button" color="primary">Editar</Button>
-                    <Button
-                      type="button"
-                      data-testid="delete-btn"
-                      color="danger"
-                      onClick={ () => delExpense(expense) }
-                    >
-                      Excluir
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })
-          }
+          { this.renderTableRows() }
         </tbody>
       </Table>
     );
