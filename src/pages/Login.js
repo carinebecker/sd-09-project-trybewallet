@@ -42,7 +42,6 @@ class Login extends React.Component {
     const emailValidated = /^[\S.]+@[a-z]+\.\w{2,3}$/g.test(email);
     // https://pt.stackoverflow.com/questions/93883/montar-regex-para-validar-senha
     const passwordValidated = /^[^\W_]{6}$/.test(password);
-    console.log(passwordValidated);
     if (emailValidated && passwordValidated) {
       this.setState({
         validated: false,

@@ -9,6 +9,14 @@ class ExpenseForm extends React.Component {
     this.state = {
       coins: [],
       loading: false,
+      id: 0,
+      value: 0,
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+      exchangeRates: {},
+      expenses: [],
     };
 
     this.renderValueInput = this.renderValueInput.bind(this);
@@ -18,6 +26,7 @@ class ExpenseForm extends React.Component {
     this.renderPaymentMethod = this.renderPaymentMethod.bind(this);
     this.renderTagExpense = this.renderTagExpense.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -27,14 +36,39 @@ class ExpenseForm extends React.Component {
   getCurrencyOptions() {
     this.setState({ loading: true });
     getCurrencyOptions()
+      .then((result) => {
+        this.setState({ exchangeRates: result });
+        return Object.keys(result);
+      })
       .then((coins) => {
         this.setState({ coins });
         this.setState({ loading: false });
       });
   }
 
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
   handleClick() {
-    console.log(this.state);
+    // Buscar no redux o ultimo ID e acrescentar 1 ou mudar direto lá
+    // salvar no redux sem sobrescrever
+    const { id, value, description, currency,
+      method, tag, exchangeRates } = this.state;
+    this.setState({
+      expenses: [{
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates,
+      }],
+    });
   }
 
   renderValueInput() {
@@ -44,10 +78,9 @@ class ExpenseForm extends React.Component {
         <input
           data-testid="value-input"
           id="value-input"
-          name="valueIput"
+          name="value"
           type="text"
-          /* value={}
-          onChange={} */
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -62,8 +95,7 @@ class ExpenseForm extends React.Component {
           id="description-input"
           name="descriptionIput"
           type="text"
-          /* value={}
-          onChange={} */
+          onChange={ this.handleChange }
         />
       </label>
     );
@@ -74,7 +106,12 @@ class ExpenseForm extends React.Component {
     return (
       <label htmlFor="currency-input">
         Moeda:
-        <select data-testid="currency-input" id="currency-input">
+        <select
+          data-testid="currency-input"
+          id="currency-input"
+          onChange={ this.handleChange }
+          name="currency"
+        >
           { coins
             .filter((coin) => coin !== 'USDT')
             .map((coin, index) => (
@@ -94,7 +131,12 @@ class ExpenseForm extends React.Component {
     return (
       <label htmlFor="method-input">
         Metodo de pagamento:
-        <select data-testid="method-input" id="method-input">
+        <select
+          data-testid="method-input"
+          id="method-input"
+          onChange={ this.handleChange }
+          name="method"
+        >
           { payMethods
             .map((method, index) => (
               <option
@@ -112,7 +154,12 @@ class ExpenseForm extends React.Component {
     return (
       <label htmlFor="tag-input">
         Metodo de pagamento:
-        <select data-testid="tag-input" id="tag-input">
+        <select
+          data-testid="tag-input"
+          id="tag-input"
+          onChange={ this.handleChange }
+          name="tag"
+        >
           { tagExpense
             .map((tag, index) => (
               <option
@@ -134,18 +181,19 @@ class ExpenseForm extends React.Component {
     return (
       <section>
         <h1>Formulario de adição de despesa</h1>
-        { this.renderValueInput() }
-        { this.renderDescriptionInput() }
-        { this.renderCurrencyInput() }
-        { this.renderPaymentMethod() }
-        { this.renderTagExpense() }
-
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
+        <form>
+          { this.renderValueInput() }
+          { this.renderDescriptionInput() }
+          { this.renderCurrencyInput() }
+          { this.renderPaymentMethod() }
+          { this.renderTagExpense() }
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa
+          </button>
+        </form>
       </section>
     );
   }
