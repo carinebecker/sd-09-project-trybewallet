@@ -10,10 +10,10 @@ export const user = (email) => ({
   email,
 });
 
-export const wallet = () => ({
+export const wallet = (expenses) => ({
   type: INPUT_WALLET,
   currencies: [],
-  expenses: [],
+  expenses,
 });
 
 export const requestCurrecy = (response) => ({
@@ -21,17 +21,7 @@ export const requestCurrecy = (response) => ({
   response,
 });
 
-export const requestValue = (data) => ({
-  type: REQUEST_VALUE,
-  data,
-});
-
 export const getCurrencies = () => async (dispatch) => {
   const currencies = await requestApi();
   dispatch(requestCurrecy(Object.keys(currencies)));
-};
-
-export const getCurrenciesValues = () => async (dispatch) => {
-  const currenciesValue = await requestApi();
-  dispatch(requestValue((requestValue(currenciesValue))));
 };

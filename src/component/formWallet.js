@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { wallet } from '../actions';
+import currencyApi from '../services/requestApi';
+
+const methodList = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+const tagList = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
 class FormWallet extends React.Component {
   constructor(props) {
@@ -10,13 +14,15 @@ class FormWallet extends React.Component {
       id: 0,
       value: '',
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      exchangeRates: {},
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: '',
     };
 
     this.createOptions = this.createOptions.bind(this);
+    this.createSelect = this.createSelect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   createOptions() {
@@ -37,52 +43,83 @@ class FormWallet extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleClick() {
-    console.log(this.props.currencyValuesState.usd);
+  async handleClick() {
+    const { expensesDispatched } = this.props;
+    const data = await currencyApi();
+    await this.setState(() => ({
+      exchangeRates: data,
+    }));
+    expensesDispatched(this.state);
+    const { id } = this.state;
+    this.setState({
+      id: id + 1,
+      value: '',
+      description: '',
+    });
+    // currencyApi();
+  }
+
+  createSelect(array, name, data, onChange) {
+    return (
+      <select
+        name={ name }
+        id={ name }
+        data-testid={ data }
+        onChange={ onChange }
+      >
+        {array.map((element) => (
+          <option key={ element }>{ element }</option>
+        )) }
+      </select>
+    );
+  }
+
+  createInputs(name, type, data, value) {
+    return (<input
+      name={ name }
+      id={ name }
+      value={ value }
+      type={ type }
+      data-testid={ data }
+      onChange={ this.handleChange }
+    />);
   }
 
   render() {
+    const { value, description } = this.state;
     return (
       <div>
         <form>
           <label htmlFor="value">
-            Valor
-            <input name="value" id="value" type="text" data-testid="value-input" onChange={ this.handleChange.bind(this) } />
+            Valor:
+            { this.createInputs('value', 'number', 'value-input', value) }
+          </label>
+          <label htmlFor="description">
+            Descrição:
+            { this.createInputs('description', 'text', 'description-input', description) }
           </label>
           <label htmlFor="currency">
-            Moeda
-            <select name="currency" id="currency" data-testid=" currency-input" onChange={ this.handleChange.bind(this) }>
+            Moeda:
+            <select
+              name="currency"
+              id="currency"
+              data-testid=" currency-input"
+              onChange={ this.handleChange }
+            >
               { this.createOptions() }
             </select>
           </label>
           <label htmlFor="method">
-            Método de pagamento
-            <select name="method" id="method" data-testid="method-input" onChange={ this.handleChange.bind(this) }>
-              <option>Dinheiro</option>
-              <option>Cartão de crédito</option>
-              <option>Cartão de débito</option>
-            </select>
+            Método de pagamento:
+            { this.createSelect(methodList, 'method', 'method-input', this.handleChange) }
           </label>
           <label htmlFor="tag">
-            Tag
-            <select name="tag" id="tag" data-testid="tag-input" onChange={ this.handleChange.bind(this) }>
-              <option>Alimentação</option>
-              <option>Lazer</option>
-              <option>Trabalho</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
-            </select>
+            Tag:
+            { this.createSelect(tagList, 'tag', 'tag-input', this.handleChange) }
           </label>
-          <label htmlFor="description">
-            Descrição
-            <input
-              name="description"
-              id="description"
-              type="text"
-              data-testid="description-input"
-            />
-          </label>
-          <button type="button" onClick={ this.handleClick.bind(this) }>Adicionar despesa</button>
+          <button type="button" onClick={ this.handleClick.bind(this) }>
+            Adicionar despesa:
+          </button>
         </form>
       </div>
     );
@@ -91,16 +128,15 @@ class FormWallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   listCurrenciesState: state.wallet.currencies,
-  currencyValuesState: state.wallet.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  expensesDispatched: () => dispatch(wallet),
+  expensesDispatched: (expenses) => dispatch(wallet(expenses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormWallet);
 
 FormWallet.propTypes = {
   listCurrenciesState: PropTypes.func.isRequired,
-  expensesDispatched: PropTypes.objectOf.isRequired,
+  expensesDispatched: PropTypes.func.isRequired,
 };

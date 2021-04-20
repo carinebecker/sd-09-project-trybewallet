@@ -1,22 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getCurrencies, getCurrenciesValues } from '../actions';
+import { getCurrencies } from '../actions';
 import FormWallet from '../component/formWallet';
 import ExpenseAddForm from '../component/ExpenseAddForm';
 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // currency: '',
-    };
+
+    this.handleTotalValue = this.handleTotalValue.bind(this);
   }
 
   componentDidMount() {
-    const { currencyDispatcher, valoresDispatched } = this.props;
+    const { currencyDispatcher } = this.props;
     currencyDispatcher();
-    valoresDispatched();
+  }
+
+  handleTotalValue() {
+    const { expensesState } = this.props;
+
+    const sumTotal = expensesState
+      .map(({ value, currency, exchangeRates }) => exchangeRates[currency].ask * value);
+    return sumTotal.reduce((acc, cur) => acc + cur, 0).toFixed(2);
   }
 
   render() {
@@ -27,11 +33,11 @@ class Wallet extends React.Component {
           <h1>Wallet</h1>
           <ul>
             <li data-testid="email-field">{ emailStore }</li>
-            <li data-testid="total-field">0</li>
+            <li data-testid="total-field">{ this.handleTotalValue() }</li>
             <li data-testid="header-currency-field">BRL</li>
           </ul>
         </header>
-        <FormWallet />
+        <FormWallet totalValue={ this.handleTotalValue() } />
         <ExpenseAddForm />
       </main>
     );
@@ -40,18 +46,17 @@ class Wallet extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   currencyDispatcher: () => dispatch(getCurrencies()),
-  valoresDispatched: () => dispatch(getCurrenciesValues()),
 });
 
 const mapStateToProps = (state) => ({
   emailStore: state.user.email,
-  // expensesState: state.wallet.expenses,
+  expensesState: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
 
 Wallet.propTypes = {
   currencyDispatcher: PropTypes.func.isRequired,
-  valoresDispatched: PropTypes.func.isRequired,
   emailStore: PropTypes.objectOf.isRequired,
+  expensesState: PropTypes.objectOf.isRequired,
 };
