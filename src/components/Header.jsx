@@ -8,13 +8,11 @@ class Header extends React.Component {
     const totalNumber = Number(total);
     return (
       <header>
-        <div>
-          <span data-testid="email-field">Usuário</span>
-          { email }
-          <span data-testid="total-field">Despesas Totais R$:</span>
-          { totalNumber }
-          <span data-testid="header-currency-field">BRL</span>
-        </div>
+        <span>email:</span>
+        <span data-testid="email-field">{ email }</span>
+        <span>Despesas Totais R$:</span>
+        <span data-testid="total-field">{ totalNumber }</span>
+        <span data-testid="header-currency-field">BRL</span>
       </header>
     );
   }

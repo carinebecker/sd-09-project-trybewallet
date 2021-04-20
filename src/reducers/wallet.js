@@ -7,8 +7,27 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case '':
-    return { };
+  case 'REQUEST_CURRENCY':
+    return {
+      ...state,
+      currencies: action.currencies,
+    };
+  case 'ADD_NEW_EXPENSE':
+    return {
+      ...state,
+      expenses: [...state.expenses, action.expenseObj],
+    };
+  case 'SET_TOTAL':
+    return {
+      ...state,
+      total: action.total,
+    };
+  case 'REMOVE_TABLE_ITEM':
+    return {
+      ...state,
+      expenses: action.expenses,
+      total: action.total,
+    };
   default:
     return state;
   }
