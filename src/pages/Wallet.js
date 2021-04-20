@@ -54,11 +54,8 @@ class Wallet extends React.Component {
     // });
     // console.log(totalMoney);
     // const total = totalMoney.reduce((a, b) => a + b);
-    this.setState({
-      value: 0,
-    });
     this.setState((state) => ({
-      // ...this.reset,
+      ...this.reset,
       // value: 0,
       id: state.id + 1,
     }));
@@ -66,7 +63,6 @@ class Wallet extends React.Component {
 
   input(id, type, testid) {
     const { value } = this.state;
-    console.log('input', value);
     return (<input
       name={ id }
       value={ value }
