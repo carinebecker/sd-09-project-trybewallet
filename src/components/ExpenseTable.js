@@ -2,32 +2,45 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../styles/components/ExpenseTable.css';
-import { deleteExpense } from '../actions';
+import { deleteExpense, editExpense } from '../actions';
 
 class ExpenseTable extends React.Component {
   constructor() {
     super();
     this.renderThead = this.renderThead.bind(this);
     this.renderTbody = this.renderTbody.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
   }
 
-  handleClick(id) {
+  handleDeleteClick(id) {
     const { expenses, dipatachDeletedExpense } = this.props;
     const updatedExpenses = expenses.filter((expense) => expense.id !== id);
     dipatachDeletedExpense(updatedExpenses);
   }
 
+  handleEditClick(id) {
+    const { dipatachEditExpense } = this.props;
+    dipatachEditExpense(id, true);
+  }
+
   renderButtons(id) {
     return (
       <>
-        <button type="button" className="edit-btn">Editar</button>
+        <button
+          type="button"
+          className="edit-btn"
+          data-testid="edit-btn"
+          onClick={ () => this.handleEditClick(id) }
+        >
+          Editar
+        </button>
         <button
           type="button"
           className="delete-btn"
           data-testid="delete-btn"
-          onClick={ () => this.handleClick(id) }
+          onClick={ () => this.handleDeleteClick(id) }
         >
           Excluir
         </button>
@@ -99,11 +112,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dipatachDeletedExpense: (expenses) => dispatch(deleteExpense(expenses)),
+  dipatachEditExpense: (id, editor) => dispatch(editExpense(id, editor)),
 });
 
 ExpenseTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   dipatachDeletedExpense: PropTypes.func.isRequired,
+  dipatachEditExpense: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

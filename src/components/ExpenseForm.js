@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { submitExpense } from '../actions';
+import { fetchCurrencies, submitExpense, updateExpenses } from '../actions';
 import * as Api from '../services/Api';
 import '../styles/components/ExpenseForm.css';
 
@@ -18,24 +18,42 @@ class ExpenseForm extends React.Component {
     super();
     this.state = {
       inputs: INITIAL_STATE_INPUTS,
-      currencies: [],
       paymentMethods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       expenseType: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
     };
     this.handleChange = this.handleChange.bind(this);
     this.renderInput = this.renderInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.getCurrencies = this.getCurrencies.bind(this);
+    this.getExpenseToEdit = this.getExpenseToEdit.bind(this);
   }
 
-  async componentDidMount() {
-    this.getCurrencies();
+  componentDidMount() {
+    const { dispatchCurrencies } = this.props;
+    dispatchCurrencies();
   }
 
-  async getCurrencies() {
-    this.setState({
-      currencies: await Api.getCurrencies(),
-    });
+  componentDidUpdate(_, prevState) {
+    const { inputs } = this.state;
+    if (prevState.inputs === inputs) {
+      this.getExpenseToEdit();
+    }
+  }
+
+  getExpenseToEdit() {
+    const { expenses, expenseIdToEdit, editor } = this.props;
+    if (editor) {
+      const expenseToEdit = expenses
+        .find((expense) => expense.id === expenseIdToEdit);
+      this.setState({
+        inputs: {
+          value: expenseToEdit.value,
+          description: expenseToEdit.description,
+          currency: expenseToEdit.currency,
+          method: expenseToEdit.method,
+          tag: expenseToEdit.tag,
+        },
+      });
+    }
   }
 
   handleChange({ target: { name, value } }) {
@@ -47,9 +65,32 @@ class ExpenseForm extends React.Component {
   async handleClick(event) {
     event.preventDefault();
     const { inputs } = this.state;
-    const { dispatchExpense, expenses } = this.props;
+    const {
+      dispatchExpense,
+      expenses,
+      editor,
+      expenseIdToEdit,
+      dispatchUpdateExpenses,
+    } = this.props;
     const exchangeRates = await Api.getExchangeRates();
-    dispatchExpense({ id: expenses.length, ...inputs, exchangeRates });
+    if (editor) {
+      const oldExchangeRates = expenses
+        .find((expense) => expense.id === expenseIdToEdit).exchangeRates;
+      const updatedExpenses = expenses
+        .map((expense) => {
+          if (expense.id === expenseIdToEdit) {
+            expense = ({
+              id: expenseIdToEdit,
+              ...inputs,
+              exchangeRates: oldExchangeRates,
+            });
+          }
+          return expense;
+        });
+      dispatchUpdateExpenses(updatedExpenses);
+    } else {
+      dispatchExpense({ id: expenses.length, ...inputs, exchangeRates });
+    }
     this.setState({
       inputs: INITIAL_STATE_INPUTS,
     });
@@ -103,40 +144,81 @@ class ExpenseForm extends React.Component {
   render() {
     const {
       inputs: { value, description, currency, method, tag },
-      currencies,
       paymentMethods,
       expenseType,
     } = this.state;
+    const { editor, currencies, isFetching } = this.props;
     return (
-      <div className="expense-form-container">
-        <form className="expense-form">
-          { this.renderInput('number', 'value', value, 'Valor') }
-          { this.renderSelect('currency', 'Moeda', currencies, currency) }
-          { this.renderSelect('method', 'Método de Pagamento', paymentMethods, method) }
-          { this.renderSelect('tag', 'Tag', expenseType, tag) }
-          { this.renderInput('text', 'description', description, 'Descrição') }
-          <div>
-            <button type="submit" onClick={ this.handleClick }>
-              Adicionar despesa
-            </button>
-          </div>
-        </form>
+      <div
+        className={ (editor) ? (
+          'edit-expense-form-container'
+        ) : (
+          'expense-form-container'
+        ) }
+      >
+        { !(isFetching) && (
+          <form className="expense-form">
+            { this.renderInput('number', 'value', value, 'Valor') }
+            { this.renderSelect('currency', 'Moeda', currencies, currency) }
+            { this.renderSelect('method', 'Método de Pagamento', paymentMethods, method) }
+            { this.renderSelect('tag', 'Tag', expenseType, tag) }
+            { this.renderInput('text', 'description', description, 'Descrição') }
+            <div>
+              { (editor) ? (
+                <button
+                  type="submit"
+                  className="edit-btn"
+                  onClick={ this.handleClick }
+                >
+                  Editar despesa
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="add-btn"
+                  onClick={ this.handleClick }
+                >
+                  Adicionar despesa
+                </button>
+              ) }
+            </div>
+          </form>
+        ) }
       </div>
+
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  expenseIdToEdit: state.wallet.id,
+  editor: state.wallet.editor,
+  currencies: state.wallet.currencies,
+  isFetching: state.wallet.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expense) => dispatch(submitExpense(expense)),
+  dispatchUpdateExpenses: (expenses) => dispatch(updateExpenses(expenses)),
+  dispatchCurrencies: () => dispatch(fetchCurrencies()),
 });
 
 ExpenseForm.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchExpense: PropTypes.func.isRequired,
+  dispatchUpdateExpenses: PropTypes.func.isRequired,
+  expenseIdToEdit: PropTypes.number,
+  editor: PropTypes.bool,
+  isFetching: PropTypes.bool,
+  dispatchCurrencies: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+ExpenseForm.defaultProps = {
+  expenseIdToEdit: 0,
+  editor: false,
+  isFetching: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
