@@ -1,31 +1,21 @@
-/* eslint-disable max-lines-per-function */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchCurrency from '../services/api';
 import { setExpense as setExpenseThunk } from '../actions';
+import SelectCurrency from './SelectCurrency';
+import ExpenseCategory from './ExpenseCategory';
 
 class RegisterExpense extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currencies: {},
       value: 0,
       description: '',
       currency: '',
       method: '',
       tag: '',
     };
-    this.getCurrencies = this.getCurrencies.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.getCurrencies();
-  }
-
-  getCurrencies() {
-    fetchCurrency().then((currencies) => this.setState({ currencies }));
   }
 
   setExpense(event) {
@@ -47,16 +37,6 @@ class RegisterExpense extends Component {
   }
 
   render() {
-    const { currencies } = this.state;
-    const selectCurrency = Object.keys(currencies).map((currency, index) => (
-      <option
-        value={ currency }
-        key={ index }
-        data-testid={ currency }
-      >
-        {currency}
-      </option>
-    ));
     return (
       <form>
         <label htmlFor="value">
@@ -79,17 +59,7 @@ class RegisterExpense extends Component {
             onChange={ this.handleInputChange }
           />
         </label>
-        <label htmlFor="currency">
-          Moeda:
-          <select
-            name="currency"
-            id="currency"
-            data-testid="currency-input"
-            onChange={ this.handleInputChange }
-          >
-            {selectCurrency}
-          </select>
-        </label>
+        <SelectCurrency handleChange={ this.handleInputChange } />
         <label htmlFor="method">
           <select
             name="method"
@@ -102,21 +72,7 @@ class RegisterExpense extends Component {
             <option value="Cartão de débito">Cartão de débito</option>
           </select>
         </label>
-        <label htmlFor="tag">
-          Categoria:
-          <select
-            name="tag"
-            id="tag"
-            data-testid="tag-input"
-            onChange={ this.handleInputChange }
-          >
-            <option value="Alimentação">Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Saúde">Saúde</option>
-          </select>
-        </label>
+        <ExpenseCategory handleChange={ this.handleInputChange } />
         <button
           type="button"
           onClick={ (event) => this.setExpense(event) }
