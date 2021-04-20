@@ -8,6 +8,15 @@ class ExpenseList extends React.Component {
   constructor() {
     super();
     this.assignEdit = this.assignEdit.bind(this);
+    this.moneyList = this.moneyList.bind(this);
+  }
+
+  moneyList() {
+    const { money } = this.props;
+    const keys = Object.keys(money);
+    const allKeys = keys.filter((coin) => coin !== 'USDT');
+    const allMoney = allKeys.map((key) => money[key]);
+    return allMoney;
   }
 
   assignEdit(item) {
@@ -17,10 +26,10 @@ class ExpenseList extends React.Component {
   }
 
   render() {
-    const { expenses, money, deleteLine } = this.props;
+    const { expenses, deleteLine } = this.props;
     const map = expenses.map((item) => {
-      const moneyInfo = money.find((each) => item.currency === each.code);
-      const moneyName = moneyInfo.name.split('/');
+      const moneyInfo = this.moneyList().find((each) => item.currency === each.code);
+      console.log(moneyInfo);
       return (
         <tr key={ item.id }>
           <td>
@@ -36,7 +45,7 @@ class ExpenseList extends React.Component {
             {`${item.currency} ${item.value}`}
           </td>
           <td>
-            {moneyName[0]}
+            {item.currency}
           </td>
           <td>
             R$
@@ -70,7 +79,7 @@ class ExpenseList extends React.Component {
 
 ExpenseList.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
-  money: PropTypes.arrayOf(PropTypes.object),
+  money: PropTypes.objectOf(PropTypes.object),
   deleteLine: PropTypes.func,
   editForm: PropTypes.func,
   edit: PropTypes.func,
@@ -78,6 +87,7 @@ ExpenseList.propTypes = {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  money: state.wallet.currencies,
 });
 
 const mapDispatchToProps = (dispatch) => ({

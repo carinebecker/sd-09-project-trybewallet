@@ -16,7 +16,6 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      total: 0,
     };
     this.reset = { ...this.state };
     this.expenseForm = this.expenseForm.bind(this);
@@ -31,9 +30,9 @@ class Wallet extends React.Component {
   }
 
   handleDropdown({ target }) {
-    const { value, id } = target;
+    const { value, name } = target;
     this.setState({
-      [id]: value,
+      [name]: value,
     });
   }
 
@@ -55,20 +54,37 @@ class Wallet extends React.Component {
     // });
     // console.log(totalMoney);
     // const total = totalMoney.reduce((a, b) => a + b);
+    this.setState({
+      value: 0,
+    });
     this.setState((state) => ({
-      ...this.reset,
+      // ...this.reset,
+      // value: 0,
       id: state.id + 1,
     }));
   }
 
-  input(id, type, testid, maxLength) {
+  input(id, type, testid) {
+    const { value } = this.state;
+    console.log('input', value);
+    return (<input
+      name={ id }
+      value={ value }
+      type={ type }
+      data-testid={ testid }
+      // maxLength={ maxLength }
+      onChange={ this.handleDropdown }
+    />);
+  }
+
+  inputDois(id, type, testid) {
     const { state } = this;
     return (<input
-      id={ id }
+      name={ id }
       value={ state[id] }
       type={ type }
       data-testid={ testid }
-      maxLength={ maxLength }
+      // maxLength={ maxLength }
       onChange={ this.handleDropdown }
     />);
   }
@@ -138,7 +154,7 @@ class Wallet extends React.Component {
           <option>Saúde</option>
         </select>
         Descrição:
-        { this.input('description', 'text', 'description-input', '50') }
+        { this.inputDois('description', 'text', 'description-input', '50') }
         { this.sendButton() }
       </form>);
   }
@@ -153,7 +169,8 @@ class Wallet extends React.Component {
     const allKeys = keys.filter((coin) => coin !== 'USDT');
     const allMoney = allKeys.map((key) => money[key]);
     const { email, isFetching } = this.props;
-    const { total } = this.state;
+    const { value } = this.state;
+    console.log(value);
     return (
       <div>
         <header>
@@ -161,7 +178,7 @@ class Wallet extends React.Component {
             {`Email: ${email}`}
           </p>
           <p data-testid="total-field">
-            {`Despesas totais: R$ ${total} `}
+            {`Despesas totais: R$ ${0} `}
           </p>
           <p data-testid="header-currency-field">
             BRL
@@ -181,7 +198,7 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
-            <WalletRegistry money={ allMoney } edit={ this.editForm } />
+            <WalletRegistry edit={ this.editForm } />
           </table>
         </main>
       </div>
