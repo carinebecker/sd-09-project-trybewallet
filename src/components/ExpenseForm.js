@@ -9,7 +9,6 @@ class ExpenseForm extends React.Component {
     super(props);
 
     this.state = {
-      // coins: [],
       loading: false,
       id: 0,
       value: 0,
@@ -17,7 +16,6 @@ class ExpenseForm extends React.Component {
       currency: '',
       method: '',
       tag: '',
-      // exchangeRates: {},
       expenses: [],
     };
 
@@ -29,27 +27,19 @@ class ExpenseForm extends React.Component {
     this.renderTagExpense = this.renderTagExpense.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.genereteID = this.genereteID.bind(this);
+    this.calculateExpenses = this.calculateExpenses.bind(this);
   }
 
   componentDidMount() {
-    /* const { getExchangeRates } = this.props;
-    getExchangeRates(); */
     this.getCurrencyOptions();
   }
 
   getCurrencyOptions() {
     const { getExchangeRates } = this.props;
-    getExchangeRates();
-/*     this.setState({ loading: true });
-    getCurrencyOptions()
-      .then((result) => {
-        this.setState({ exchangeRates: result });
-        return Object.keys(result);
-      })
-      .then((coins) => {
-        this.setState({ coins });
-        this.setState({ loading: false });
-      }); */
+    this.setState({ loading: true });
+    getExchangeRates()
+      .then(() => { this.setState({ loading: false }); });
   }
 
   handleChange({ target }) {
@@ -63,21 +53,31 @@ class ExpenseForm extends React.Component {
     // fazer uma requisição à API para trazer o câmbio mais atualizado possível.
     // Buscar no redux o ultimo ID e acrescentar 1 ou mudar direto lá
     // salvar no redux sem sobrescrever
-    const { getExchangeRates } = this.props;
-    getExchangeRates();
-/*     const { id, value, description, currency,
-      method, tag, exchangeRates, expenses } = this.state;
-    this.setState({
-      expenses: [{
-        id,
-        value,
-        description,
-        currency,
-        method,
-        tag,
-        exchangeRates,
-      }],
-    }, () => { wallet(expenses); }); */
+    const { id, value, description, currency,
+      method, tag } = this.state;
+    const { getExchangeRates, wallet } = this.props;
+    getExchangeRates()
+      .then((result) => (
+        wallet(
+          {
+            id,
+            value,
+            description,
+            currency,
+            method,
+            tag,
+            exchangeRates: result.currencies,
+          },
+        )
+      ));
+  }
+
+  genereteID() {
+    console.log('id');
+  }
+
+  calculateExpenses() {
+    console.log('total');
   }
 
   renderValueInput() {
@@ -211,13 +211,14 @@ class ExpenseForm extends React.Component {
   }
 }
 
-const mapStateToProps = ({ wallet: { currencies, isFetching } }) => ({
+const mapStateToProps = ({ wallet: { currencies, isFetching, expenses } }) => ({
   currencies,
   isFetching,
+  expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  /* wallet: (expenses) => dispatch(walletCreate(expenses)), */
+  wallet: (expenses) => dispatch(walletCreate(expenses)),
   // faz um dispatch que chama o fetch
   getExchangeRates: () => dispatch(fetchCurrencies()),
 });

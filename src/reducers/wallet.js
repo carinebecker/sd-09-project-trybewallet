@@ -9,11 +9,11 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-/*   case WALLET:
+  case WALLET:
     return {
       ...state,
-      expenses: state.wallet.expenses + action.expenses,
-    }; */
+      expenses: state.expenses + action.expenses,
+    };
   case REQUEST_CURRENCIES_SUCCESS:
     return {
       ...state,
