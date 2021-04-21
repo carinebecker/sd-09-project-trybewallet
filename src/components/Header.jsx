@@ -8,21 +8,18 @@ class Header extends React.Component {
 
     this.updateTotal = this.updateTotal.bind(this);
 
-    this.state = {
-      total: 0,
-    }
+    // this.state = {
+    //   total: 0,
+    // }
   }
-
-  // componentDidUpdate() {
-  //   const { updateTotal } = this;
-  //   updateTotal();
-  // }
 
   updateTotal() {
     const { expenses } = this.props;
     return expenses
       .reduce((acc, element) =>
-        acc += (Number(element.value) * Number(element.exchangeRates[element.currency].ask)), 0).toFixed(2);
+        acc += (Number(element.value) * Number(element.exchangeRates[element.currency].ask)),
+        0
+      ).toFixed(2);
   }
 
   render() {
@@ -59,6 +56,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   userEmail: PropTypes.string.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
