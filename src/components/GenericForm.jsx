@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ExpensesTable from './ExpensesTable';
-import { setGlobalState as setGlobalStateAction, updatesExpense, updatesExpense as updatesExpenseAction} from '../actions';
+import {
+  setGlobalState as setGlobalStateAction,
+  updatesExpense as updatesExpenseAction
+} from '../actions';
 
 class GenericForm extends React.Component {
   constructor(props) {
