@@ -5,6 +5,7 @@ import {
   setGlobalState as setGlobalStateAction,
   updatesExpense as updatesExpenseAction,
 } from '../actions';
+import segundaMetadeDoForm from './segundaMetadeDoForm';
 
 class GenericForm extends React.Component {
   constructor(props) {
@@ -13,6 +14,9 @@ class GenericForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderAllAndLintSucks = this.renderAllAndLintSucks.bind(this);
+    this.renderMethod = this.renderMethod.bind(this);
+    this.renderTag = this.renderTag.bind(this);
+    this.renderCurrencies = this.renderCurrencies.bind(this);
 
     this.state = {
       value: '',
@@ -68,6 +72,48 @@ class GenericForm extends React.Component {
     }));
   }
 
+  renderMethod() {
+    const methodArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+    return (
+      methodArray.map((element) => (
+        <option
+          value={ element }
+          key={ element }
+        >
+          { element }
+        </option>
+      ))
+    );
+  }
+
+  renderTag() {
+    const tagArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+    return (
+      tagArray.map((e) => (
+        <option
+          value={ e }
+          key={ e }
+        >
+          { e }
+        </option>
+      ))
+    );
+  }
+
+  renderCurrencies(currencies) {
+    return (
+      currencies.map((element) => (
+        <option
+          value={ element }
+          data-testid={ element }
+          key={ element }
+        >
+          { element }
+        </option>
+      ))
+    );
+  }
+
   renderAllAndLintSucks() {
     const { handleClick, handleChange } = this;
     const { value, description, currency, method, tag } = this.state;
@@ -81,43 +127,35 @@ class GenericForm extends React.Component {
           type="number"
           placeholder="Valor"
           name="value"
-          value={value}
-          onChange={(event) => handleChange(event)}
+          value={ value }
+          onChange={ (event) => handleChange(event) }
         />
         <input
           data-testid="description-input"
           type="text"
           placeholder="Descrição"
           name="description"
-          value={description}
-          onChange={(event) => handleChange(event)}
+          value={ description }
+          onChange={ (event) => handleChange(event) }
         />
         <label htmlFor="currency">
           Moeda escolhida
-                <select
+          <select
             data-testid="currency-input"
             name="currency"
             id="currency"
-            value={currency}
-            onChange={(event) => handleChange(event)}
+            value={ currency }
+            onChange={ (event) => handleChange(event) }
           >
             {
-              currencies
-                .map((element) => (
-                  <option
-                    value={element}
-                    data-testid={element}
-                    key={element}
-                  >
-                    { element}
-                  </option>
-                ))
+              this.renderCurrencies(currencies)
             }
           </select>
         </label>
+        {/* <segundaMetadeDoForm method={ method } tag={ tag } handleClick={ handleClick } handleChange={ handleChange } /> */}
         <label htmlFor="method">
           Método de pagamento utilizado
-                <select
+          <select
             data-testid="method-input"
             name="method"
             id="method"
@@ -125,21 +163,13 @@ class GenericForm extends React.Component {
             onChange={(event) => handleChange(event)}
           >
             {
-              ['Dinheiro', 'Cartão de crédito', 'Cartão de débito']
-                .map((element) => (
-                  <option
-                    value={element}
-                    key={element}
-                  >
-                    { element}
-                  </option>
-                ))
+              this.renderMethod()
             }
           </select>
         </label>
         <label htmlFor="tag">
           Selecione uma categoria
-                <select
+          <select
             data-testid="tag-input"
             name="tag"
             id="tag"
@@ -147,15 +177,7 @@ class GenericForm extends React.Component {
             onChange={(event) => handleChange(event)}
           >
             {
-              ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde']
-                .map((e) => (
-                  <option
-                    value={ e }
-                    key={ e }
-                  >
-                    { e }
-                  </option>
-                ))
+              this.renderTag()
             }
           </select>
         </label>
