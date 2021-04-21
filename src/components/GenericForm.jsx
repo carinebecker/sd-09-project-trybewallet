@@ -5,7 +5,6 @@ import {
   setGlobalState as setGlobalStateAction,
   updatesExpense as updatesExpenseAction,
 } from '../actions';
-// import segundaMetadeDoForm from './segundaMetadeDoForm';
 
 class GenericForm extends React.Component {
   constructor(props) {
@@ -73,35 +72,21 @@ class GenericForm extends React.Component {
     }));
   }
 
-  renderTag() {
-    const tagArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-    return (
-      tagArray.map((e) => (
-        <option
-        value={ e }
-        key={ e }
-        >
-          { e }
-        </option>
-      ))
-      );
-    }
-    
-    renderCurrencies(currencies) {
+  renderCurrencies(currencies) {
     return (
       currencies.map((element) => (
         <option
           value={ element }
           data-testid={ element }
           key={ element }
-          >
+        >
           { element }
         </option>
       ))
-      );
+    );
   }
-  
-  lalala() {
+    
+    lalala() {
     const { value, description } = this.state;
     const { handleChange } = this;
     return (
@@ -121,8 +106,22 @@ class GenericForm extends React.Component {
           name="description"
           value={ description }
           onChange={ (event) => handleChange(event) }
-          />
+        />
       </>
+    );
+  }
+
+  renderTag() {
+    const tagArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+    return (
+      tagArray.map((e) => (
+        <option
+          value={ e }
+          key={ e }
+        >
+          { e }
+        </option>
+      ))
     );
   }
 
