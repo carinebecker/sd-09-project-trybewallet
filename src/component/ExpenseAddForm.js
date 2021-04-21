@@ -6,35 +6,39 @@ class ExpenseAddForm extends React.Component {
   createrExpenses() {
     const { stateProps } = this.props;
     const expenses = stateProps;
-    return expenses
-      .map(({ id,
-        value,
-        description,
-        currency,
-        method,
-        tag,
-        exchangeRates }) => {
-        console.log(exchangeRates[currency]);
-        const { name, ask } = exchangeRates[currency];
-        return (
-          <tr key={ id }>
-            <th>{ description }</th>
-            <th>{ tag }</th>
-            <th>{ method }</th>
-            <th>{ value }</th>
-            <th>{ currency }</th>
-            <th>convertValue</th>
-            <th>{ `R$ ${ask}` }</th>
-            <th>{ name }</th>
-            <button type="button" data-testid="edit-btn">Editar</button>
-            <button type="button" data-testid="delete-btn">Exluir</button>
-          </tr>
-        );
-      });
+
+    if (expenses !== undefined) {
+      return expenses
+        .map(({ id,
+          value,
+          description,
+          currency,
+          method,
+          tag,
+          exchangeRates }) => {
+          const { name, ask } = exchangeRates[currency];
+          const total = value * Number(ask);
+          return (
+            <tr key={ id }>
+              <td name={ description }>{ description }</td>
+              <td name={ tag }>{ tag }</td>
+              <td name={ method }>{ method }</td>
+              <td name={ Number(ask).toFixed(2) }>
+                { `${Number(ask).toFixed(2)}` }
+              </td>
+              <td name={ name.substring(0, )}>{ name }</td>
+              <td name={ value }>{ value }</td>
+              <td>{ `${total.toFixed(2)}` }</td>
+              <td>Real</td>
+              <button type="button" data-testid="edit-btn">Editar</button>
+              <button type="button" data-testid="delete-btn">Exluir</button>
+            </tr>
+          );
+        });
+    }
   }
 
   render() {
-    // console.log(this.props.wallet);
     return (
       <div>
         <table>

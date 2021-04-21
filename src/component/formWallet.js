@@ -12,7 +12,7 @@ class FormWallet extends React.Component {
     super(props);
     this.state = {
       id: 0,
-      value: '',
+      value: 0,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -53,10 +53,9 @@ class FormWallet extends React.Component {
     const { id } = this.state;
     this.setState({
       id: id + 1,
-      value: '',
+      value: 0,
       description: '',
     });
-    // currencyApi();
   }
 
   createSelect(array, name, data, onChange) {

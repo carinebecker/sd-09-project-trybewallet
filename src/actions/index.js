@@ -3,7 +3,6 @@ import requestApi from '../services/requestApi';
 export const INPUT_LOGIN = 'INPUT_LOGIN';
 export const INPUT_WALLET = 'INPUT_WALLET';
 export const REQUEST_CURRENCY = 'REQUEST_CURRENCY';
-export const REQUEST_VALUE = 'REQUEST_VALUE';
 
 export const user = (email) => ({
   type: INPUT_LOGIN,
