@@ -73,48 +73,34 @@ class GenericForm extends React.Component {
     }));
   }
 
-  renderMethod() {
-    const methodArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-    return (
-      methodArray.map((element) => (
-        <option
-          value={ element }
-          key={ element }
-        >
-          { element }
-        </option>
-      ))
-    );
-  }
-
   renderTag() {
     const tagArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     return (
       tagArray.map((e) => (
         <option
-          value={ e }
-          key={ e }
+        value={ e }
+        key={ e }
         >
           { e }
         </option>
       ))
-    );
-  }
-
-  renderCurrencies(currencies) {
+      );
+    }
+    
+    renderCurrencies(currencies) {
     return (
       currencies.map((element) => (
         <option
           value={ element }
           data-testid={ element }
           key={ element }
-        >
+          >
           { element }
         </option>
       ))
-    );
+      );
   }
-
+  
   lalala() {
     const { value, description } = this.state;
     const { handleChange } = this;
@@ -135,16 +121,29 @@ class GenericForm extends React.Component {
           name="description"
           value={ description }
           onChange={ (event) => handleChange(event) }
-        />
+          />
       </>
     );
   }
 
+  renderMethod() {
+    const methodArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+    return (
+      methodArray.map((element) => (
+        <option
+          value={ element }
+          key={ element }
+        >
+          { element }
+        </option>
+      ))
+    );
+  }
+  
   renderAllAndLintSucks() {
     const { handleClick, handleChange } = this;
-    const { value, description, currency, method, tag } = this.state;
-    const { currencies, id } = this.props;
-    console.log(id);
+    const { currency, method, tag } = this.state;
+    const { currencies } = this.props;
     return (
       <form>
         { this.lalala() }

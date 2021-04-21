@@ -1,24 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   updatesExpense as updatesExpenseAction,
-  setGlobalState as setGlobalStateAction
+  setGlobalState as setGlobalStateAction,
 } from '../actions';
 import GenericForm from './GenericForm';
 
 class ExpensesTable extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
     this.handleEditClick = this.handleEditClick.bind(this);
     this.toggleIsEdit = this.toggleIsEdit.bind(this);
+    this.anotherRender = this.anotherRender.bind(this);
 
     this.state = {
       isEdit: false,
       editId: undefined,
-    }
+    };
   }
 
   handleClick(id) {
@@ -33,7 +34,7 @@ class ExpensesTable extends React.Component {
     const { setGlobalState } = this.props;
     this.setState({
       isEdit: true,
-      editId:  id,
+      editId: id,
     });
 
     setGlobalState();
@@ -43,13 +44,51 @@ class ExpensesTable extends React.Component {
     this.setState({
       isEdit: false,
       id: undefined,
-    })
+    });
+  }
+
+  anotherRender() {
+    const { expenses } = this.props;
+    const  { handleClick, handleEditClick } = this;
+    return (
+      expenses.map((expense) => {
+        const { description, tag, method, value, exchangeRates, id } = expense;
+        return (
+          <tr key={id}>
+            <td>{ description }</td>
+            <td>{ tag }</td>
+            <td>{ method }</td>
+            <td>{ value }</td>
+            <td>{ exchangeRates[expense.currency].name.split('/')[0] }</td>
+            <td>{ Number(exchangeRates[expense.currency].ask).toFixed(2) }</td>
+            <td>{ Number((value * exchangeRates[expense.currency].ask)).toFixed(2) }</td>
+            <td>Real</td>
+            <td>
+              <button
+                data-testid="edit-btn"
+                type="button"
+                onClick={ () => handleEditClick(id) }
+              >
+                Editar
+              </button>
+              /
+              <button
+                data-testid="delete-btn"
+                type="button"
+                onClick={ () => handleClick(id) }
+              >
+                Excluir
+              </button>
+            </td>
+          </tr>
+        );
+      })
+    );
   }
 
   render() {
-    const { expenses } = this.props;
     const { editId, isEdit } = this.state;
-    const  { handleClick, handleEditClick, toggleIsEdit } = this;
+    const  { toggleIsEdit } = this;
 
     return (
       <>
@@ -68,40 +107,7 @@ class ExpensesTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {
-            expenses.map((expense) => {
-              const { description, tag, method, value, exchangeRates, id } = expense;
-              return (
-                <tr key={id}>
-                  <td>{ description }</td>
-                  <td>{ tag }</td>
-                  <td>{ method }</td>
-                  <td>{ value }</td>
-                  <td>{ exchangeRates[expense.currency].name.split('/')[0] }</td>
-                  <td>{ Number(exchangeRates[expense.currency].ask).toFixed(2) }</td>
-                  <td>{ Number((value * exchangeRates[expense.currency].ask)).toFixed(2) }</td>
-                  <td>Real</td>
-                  <td>
-                    <button
-                      data-testid="edit-btn"
-                      type="button"
-                      onClick={ () => handleEditClick(id) }
-                    >
-                      Editar
-                    </button>
-                    /
-                    <button
-                      data-testid="delete-btn"
-                      type="button"
-                      onClick={ () => handleClick(id) }
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              );
-            })
-          }
+          { this.anotherRender() }
         </tbody>
       </table>
       {
@@ -111,6 +117,15 @@ class ExpensesTable extends React.Component {
     );
   }
 }
+
+ExpensesTable.propTypes = {
+  updatesExpense: PropTypes.func.isRequired,
+  setGlobalState: PropTypes.func.isRequired,
+  savesCurrencyList: PropTypes.func.isRequired,
+  expenses: PropTypes.objectOf(PropTypes.object).isRequired,
+  fetchCurrencyData: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   updatesExpense: (filteredExpenses) => (dispatch(updatesExpenseAction(filteredExpenses))),
