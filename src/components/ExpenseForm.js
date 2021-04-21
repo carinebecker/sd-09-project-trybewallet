@@ -26,8 +26,6 @@ class ExpenseForm extends React.Component {
     this.renderTagExpense = this.renderTagExpense.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
-    this.calculateExpenses = this.calculateExpenses.bind(this);
   }
 
   componentDidMount() {
@@ -69,10 +67,6 @@ class ExpenseForm extends React.Component {
           },
         )
       ));
-  }
-
-  calculateExpenses() {
-    console.log('total');
   }
 
   renderValueInput() {

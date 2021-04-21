@@ -40,9 +40,9 @@ export function fetchCurrencies() {
     // despacha a action que no reduce altera a chave isFetching para true
     dispath(requestCurrencies());
     // requisição para api
-    //const jsonData = await getCurrencyOptions();
+    // const jsonData = await getCurrencyOptions();
     // apos a requisição despacha a action de success
-    //dispath(receiveCurrenciesSuccess(jsonData));
+    // dispath(receiveCurrenciesSuccess(jsonData));
     return getCurrencyOptions()
       .then(
         (result) => dispath(receiveCurrenciesSuccess(result)),
