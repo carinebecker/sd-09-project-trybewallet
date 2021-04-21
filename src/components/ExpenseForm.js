@@ -12,10 +12,9 @@ class ExpenseForm extends React.Component {
       loading: false,
       value: 0,
       description: '',
-      currency: '',
+      currency: 'USD',
       method: '',
       tag: '',
-      /* expenses: [], */
     };
 
     this.renderValueInput = this.renderValueInput.bind(this);
@@ -57,7 +56,7 @@ class ExpenseForm extends React.Component {
       .then((result) => (
         wallet(
           {
-            id: expenses.length + 1,
+            id: expenses.length,
             value,
             description,
             currency,
@@ -66,10 +65,12 @@ class ExpenseForm extends React.Component {
             exchangeRates: result.currencies,
           },
         )
-      ));
+      ))
+      .then(() => { this.setState({ value: 0 }); });
   }
 
   renderValueInput() {
+    const { value } = this.state;
     return (
       <label htmlFor="value-input">
         Valor da despesa:
@@ -79,6 +80,7 @@ class ExpenseForm extends React.Component {
           name="value"
           type="text"
           onChange={ this.handleChange }
+          value={ value }
         />
       </label>
     );

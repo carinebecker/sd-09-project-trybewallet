@@ -11,11 +11,16 @@ class Header extends React.Component {
 
   calculateExpenses() {
     const { expenses } = this.props;
-    const total = expenses.reduce((a, b) => parseFloat(a) + parseFloat(b.value), 0);
+    const total = expenses
+      .reduce((a, b) => {
+        a += (b.value * b.exchangeRates[b.currency].ask);
+        return a;
+      }, 0);
     return (
-      <p data-testid="total-field">
-        { `Total Gasto: ${total}` }
-      </p>
+      <section>
+        <h6>Total Gasto: </h6>
+        <p data-testid="total-field">{ total }</p>
+      </section>
     );
   }
 
