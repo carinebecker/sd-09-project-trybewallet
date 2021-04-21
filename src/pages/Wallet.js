@@ -7,14 +7,9 @@ import {
 import Header from '../components/Header';
 import { currencyList } from '../services/currencyData';
 import ExpenseForm from '../components/ExpenseForm';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.test = this.test.bind(this);
-  }
-
   componentDidMount() {
     this.savesCurrencyList();
   }
@@ -25,23 +20,12 @@ class Wallet extends React.Component {
     savesCurrencyList(currencyArray);
   }
 
-  test() {
-    // console.log(this.state.currencyList);
-  }
-
   render() {
-    const { test } = this;
-
     return (
       <>
-        <button
-          type="button"
-          onClick={ () => test() }
-        >
-          teste
-        </button>
         <Header />
         <ExpenseForm />
+        <ExpensesTable />
       </>
     );
   }

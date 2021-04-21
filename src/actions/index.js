@@ -7,6 +7,8 @@ export const SAVES_EXCHANGE_RATE = 'SAVES_EXCHANGE_RATE';
 export const SAVES_EXCHANGE_RATE_FAILS = 'SAVES_EXCHANGE_RATE_FAILS';
 export const SAVES_EXPENSE = 'SAVES_EXPENSE';
 export const FETCH_CURRENCY_DATA_FAILS = 'FETCH_CURRENCY_DATA_FAILS';
+export const UPDATES_EXPENSE = 'UPDATES_EXPENSE';
+export const SET_GLOBAL_STATE = 'SET_GLOBAL_STATE';
 
 export const savesUserEmail = (userEmail) => ({
   type: SAVES_USER_EMAIL,
@@ -18,7 +20,7 @@ export const savesCurrencyList = (currencies) => ({
   payload: currencies,
 });
 
-const savesExpense = (expenseData) => ({
+export const savesExpense = (expenseData) => ({
   type: SAVES_EXPENSE,
   payload: expenseData,
 });
@@ -47,3 +49,12 @@ export const fetchCurrencyData = (expenseData) => (dispatch) => {
       (error) => fetchCurrencyDataFails(error),
     );
 };
+
+export const updatesExpense = (filteredExpenses) => ({
+  type: UPDATES_EXPENSE,
+  payload: filteredExpenses,
+});
+
+export const setGlobalState = () => ({
+  type: SET_GLOBAL_STATE,
+});

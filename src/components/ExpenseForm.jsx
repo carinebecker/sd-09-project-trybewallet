@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  savesCurrencyList as savesCurrencyListAction,
   fetchCurrencyData as fetchCurrencyDataAction,
 } from '../actions';
 
@@ -12,6 +11,7 @@ class ExpenseForm extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.renderForm = this.renderForm.bind(this);
 
     this.state = {
       value: '',
@@ -19,6 +19,7 @@ class ExpenseForm extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      count: 0,
     };
   }
 
@@ -30,8 +31,8 @@ class ExpenseForm extends React.Component {
   }
 
   handleClick() {
-    const { value, description, currency, method, tag } = this.state;
-    const { expenses, fetchCurrencyData } = this.props;
+    const { value, description, currency, method, tag, count } = this.state;
+    const { fetchCurrencyData } = this.props;
 
     const expenseData = {
       value: value,
@@ -39,11 +40,15 @@ class ExpenseForm extends React.Component {
       currency: currency,
       method: method,
       tag: tag,
-      id: expenses.length,
+      id: count,
       exchangeRates: '',
     };
 
     fetchCurrencyData(expenseData);
+
+    this.setState((state) => ({
+      count: state.count += 1,
+    }));
 
     this.resetState();
   }
@@ -52,19 +57,20 @@ class ExpenseForm extends React.Component {
     this.setState((state) => ({
       ...state,
       value: '',
+      description: '',
     }));
   }
 
-  render() {
-    const { test, handleClick, handleChange } = this;
+  renderForm() {
+    const { handleClick, handleChange, renderForm } = this;
     const { value, description, currency, method, tag } = this.state;
-    const { currencies } = this.props;
-
+    const { currencies, isEdit } = this.props;
     return (
       <form>
           <h2>Dados da despesa:</h2>
           <input
             data-testid="value-input"
+            type="number"
             placeholder="Valor"
             name="value"
             value={ value }
@@ -72,13 +78,14 @@ class ExpenseForm extends React.Component {
           />
           <input
             data-testid="description-input"
+            type="text"
             placeholder="Descrição"
             name="description"
             value={ description }
             onChange={ (event) => handleChange(event) }
           />
           <label htmlFor="currency">
-            Moeda
+            Moeda escolhida
             <select
               data-testid="currency-input"
               name="currency"
@@ -101,7 +108,7 @@ class ExpenseForm extends React.Component {
             </select>
           </label>
           <label htmlFor="method">
-            Método de pagamento
+            Método de pagamento utilizado
             <select
               data-testid="method-input"
               name="method"
@@ -153,6 +160,20 @@ class ExpenseForm extends React.Component {
         </form>
     );
   }
+
+  render() {
+    const { handleClick, handleChange, renderForm } = this;
+    const { value, description, currency, method, tag } = this.state;
+    const { currencies, isEdit } = this.props;
+
+    return (
+      <>
+        {
+          !(isEdit) ? renderForm() : <span>Editando</span>
+        }
+      </>
+    );
+  }
 }
 
 ExpenseForm.propTypes = {
@@ -165,6 +186,7 @@ ExpenseForm.propTypes = {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  isEdit: state.wallet.isEdit,
 });
 
 const mapDispatchToProps = (dispatch) => ({
