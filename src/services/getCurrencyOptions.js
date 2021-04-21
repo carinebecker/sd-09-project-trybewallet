@@ -1,6 +1,7 @@
+const CURRENCIES_API = 'https://economia.awesomeapi.com.br';
 const getCurrencyOptions = async () => {
   try {
-    const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+    const response = await fetch(`${CURRENCIES_API}/json/all`);
     const result = await response.json();
     return result;
   } catch (error) {
