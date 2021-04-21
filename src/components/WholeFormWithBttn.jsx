@@ -1,7 +1,7 @@
 import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { saveExpense } from '../actions';
+import { saveExpense, editExpense } from '../actions';
 
 class WholeFormWithBttn extends React.Component {
   constructor(props) {
@@ -13,7 +13,22 @@ class WholeFormWithBttn extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      currencies: [],
+      currencies: [
+        'USD',
+        'CAD',
+        'EUR',
+        'GBP',
+        'ARS',
+        'BTC',
+        'LTC',
+        'JPY',
+        'CHF',
+        'AUD',
+        'CNY',
+        'ILS',
+        'ETH',
+        'XRP',
+      ],
       paymentMethods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       expenseTag: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
     };
@@ -22,10 +37,39 @@ class WholeFormWithBttn extends React.Component {
     this.createOptionsElements = this.createOptionsElements.bind(this);
     this.createTextInputs = this.createTextInputs.bind(this);
     this.createDropdownElements = this.createDropdownElements.bind(this);
+    this.getExpenseDetailsToEdit = this.getExpenseDetailsToEdit.bind(this);
   }
 
   componentDidMount() {
     this.convertCurrencyDataToInitials();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { expenseToEdit } = this.props;
+    if (expenseToEdit !== prevProps.expenseToEdit) {
+      this.getExpenseDetailsToEdit();
+    }
+  }
+
+  getExpenseDetailsToEdit() {
+    const { expenseToEdit } = this.props;
+    const { value, description, currency, method, tag } = expenseToEdit;
+    this.setState({
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    });
+  }
+
+  changeButtonName() {
+    const { expenseToEdit = {} } = this.props;
+    let btnName = 'Adicionar despesa';
+    if (Object.keys(expenseToEdit).length) {
+      btnName = 'Editar despesa';
+    }
+    return btnName;
   }
 
   handleChange(event) {
@@ -33,25 +77,52 @@ class WholeFormWithBttn extends React.Component {
     this.setState({ [name]: value });
   }
 
-  async handleClick() {
+  async handleClick(event) {
     const { id, value, description, currency, method, tag } = this.state;
-    const { addExpense } = this.props;
-    const fetchFunc = await this.fetchCurrenciesAPI();
-    const expenseDetailed = {
-      id,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: fetchFunc,
-    };
-    addExpense(expenseDetailed);
-    this.setState({
-      id: id + 1,
-      value: '',
-      description: '',
-    });
+    console.log(currency, value, description, method, tag);
+    const {
+      expenses,
+      expenseToEdit,
+      dispatchSaveExpense,
+      dispatchEditExpense,
+    } = this.props;
+    const { name } = event.target;
+    if (name === 'Adicionar despesa') {
+      const fetchFunc = await this.fetchCurrenciesAPI();
+      const expenseDetailed = {
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: fetchFunc,
+      };
+      dispatchSaveExpense(expenseDetailed);
+      this.setState({
+        id: id + 1,
+        value: '',
+        description: '',
+      });
+    } else {
+      const expenseDetailed = {
+        id: expenseToEdit.id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: expenseToEdit.exchangeRates,
+      };
+      const editedExpenses = expenses.map((expense) => {
+        if (expense.id === expenseToEdit.id) {
+          return expenseDetailed;
+        }
+        return expense;
+      });
+      console.log('edit button');
+      dispatchEditExpense(editedExpenses);
+    }
   }
 
   async fetchCurrenciesAPI() {
@@ -71,12 +142,12 @@ class WholeFormWithBttn extends React.Component {
     this.setState({ currencies: currenciesNames });
   }
 
-  createOptionsElements(item, stateKey) {
+  createOptionsElements(item) {
     return (
       <option
         data-testid={ item }
         key={ `${item}-option` }
-        value={ stateKey }
+        value={ item }
       >
         { item }
       </option>
@@ -113,11 +184,6 @@ class WholeFormWithBttn extends React.Component {
     );
   }
 
-  createExpenseDetailsObject() {
-    const objectExpense = { testKey: 'testValue' };
-    return objectExpense;
-  }
-
   render() {
     const { value, description, currencies, paymentMethods, expenseTag } = this.state;
     return (
@@ -136,21 +202,28 @@ class WholeFormWithBttn extends React.Component {
         </form>
         <button
           type="button"
+          name={ this.changeButtonName() }
           onClick={ this.handleClick }
         >
-          Adicionar despesa
+          { this.changeButtonName() }
         </button>
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  expenseToEdit: state.wallet.setExpenses,
+  expenses: state.wallet.expenses,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  addExpense: (expenseDetails) => dispatch(saveExpense(expenseDetails)),
+  dispatchSaveExpense: (expenseDetails) => dispatch(saveExpense(expenseDetails)),
+  dispatchEditExpense: (editedExpenses) => dispatch(editExpense(editedExpenses)),
 });
 
 WholeFormWithBttn.propTypes = {
   addExpense: func,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(WholeFormWithBttn);
+export default connect(mapStateToProps, mapDispatchToProps)(WholeFormWithBttn);
