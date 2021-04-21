@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import getCurrencyOptions from '../services/getCurrencyOptions';
+import PropTypes from 'prop-types';
 import { payMethods, tagExpense } from '../data';
 import { fetchCurrencies, walletCreate } from '../actions';
 
@@ -10,13 +10,12 @@ class ExpenseForm extends React.Component {
 
     this.state = {
       loading: false,
-      id: 0,
       value: 0,
       description: '',
       currency: '',
       method: '',
       tag: '',
-      expenses: [],
+      /* expenses: [], */
     };
 
     this.renderValueInput = this.renderValueInput.bind(this);
@@ -27,7 +26,7 @@ class ExpenseForm extends React.Component {
     this.renderTagExpense = this.renderTagExpense.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.genereteID = this.genereteID.bind(this);
+
     this.calculateExpenses = this.calculateExpenses.bind(this);
   }
 
@@ -53,14 +52,14 @@ class ExpenseForm extends React.Component {
     // fazer uma requisição à API para trazer o câmbio mais atualizado possível.
     // Buscar no redux o ultimo ID e acrescentar 1 ou mudar direto lá
     // salvar no redux sem sobrescrever
-    const { id, value, description, currency,
+    const { value, description, currency,
       method, tag } = this.state;
-    const { getExchangeRates, wallet } = this.props;
+    const { getExchangeRates, wallet, expenses } = this.props;
     getExchangeRates()
       .then((result) => (
         wallet(
           {
-            id,
+            id: expenses.length + 1,
             value,
             description,
             currency,
@@ -70,10 +69,6 @@ class ExpenseForm extends React.Component {
           },
         )
       ));
-  }
-
-  genereteID() {
-    console.log('id');
   }
 
   calculateExpenses() {
@@ -112,8 +107,6 @@ class ExpenseForm extends React.Component {
 
   renderCurrencyInput() {
     const { isFetching, currencies } = this.props;
-    // console.log(isFetching, currencies);
-    /* const { coins } = this.state; */
     return (
       <label htmlFor="currency-input">
         Moeda:
@@ -222,5 +215,13 @@ const mapDispatchToProps = (dispatch) => ({
   // faz um dispatch que chama o fetch
   getExchangeRates: () => dispatch(fetchCurrencies()),
 });
+
+ExpenseForm.propTypes = {
+  getExchangeRates: PropTypes.func.isRequired,
+  wallet: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
