@@ -17,6 +17,7 @@ class GenericForm extends React.Component {
     this.renderMethod = this.renderMethod.bind(this);
     this.renderTag = this.renderTag.bind(this);
     this.renderCurrencies = this.renderCurrencies.bind(this);
+    this.lalala = this.lalala.bind(this);
 
     this.state = {
       value: '',
@@ -114,13 +115,11 @@ class GenericForm extends React.Component {
     );
   }
 
-  renderAllAndLintSucks() {
-    const { handleClick, handleChange } = this;
-    const { value, description, currency, method, tag } = this.state;
-    const { currencies, id } = this.props;
-    console.log(id);
+  lalala() {
+    const { value, description } = this.state;
+    const { handleChange } = this;
     return (
-      <form>
+      <>
         <input
           data-testid="value-input"
           type="number"
@@ -137,6 +136,18 @@ class GenericForm extends React.Component {
           value={ description }
           onChange={ (event) => handleChange(event) }
         />
+      </>
+    );
+  }
+
+  renderAllAndLintSucks() {
+    const { handleClick, handleChange } = this;
+    const { value, description, currency, method, tag } = this.state;
+    const { currencies, id } = this.props;
+    console.log(id);
+    return (
+      <form>
+        { this.lalala() }
         <select
           data-testid="currency-input"
           name="currency"
@@ -148,23 +159,23 @@ class GenericForm extends React.Component {
         <select
           data-testid="method-input"
           name="method"
-          value={method}
-          onChange={(event) => handleChange(event)}
+          value={ method }
+          onChange={ (event) => handleChange(event) }
         >
           { this.renderMethod() }
         </select>
         <select
           data-testid="tag-input"
           name="tag"
-          value={tag}
-          onChange={(event) => handleChange(event)}
+          value={ tag }
+          onChange={ (event) => handleChange(event) }
         >
           { this.renderTag() }
         </select>
         <button
           data-testid="edit-btn"
           type="button"
-          onClick={() => handleClick()}
+          onClick={ () => handleClick() }
         >
           Editar despesas
         </button>
@@ -175,7 +186,7 @@ class GenericForm extends React.Component {
   render() {
     const { renderAllAndLintSucks } = this;
     return (
-       renderAllAndLintSucks()
+      renderAllAndLintSucks()
     );
   }
 }
