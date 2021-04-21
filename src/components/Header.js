@@ -20,13 +20,12 @@ class Header extends React.Component {
   }
 
   render() {
-    const { email, isFetching } = this.props;
+    const { email } = this.props;
     return (
       <header>
         <p>Este é o header</p>
         <p data-testid="email-field">{ email }</p>
-        { !isFetching
-            && this.calculateExpenses()}
+        { this.calculateExpenses()}
         <p data-testid="header-currency-field">Cambio: BRL</p>
       </header>
     );
@@ -36,13 +35,11 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
-  isFetching: state.wallet.isFetching,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
