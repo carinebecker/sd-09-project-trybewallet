@@ -7,17 +7,24 @@ class Header extends React.Component {
     super(props);
 
     this.updateTotal = this.updateTotal.bind(this);
+    this.reduceFunction = this.reduceFunction.bind(this);
 
     // this.state = {
     //   total: 0,
     // }
   }
 
+  reduceFunction(acc, element) {
+    
+    return (
+      acc += Number(element.value) * Number(element.exchangeRates[element.currency].ask)
+    );
+  }
+
   updateTotal() {
     const { expenses } = this.props;
-    return expenses
-      .reduce((acc, element) =>
-        acc += (Number(element.value) * Number(element.exchangeRates[element.currency].ask)),0).toFixed(2);
+    const { reduceFunction } = this;
+    return expenses.reduce((acc, element) => reduceFunction(acc, element), 0).toFixed(2);
   }
 
   render() {
