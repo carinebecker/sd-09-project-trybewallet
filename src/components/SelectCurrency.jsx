@@ -40,6 +40,7 @@ class SelectCurrency extends Component {
           id="currency"
           data-testid="currency-input"
           onChange={ handleChange }
+          defaultValue="USD"
         >
           {selectCurrency}
         </select>
