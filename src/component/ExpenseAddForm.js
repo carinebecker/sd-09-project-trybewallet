@@ -26,7 +26,7 @@ class ExpenseAddForm extends React.Component {
               <td name={ Number(ask).toFixed(2) }>
                 { `${Number(ask).toFixed(2)}` }
               </td>
-              <td name={ name.substring(0, )}>{ name }</td>
+              <td name={ name }>{ name }</td>
               <td name={ value }>{ value }</td>
               <td>{ `${total.toFixed(2)}` }</td>
               <td>Real</td>
