@@ -72,21 +72,7 @@ class GenericForm extends React.Component {
     }));
   }
 
-  renderCurrencies(currencies) {
-    return (
-      currencies.map((element) => (
-        <option
-          value={ element }
-          data-testid={ element }
-          key={ element }
-        >
-          { element }
-        </option>
-      ))
-    );
-  }
-    
-    lalala() {
+  lalala() {
     const { value, description } = this.state;
     const { handleChange } = this;
     return (
@@ -106,8 +92,22 @@ class GenericForm extends React.Component {
           name="description"
           value={ description }
           onChange={ (event) => handleChange(event) }
-        />
+          />
       </>
+    );
+  }
+
+  renderCurrencies(currencies) {
+    return (
+      currencies.map((element) => (
+        <option
+          value={ element }
+          data-testid={ element }
+          key={ element }
+        >
+          { element }
+        </option>
+      ))
     );
   }
 
