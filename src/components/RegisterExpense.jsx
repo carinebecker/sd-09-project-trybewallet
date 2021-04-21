@@ -61,11 +61,13 @@ class RegisterExpense extends Component {
         </label>
         <SelectCurrency handleChange={ this.handleInputChange } />
         <label htmlFor="method">
+          Método de pagamento:
           <select
             name="method"
             id="method"
             data-testid="method-input"
             onChange={ this.handleInputChange }
+            defaultValue="Dinheiro"
           >
             <option value="Dinheiro">Dinheiro</option>
             <option value="Cartão de crédito">Cartão de crédito</option>
