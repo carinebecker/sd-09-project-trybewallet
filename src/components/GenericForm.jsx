@@ -5,7 +5,7 @@ import {
   setGlobalState as setGlobalStateAction,
   updatesExpense as updatesExpenseAction,
 } from '../actions';
-import segundaMetadeDoForm from './segundaMetadeDoForm';
+// import segundaMetadeDoForm from './segundaMetadeDoForm';
 
 class GenericForm extends React.Component {
   constructor(props) {
@@ -121,7 +121,6 @@ class GenericForm extends React.Component {
     console.log(id);
     return (
       <form>
-        <h2>Dados da despesa:</h2>
         <input
           data-testid="value-input"
           type="number"
@@ -139,7 +138,6 @@ class GenericForm extends React.Component {
           onChange={ (event) => handleChange(event) }
         />
         <label htmlFor="currency">
-          Moeda escolhida
           <select
             data-testid="currency-input"
             name="currency"
@@ -154,7 +152,6 @@ class GenericForm extends React.Component {
         </label>
         {/* <segundaMetadeDoForm method={ method } tag={ tag } handleClick={ handleClick } handleChange={ handleChange } /> */}
         <label htmlFor="method">
-          Método de pagamento utilizado
           <select
             data-testid="method-input"
             name="method"
@@ -162,25 +159,17 @@ class GenericForm extends React.Component {
             value={method}
             onChange={(event) => handleChange(event)}
           >
-            {
-              this.renderMethod()
-            }
+            { this.renderMethod() }
           </select>
         </label>
-        <label htmlFor="tag">
-          Selecione uma categoria
-          <select
-            data-testid="tag-input"
-            name="tag"
-            id="tag"
-            value={tag}
-            onChange={(event) => handleChange(event)}
-          >
-            {
-              this.renderTag()
-            }
-          </select>
-        </label>
+        <select
+          data-testid="tag-input"
+          name="tag"
+          value={tag}
+          onChange={(event) => handleChange(event)}
+        >
+          { this.renderTag() }
+        </select>
         <button
           data-testid="edit-btn"
           type="button"
