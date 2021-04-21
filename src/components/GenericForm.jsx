@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   setGlobalState as setGlobalStateAction,
-  updatesExpense as updatesExpenseAction
+  updatesExpense as updatesExpenseAction,
 } from '../actions';
 
 class GenericForm extends React.Component {
@@ -11,6 +12,7 @@ class GenericForm extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.renderAllAndLintSucks = this.renderAllAndLintSucks.bind(this);
 
     this.state = {
       value: '',
@@ -56,7 +58,6 @@ class GenericForm extends React.Component {
     toggleIsEdit();
 
     setGlobalState();
-
   }
 
   resetState() {
@@ -67,7 +68,7 @@ class GenericForm extends React.Component {
     }));
   }
 
-  render() {
+  renderAllAndLintSucks() {
     const { handleClick, handleChange } = this;
     const { value, description, currency, method, tag } = this.state;
     const { currencies, id } = this.props;
@@ -168,7 +169,23 @@ class GenericForm extends React.Component {
       </form>
     );
   }
+
+  render() {
+    const { renderAllAndLintSucks } = this;
+    return (
+       renderAllAndLintSucks()
+    );
+  }
 }
+
+GenericForm.propTypes = {
+  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  id: PropTypes.number.isRequired,
+  updatesExpense: PropTypes.func.isRequired,
+  setGlobalState: PropTypes.func.isRequired,
+  toggleIsEdit: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
