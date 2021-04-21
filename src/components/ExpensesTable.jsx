@@ -33,21 +33,30 @@ class ExpensesTable extends Component {
     const { expenses } = this.props;
     const tableContent = expenses.map((expense) => {
       const { description, tag, method, value, exchangeRates, currency } = expense;
-      const formatedValue = `${currency} ${Number(value).toFixed(2)}`;
+      const formattedValue = `${currency} ${Number(value).toFixed(2)}`;
       const currencyName = exchangeRates[currency].name.split('/')[0];
       let exchange = exchangeRates[currency].ask;
       const exchangedValue = Math.round((value * exchange) * 100) / 100;
       exchange = Math.round(exchangeRates[currency].ask * 100) / 100;
       const exchangedCurrency = 'Real';
+      const buttons = (
+        <td>
+          <button type="button"> Editar </button>
+          <button data-testid="delete-btn" type="button">
+            Deletar
+          </button>
+        </td>
+      );
       return {
         description,
         tag,
         method,
-        formatedValue,
+        formattedValue,
         currencyName,
         exchange,
         exchangedValue,
         exchangedCurrency,
+        buttons,
       };
     });
     this.setState({ tableContent, isNewContent: false });
@@ -56,50 +65,50 @@ class ExpensesTable extends Component {
   render() {
     const { tableContent } = this.state;
     return (
-      <div className="table-container">
-        <div className="description-container">
-          {tableContent.map(({ description }, index) => (
-            <p key={ index }>{ description }</p>))}
-        </div>
-        <div className="tag-container">
-          {tableContent.map(({ tag }, index) => (
-            <p key={ index }>{ tag }</p>))}
-        </div>
-        <div className="method-container">
-          {tableContent.map(({ method }, index) => (
-            <p key={ index }>{ method }</p>))}
-        </div>
-        <div className="value-container">
-          {tableContent.map(({ formatedValue }, index) => (
-            <p key={ index }>{ formatedValue }</p>))}
-        </div>
-        <div className="currency-container">
-          {tableContent.map(({ currencyName }, index) => (
-            <p key={ index }>{ currencyName }</p>))}
-        </div>
-        <div className="exchange-container">
-          {tableContent.map(({ exchange }, index) => (
-            <p key={ index }>{ exchange }</p>))}
-        </div>
-        <div className="exchanged-value-container">
-          {tableContent.map(({ exchangedValue }, index) => (
-            <p key={ index }>{ exchangedValue }</p>))}
-        </div>
-        <div className="exchange-currency-conteiner">
-          {tableContent.map(({ exchangedCurrency }, index) => (
-            <p key={ index }>{ exchangedCurrency }</p>))}
-        </div>
-        <div className="controls-container">
-          {tableContent.map((_, index) => (
-            <div key={ (Math.random() * 100) }>
-              <button type="button" key={ (Math.random() * 100) }> Editar </button>
-              <button data-testid="delete-btn" type="button" key={ index }>
-                Deletar
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="description-container">
+            {tableContent.map(({ description }, i) => (<td key={ i }>{ description }</td>))}
+          </tr>
+          <tr className="tag-container">
+            {tableContent.map(({ tag }, index) => (<td key={ index }>{ tag }</td>))}
+          </tr>
+          <tr className="method-container">
+            {tableContent.map(({ method }, index) => (<td key={ index }>{ method }</td>))}
+          </tr>
+          <tr className="value-container">
+            {tableContent.map(({ formatedValue: fv }, i) => (<td key={ i }>{ fv }</td>))}
+          </tr>
+          <tr className="currency-container">
+            {tableContent.map(({ currencyName: cn }, i) => (<td key={ i }>{ cn }</td>))}
+          </tr>
+          <tr className="exchange-container">
+            {tableContent.map(({ exchange }, i) => (<td key={ i }>{ exchange }</td>))}
+          </tr>
+          <tr className="exchanged-value-container">
+            {tableContent.map(({ exchangedValue: ev }, i) => (<td key={ i }>{ ev }</td>))}
+          </tr>
+          <tr className="exchange-currency-conteiner">
+            {tableContent.map(({ exchangedCurrency: e }, i) => (<td key={ i }>{ e }</td>))}
+          </tr>
+          <tr className="controls-container">
+            {tableContent.map(({ buttons }) => buttons)}
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }
