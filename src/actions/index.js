@@ -8,6 +8,6 @@ export const loginUser = (email) => ({
   email,
 });
 
-export const walletCreate = (state) => ({
+export const walletCreate = (expenses) => ({
   type: WALLET,
-  state });
+  expenses });

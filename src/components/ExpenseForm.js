@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import getCurrencyOptions from '../services/getCurrencyOptions';
 import { payMethods, tagExpense } from '../data';
+import { walletCreate } from '../actions';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -54,10 +56,12 @@ class ExpenseForm extends React.Component {
   }
 
   handleClick() {
+    // fazer uma requisição à API para trazer o câmbio mais atualizado possível.
     // Buscar no redux o ultimo ID e acrescentar 1 ou mudar direto lá
     // salvar no redux sem sobrescrever
+    const { wallet } = this.props;
     const { id, value, description, currency,
-      method, tag, exchangeRates } = this.state;
+      method, tag, exchangeRates, expenses } = this.state;
     this.setState({
       expenses: [{
         id,
@@ -68,7 +72,7 @@ class ExpenseForm extends React.Component {
         tag,
         exchangeRates,
       }],
-    });
+    }, () => { wallet(expenses); });
   }
 
   renderValueInput() {
@@ -199,4 +203,8 @@ class ExpenseForm extends React.Component {
   }
 }
 
-export default ExpenseForm;
+const mapDispatchToProps = (dispatch) => ({
+  wallet: (expenses) => dispatch(walletCreate(expenses)),
+});
+
+export default connect(null, mapDispatchToProps)(ExpenseForm);
