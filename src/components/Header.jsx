@@ -17,8 +17,7 @@ class Header extends React.Component {
     const { expenses } = this.props;
     return expenses
       .reduce((acc, element) =>
-        acc += (Number(element.value) * Number(element.exchangeRates[element.currency].ask)),0
-    ).toFixed(2);
+        acc += (Number(element.value) * Number(element.exchangeRates[element.currency].ask)),0).toFixed(2);
   }
 
   render() {
@@ -31,7 +30,7 @@ class Header extends React.Component {
           name="userData"
         >
           <h3 data-testid="email-field">
-            Bem vindo, 
+            Bem vindo,
             { userEmail }
           </h3>
         </section>
