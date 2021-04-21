@@ -137,31 +137,22 @@ class GenericForm extends React.Component {
           value={ description }
           onChange={ (event) => handleChange(event) }
         />
-        <label htmlFor="currency">
-          <select
-            data-testid="currency-input"
-            name="currency"
-            id="currency"
-            value={ currency }
-            onChange={ (event) => handleChange(event) }
-          >
-            {
-              this.renderCurrencies(currencies)
-            }
-          </select>
-        </label>
-        {/* <segundaMetadeDoForm method={ method } tag={ tag } handleClick={ handleClick } handleChange={ handleChange } /> */}
-        <label htmlFor="method">
-          <select
-            data-testid="method-input"
-            name="method"
-            id="method"
-            value={method}
-            onChange={(event) => handleChange(event)}
-          >
-            { this.renderMethod() }
-          </select>
-        </label>
+        <select
+          data-testid="currency-input"
+          name="currency"
+          value={ currency }
+          onChange={ (event) => handleChange(event) }
+        >
+          { this.renderCurrencies(currencies) }
+        </select>
+        <select
+          data-testid="method-input"
+          name="method"
+          value={method}
+          onChange={(event) => handleChange(event)}
+        >
+          { this.renderMethod() }
+        </select>
         <select
           data-testid="tag-input"
           name="tag"
