@@ -20,10 +20,12 @@ class RegisterExpense extends Component {
 
   setExpense(event) {
     event.preventDefault();
-    const { setExpense } = this.props;
+    const { setExpense, expenses } = this.props;
+    const id = expenses.length;
     const { value, description, currency, method, tag } = this.state;
-    const expense = { value, description, currency, method, tag };
+    const expense = { id, value, description, currency, method, tag };
     setExpense(expense);
+    this.setState({ value: 0 });
   }
 
   handleInputChange(event) {
@@ -37,6 +39,7 @@ class RegisterExpense extends Component {
   }
 
   render() {
+    const { value } = this.state;
     return (
       <form>
         <label htmlFor="value">
@@ -44,6 +47,7 @@ class RegisterExpense extends Component {
           <input
             type="number"
             name="value"
+            value={ value }
             id="value"
             data-testid="value-input"
             onChange={ this.handleInputChange }
@@ -89,6 +93,7 @@ class RegisterExpense extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   isFetching: state.wallet.isFetching,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -97,6 +102,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 RegisterExpense.propTypes = {
   setExpense: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterExpense);
