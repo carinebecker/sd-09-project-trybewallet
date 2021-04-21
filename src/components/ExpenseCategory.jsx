@@ -6,12 +6,13 @@ class ExpenseCategory extends Component {
     const { handleChange } = this.props;
     return (
       <label htmlFor="tag">
-        Categoria:
+        Tag:
         <select
           name="tag"
           id="tag"
           data-testid="tag-input"
           onChange={ handleChange }
+          defaultValue="Alimentação"
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
