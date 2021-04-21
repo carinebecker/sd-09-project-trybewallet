@@ -81,7 +81,7 @@ class ExpensesTable extends Component {
         </thead>
         <tbody>
           <tr className="description-container">
-            {tableContent.map(({ description }, i) => (<td key={ i }>{ description }</td>))}
+            {tableContent.map(({ description: d }, i) => (<td key={ i }>{ d }</td>))}
           </tr>
           <tr className="tag-container">
             {tableContent.map(({ tag }, index) => (<td key={ index }>{ tag }</td>))}
@@ -102,7 +102,8 @@ class ExpensesTable extends Component {
             {tableContent.map(({ exchangedValue: ev }, i) => (<td key={ i }>{ ev }</td>))}
           </tr>
           <tr className="exchange-currency-conteiner">
-            {tableContent.map(({ exchangedCurrency: e }, i) => (<td key={ i }>{ e }</td>))}
+            {tableContent.map(({ exchangedCurrency: e }, i) => (
+              <td key={ i }>{ e }</td>))}
           </tr>
           <tr className="controls-container">
             {tableContent.map(({ buttons }) => buttons)}
