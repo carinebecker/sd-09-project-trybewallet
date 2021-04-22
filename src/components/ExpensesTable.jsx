@@ -119,19 +119,16 @@ class ExpensesTable extends React.Component {
 ExpensesTable.propTypes = {
   updatesExpense: PropTypes.func.isRequired,
   setGlobalState: PropTypes.func.isRequired,
-  savesCurrencyList: PropTypes.func.isRequired,
   expenses: PropTypes.objectOf(PropTypes.object).isRequired,
-  fetchCurrencyData: PropTypes.func.isRequired,
-  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   updatesExpense: (filteredExpenses) => (dispatch(updatesExpenseAction(filteredExpenses))),
   setGlobalState: () => dispatch(setGlobalStateAction()),
-})
+});
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
