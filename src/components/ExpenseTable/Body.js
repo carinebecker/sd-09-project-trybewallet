@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import DeleteButton from './DeleteButton';
 
 class Body extends React.Component {
   render() {
@@ -30,7 +31,9 @@ class Body extends React.Component {
               }
             </td>
             <td>Real</td>
-            <td>eDIT EXCLUIR</td>
+            <td>
+              <DeleteButton id={ exp.id } />
+            </td>
           </tr>
         )) }
       </>
