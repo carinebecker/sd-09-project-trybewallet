@@ -17,10 +17,10 @@ class Header extends React.Component {
         return a;
       }, 0);
     return (
-      <section>
-        <h6>Total Gasto: </h6>
-        <p data-testid="total-field">{ total }</p>
-      </section>
+      <>
+        <span>Despesa Total: R$ </span>
+        <span data-testid="total-field">{ total.toFixed(2) }</span>
+      </>
     );
   }
 
@@ -28,10 +28,10 @@ class Header extends React.Component {
     const { email } = this.props;
     return (
       <header>
-        <p>Este é o header</p>
-        <p data-testid="email-field">{ email }</p>
+        <span>email:</span>
+        <span data-testid="email-field">{ email }</span>
         { this.calculateExpenses()}
-        <p data-testid="header-currency-field">Cambio: BRL</p>
+        <span data-testid="header-currency-field"> BRL</span>
       </header>
     );
   }

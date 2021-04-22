@@ -14,7 +14,6 @@ class DeleteButton extends React.Component {
     const { expenses, id, deleteExp } = this.props;
     const expList = expenses;
     const newExpenses = expList.filter((expense) => expense.id !== id);
-    console.clear();
     deleteExp(newExpenses);
   }
 

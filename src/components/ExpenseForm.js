@@ -46,9 +46,6 @@ class ExpenseForm extends React.Component {
   }
 
   handleClick() {
-    // fazer uma requisição à API para trazer o câmbio mais atualizado possível.
-    // Buscar no redux o ultimo ID e acrescentar 1 ou mudar direto lá
-    // salvar no redux sem sobrescrever
     const { value, description, currency,
       method, tag } = this.state;
     const { getExchangeRates, wallet, expenses } = this.props;

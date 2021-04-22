@@ -8,7 +8,6 @@ class Wallet extends React.Component {
     return (
       <div>
         <Header />
-        <h1>TrybeWallet</h1>
         <ExpenseForm />
         <ExpenseTable />
       </div>
