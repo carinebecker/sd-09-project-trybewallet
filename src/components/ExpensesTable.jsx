@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { removeExpense as removeGlobalExpense } from '../actions';
 
 class ExpensesTable extends Component {
   constructor(props) {
@@ -12,15 +13,16 @@ class ExpensesTable extends Component {
 
     this.generateTableContent = this.generateTableContent.bind(this);
     this.setNewContent = this.setNewContent.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
 
-  componentDidUpdate() {
-    const { isFetching } = this.props;
+  componentDidUpdate(prevProps) {
+    const { isFetching, expenses } = this.props;
     const { isNewContent } = this.state;
     if (isFetching && !isNewContent) {
       this.setNewContent();
     }
-    if (!isFetching && isNewContent) {
+    if ((!isFetching && isNewContent) || prevProps.expenses !== expenses) {
       this.generateTableContent();
     }
   }
@@ -29,9 +31,15 @@ class ExpensesTable extends Component {
     this.setState({ isNewContent: true });
   }
 
+  removeItem(index) {
+    const { expenses, removeExpense } = this.props;
+    removeExpense(expenses[index]);
+  }
+
   generateTableContent() {
     const { expenses } = this.props;
-    const tableContent = expenses.map((expense) => {
+    console.log(expenses);
+    const tableContent = expenses.map((expense, index) => {
       const { description, tag, method, value, exchangeRates, currency } = expense;
       const formattedValue = `${currency} ${Number(value).toFixed(2)}`;
       const currencyName = exchangeRates[currency].name.split('/')[0];
@@ -40,12 +48,16 @@ class ExpensesTable extends Component {
       exchange = Math.round(exchangeRates[currency].ask * 100) / 100;
       const exchangedCurrency = 'Real';
       const buttons = (
-        <td>
+        <div>
           <button type="button"> Editar </button>
-          <button data-testid="delete-btn" type="button">
+          <button
+            data-testid="delete-btn"
+            type="button"
+            onClick={ () => this.removeItem(index) }
+          >
             Deletar
           </button>
-        </td>
+        </div>
       );
       return {
         description,
@@ -64,6 +76,22 @@ class ExpensesTable extends Component {
 
   render() {
     const { tableContent } = this.state;
+    const tableBody = tableContent
+      .map(({ description, tag, method, formattedValue, currencyName, exchange,
+        exchangedValue, exchangedCurrency, buttons }, index) => (
+        (
+          <tr key={ index }>
+            <td>{ description }</td>
+            <td>{ tag }</td>
+            <td>{ method }</td>
+            <td>{ formattedValue }</td>
+            <td>{ currencyName }</td>
+            <td>{ exchange }</td>
+            <td>{ exchangedValue }</td>
+            <td>{ exchangedCurrency }</td>
+            <td>{ buttons }</td>
+          </tr>
+        )));
     return (
       <table className="table">
         <thead>
@@ -80,34 +108,7 @@ class ExpensesTable extends Component {
           </tr>
         </thead>
         <tbody>
-          <tr className="description-container">
-            {tableContent.map(({ description: d }, i) => (<td key={ i }>{ d }</td>))}
-          </tr>
-          <tr className="tag-container">
-            {tableContent.map(({ tag }, index) => (<td key={ index }>{ tag }</td>))}
-          </tr>
-          <tr className="method-container">
-            {tableContent.map(({ method }, index) => (<td key={ index }>{ method }</td>))}
-          </tr>
-          <tr className="value-container">
-            {tableContent.map(({ formatedValue: fv }, i) => (<td key={ i }>{ fv }</td>))}
-          </tr>
-          <tr className="currency-container">
-            {tableContent.map(({ currencyName: cn }, i) => (<td key={ i }>{ cn }</td>))}
-          </tr>
-          <tr className="exchange-container">
-            {tableContent.map(({ exchange }, i) => (<td key={ i }>{ exchange }</td>))}
-          </tr>
-          <tr className="exchanged-value-container">
-            {tableContent.map(({ exchangedValue: ev }, i) => (<td key={ i }>{ ev }</td>))}
-          </tr>
-          <tr className="exchange-currency-conteiner">
-            {tableContent.map(({ exchangedCurrency: e }, i) => (
-              <td key={ i }>{ e }</td>))}
-          </tr>
-          <tr className="controls-container">
-            {tableContent.map(({ buttons }) => buttons)}
-          </tr>
+          { tableBody }
         </tbody>
       </table>
     );
@@ -118,9 +119,14 @@ const mapStateToProps = (state) => ({
   isFetching: state.wallet.isFetching,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (item) => dispatch(removeGlobalExpense(item)),
+});
+
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ExpensesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
