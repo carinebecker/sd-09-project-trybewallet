@@ -25,12 +25,14 @@ class FormExpense extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  // Depois do compomente ir pro dom, pega o grupo de moedas do redux como props, usando a api
   async componentDidMount() {
     const { agroupCurrenciesToRedux } = this.props;
     const currencies = await getCurrencies();
     agroupCurrenciesToRedux(currencies);
   }
 
+  // Atualiza estado dos inputs
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({
@@ -38,6 +40,8 @@ class FormExpense extends React.Component {
     });
   }
 
+  // Atualiza os estados de acordo com o click no botão,
+  // faz a conversão dos valores e envia pro header. Também soma.
   async handleClick(event) {
     event.preventDefault();
     const { id, value, description, currency, method, tag } = this.state;
@@ -65,8 +69,8 @@ class FormExpense extends React.Component {
       method: 'Dinheiro',
       tag: tagOptions[0],
     });
-    const form = document.getElementById('add-expense-form');
-    form.reset();
+    // const form = document.getElementById('add-expense-form');
+    // form.reset();
   }
 
   render() {
@@ -118,12 +122,14 @@ FormExpense.propTypes = {
   sumExpensesToRedux: PropTypes.func.isRequired,
   currencies: PropTypes.objectOf({}).isRequired,
 };
+// MapState - leitura do estado via props
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
 });
 
+// Manda tudo pra store
 const mapDispatchToProps = (dispatch) => ({
   addExpenseToRedux: (expenses) => dispatch(addExpense(expenses)),
   agroupCurrenciesToRedux: (currencies) => dispatch(agroupCurrencies(currencies)),
