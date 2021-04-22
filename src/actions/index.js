@@ -4,7 +4,7 @@ export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const AGROUP_CURRENCIES = 'AGROUP_CURRENCIES';
 export const SUM_EXPENSES = 'SUM_EXPENSES';
 
-export default (email) => ({ type: 'LOGIN_ACTION', payload: { email } });
+export default (email) => ({ type: 'GET_LOGIN', payload: { email } });
 
 export const addExpense = (expenses) => ({ type: ADD_EXPENSE, payload: [expenses] });
 

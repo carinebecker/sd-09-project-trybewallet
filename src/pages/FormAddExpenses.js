@@ -26,7 +26,7 @@ class FormAddExpenses extends React.Component {
 
   async componentDidMount() {
     const { agroupCurrenciesToRedux } = this.props;
-    const currencies = await getCurrencies();
+    const currencies = await fetchCurrencies();
     agroupCurrenciesToRedux(currencies);
   }
 

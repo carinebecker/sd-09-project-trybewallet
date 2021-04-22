@@ -65,23 +65,18 @@ class Login extends React.Component {
     );
   }
 }
-
 const mapDispatchToProps = (dispatch) => ({
   loginActionProp: (email) => dispatch(loginAction(email)),
 });
-
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
   loginActionProp: PropTypes.func,
-
 };
-
 Login.defaultProps = {
   loginActionProp: {},
 };
 
 export default connect(null, mapDispatchToProps)(Login);
-
 // Consultei repositório : https://github.com/tryber/sd-09-project-trybewallet/pull/58/commits/d22379aa7533fa7ba72804ad1f9958ad4b93dd11
