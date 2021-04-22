@@ -1,5 +1,4 @@
-// Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { ADD_EXPENSE, ERROR_EXPENSE, SUM_PRICE_VALUE } from '../actions';
+import { ADD_EXPENSE, ERROR_EXPENSE, SET_EXPENSE, EDIT_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -16,30 +15,24 @@ const reducerDispesas = (state = INITIAL_STATE, action) => {
         exchangeRates: action.moedas,
       }],
     };
+  case SET_EXPENSE:
+    return {
+      ...state,
+      expenses: action.expenses,
+    };
   case ERROR_EXPENSE:
     return {
       ...state,
       error: action.error,
     };
-  default:
-    return state;
-  }
-};
-
-const INITIAL_SUM_STATE = {
-  total: 0,
-};
-
-const reducerSumTotal = (state = INITIAL_SUM_STATE, action) => {
-  switch (action.type) {
-  case SUM_PRICE_VALUE:
+  case EDIT_EXPENSE:
     return {
       ...state,
-      total: action.value + action.moeda,
+      ...action.expenses,
     };
   default:
     return state;
   }
 };
 
-export { reducerDispesas, reducerSumTotal };
+export default reducerDispesas;
