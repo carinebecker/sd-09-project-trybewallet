@@ -14,73 +14,66 @@ class Login extends React.Component {
       disable: true,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChangeInput = this.handleChangeInput.bind(this);
-    this.setUserEmail = this.setUserEmail.bind(this);
+    this.handlPassChange = this.handlPassChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.btnEnable = this.btnEnable.bind(this);
   }
 
-  setUserEmail(getUserEmail) {
-    const { email } = this.state;
+  handleEmailChange({ target }) {
+    const emailValidator = /^[\S.]+@[a-z]+\.\w{2,3}$/g.test(target.value);
+    this.setState({
+      email: target.value,
+      validEmail: emailValidator,
+    });
+  }
+
+  handlPassChange({ target }) {
+    const max = 5;
+    const passValidator = target.value.length >= max;
+    this.setState({
+      validPassword: passValidator,
+    });
+  }
+
+  btnEnable() {
+    const { getUserEmail } = this.props;
+    const { validEmail, validPassword, email } = this.state;
     getUserEmail(email);
-  }
-
-  handleChangeInput(event) {
-    const { validEmail, validPassword } = this.state;
-
     if (validEmail && validPassword) {
       this.setState({
         disable: false,
       });
-    }
-
-    const maxPassLength = 5;
-    if (event.target.type === 'email'
-    && /(.+)@(.+){2,}\.(.+){2,}/.test(event.target.value)) {
+    } else {
       this.setState({
-        email: event.target.value,
-        validEmail: true,
+        disable: true,
       });
     }
-    if (event.target.type === 'password' && event.target.value.length >= maxPassLength) {
-      this.setState({
-        validPassword: true,
-      });
-    }
-  }
-
-  handleSubmit() {
   }
 
   render() {
     const { disable } = this.state;
-    const { getUserEmail } = this.props;
     return (
       <div>
         <input
           type="email"
           name="email"
-          onChange={ this.handleChangeInput }
+          onChange={ (event) => {
+            this.handleEmailChange(event);
+            this.btnEnable();
+          } }
           data-testid="email-input"
         />
         <input
           type="password"
           name="password"
-          onChange={ this.handleChangeInput }
+          onChange={ (event) => {
+            this.handlPassChange(event);
+            this.btnEnable();
+          } }
           data-testid="password-input"
         />
         <Link to="/carteira">
-          <button
-            disabled={ disable }
-            data-testid="my-action"
-            type="submit"
-            onClick={ () => {
-              this.setUserEmail(getUserEmail);
-              this.handleSubmit();
-            } }
-          >
-            Entrar
-
-          </button>
+          <button type="button" disabled={ disable }>Entrar</button>
         </Link>
       </div>
     );
