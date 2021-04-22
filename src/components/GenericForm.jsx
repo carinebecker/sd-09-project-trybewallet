@@ -92,7 +92,7 @@ class GenericForm extends React.Component {
           name="description"
           value={ description }
           onChange={ (event) => handleChange(event) }
-          />
+        />
       </>
     );
   }
@@ -138,7 +138,7 @@ class GenericForm extends React.Component {
       ))
     );
   }
-  
+
   renderAllAndLintSucks() {
     const { handleClick, handleChange } = this;
     const { currency, method, tag } = this.state;
