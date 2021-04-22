@@ -17,6 +17,7 @@ class GenericForm extends React.Component {
     this.renderTag = this.renderTag.bind(this);
     this.renderCurrencies = this.renderCurrencies.bind(this);
     this.lalala = this.lalala.bind(this);
+    this.setEqual = this.setEqual.bind(this);
 
     this.state = {
       value: '',
@@ -30,6 +31,12 @@ class GenericForm extends React.Component {
 
   componentDidMount() {
     this.updateState();
+  }
+
+  setEqual(element) {
+    const expenseData = this.state;
+    element = { ...expenseData };
+    return element;
   }
 
   updateState() {
@@ -52,7 +59,7 @@ class GenericForm extends React.Component {
 
     const editedExpense = expenses.map((element) => {
       if (element.id === expenseData.id) {
-        return element = { ...expenseData };
+        return this.setEqual(element);
       }
       return element;
     });

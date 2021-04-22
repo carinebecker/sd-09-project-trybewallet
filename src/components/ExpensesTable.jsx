@@ -123,7 +123,7 @@ ExpensesTable.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  updatesExpense: (filteredExpenses) => (dispatch(updatesExpenseAction(filteredExpenses))),
+  updatesExpense: (filteredExpenses) => dispatch(updatesExpenseAction(filteredExpenses)),
   setGlobalState: () => dispatch(setGlobalStateAction()),
 });
 

@@ -16,7 +16,7 @@ class Header extends React.Component {
 
   reduceFunction(acc, element) {
     return (
-      acc += Number(element.value) * Number(element.exchangeRates[element.currency].ask)
+      acc + Number(element.value) * Number(element.exchangeRates[element.currency].ask)
     );
   }
 

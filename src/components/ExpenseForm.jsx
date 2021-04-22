@@ -12,6 +12,9 @@ class ExpenseForm extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.renderForm = this.renderForm.bind(this);
+    this.renderCurrencies = this.renderCurrencies.bind(this);
+    this.renderMethod = this.renderMethod.bind(this);
+    this.renderTag = this.renderTag.bind(this);
 
     this.state = {
       value: '',
@@ -35,20 +38,20 @@ class ExpenseForm extends React.Component {
     const { fetchCurrencyData } = this.props;
 
     const expenseData = {
-      value: value,
-      description: description,
-      currency: currency,
-      method: method,
-      tag: tag,
+      value,
+      description,
+      currency,
+      method,
+      tag,
       id: count,
       exchangeRates: '',
     };
 
     fetchCurrencyData(expenseData);
 
-    this.setState((state) => ({
-      count: state.count += 1,
-    }));
+    this.setState({
+      count: count + 1,
+    });
 
     this.resetState();
   }
@@ -61,125 +64,116 @@ class ExpenseForm extends React.Component {
     }));
   }
 
+  renderCurrencies() {
+    const { currencies } = this.props;
+    const curr = currencies.map((element) => (
+      <option
+        value={ element }
+        data-testid={ element }
+        key={ element }
+      >
+        { element }
+      </option>
+    ));
+    return curr;
+  }
+
+  renderMethod() {
+    const methodArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+    return (
+      methodArray.map((element) => (
+        <option
+          value={ element }
+          key={ element }
+        >
+          { element }
+        </option>
+      ))
+    );
+  }
+
+  renderTag() {
+    const tagArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+    return (
+      tagArray.map((e) => (
+        <option
+          value={ e }
+          key={ e }
+        >
+          { e }
+        </option>
+      ))
+    );
+  }
+
   renderForm() {
-    const { handleClick, handleChange, renderForm } = this;
     const { value, description, currency, method, tag } = this.state;
-    const { currencies, isEdit } = this.props;
     return (
       <form>
         <input
           data-testid="value-input"
-          type="number"
-          placeholder="Valor"
           name="value"
-          value={value}
-          onChange={(event) => handleChange(event)}
+          value={ value }
+          onChange={ (event) => this.handleChange(event) }
         />
         <input
           data-testid="description-input"
-          type="text"
-          placeholder="Descrição"
           name="description"
-          value={description}
-          onChange={(event) => handleChange(event)}
+          value={ description }
+          onChange={ (event) => this.handleChange(event) }
         />
-        <label htmlFor="currency">
-          Moeda escolhida
-          <select
-            data-testid="currency-input"
-            name="currency"
-            id="currency"
-            value={currency}
-            onChange={(event) => handleChange(event)}
-          >
-            {
-              currencies
-                .map((element) => (
-                  <option
-                    value={element}
-                    data-testid={element}
-                    key={element}
-                  >
-                    { element}
-                  </option>
-                ))
-            }
-          </select>
-        </label>
-        <label htmlFor="method">
-          Método de pagamento utilizado
-            <select
-            data-testid="method-input"
-            name="method"
-            id="method"
-            value={method}
-            onChange={(event) => handleChange(event)}
-          >
-            {
-              ['Dinheiro', 'Cartão de crédito', 'Cartão de débito']
-                .map((element) => (
-                  <option
-                    value={element}
-                    key={element}
-                  >
-                    { element}
-                  </option>
-                ))
-            }
-          </select>
-        </label>
-        <label htmlFor="tag">
-          Selecione uma categoria
-            <select
-            data-testid="tag-input"
-            name="tag"
-            id="tag"
-            value={tag}
-            onChange={(event) => handleChange(event)}
-          >
-            {
-              ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde']
-                .map((e) => (
-                  <option
-                    value={e}
-                    key={e}
-                  >
-                    { e}
-                  </option>
-                ))
-            }
-          </select>
-        </label>
+        <select
+          data-testid="currency-input"
+          name="currency"
+          value={ currency }
+          onChange={ (event) => this.handleChange(event) }
+        >
+          { this.renderCurrencies() }
+        </select>
+        <select
+          data-testid="method-input"
+          name="method"
+          value={ method }
+          onChange={ (event) => this.handleChange(event) }
+        >
+          { this.renderMethod() }
+        </select>
+        <select
+          data-testid="tag-input"
+          name="tag"
+          value={ tag }
+          onChange={ (event) => this.handleChange(event) }
+        >
+          { this.renderTag() }
+        </select>
         <button
           type="button"
-          onClick={() => handleClick()}
+          onClick={ () => this.handleClick() }
         >
           Adicionar despesa
-          </button>
+        </button>
       </form>
     );
   }
 
   render() {
-    const { handleClick, handleChange, renderForm } = this;
-    const { value, description, currency, method, tag } = this.state;
-    const { currencies, isEdit } = this.props;
+    const { renderForm } = this;
+    const { isEdit } = this.props;
 
     return (
-      <>
+      <span>
         {
           !(isEdit) ? renderForm() : <span>Editando</span>
         }
-      </>
+      </span>
     );
   }
 }
 
 ExpenseForm.propTypes = {
-  savesCurrencyList: PropTypes.func.isRequired,
-  expenses: PropTypes.objectOf(PropTypes.object).isRequired,
   fetchCurrencyData: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isEdit: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
