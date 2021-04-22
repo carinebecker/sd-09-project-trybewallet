@@ -36,5 +36,4 @@ Select.propTypes = {
 };
 
 export default Select;
-
 // Consultei o repositório https://github.com/tryber/sd-09-project-trybewallet/pull/7/files?file-filters%5B%5D=.js

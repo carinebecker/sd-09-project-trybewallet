@@ -6,9 +6,8 @@ export const SUM_EXPENSES = 'SUM_EXPENSES';
 
 export default (email) => ({ type: 'GET_LOGIN', payload: { email } });
 
-export const addExpense = (expenses) => ({ type: ADD_EXPENSE, payload: [expenses] });
+export const addExpense = (expenses) => ({ type: ADD_EXPENSE, expenses });
 
-export const agroupCurrencies = (currencies) => ({
-  type: AGROUP_CURRENCIES, payload: currencies });
+export const agroupCurrencies = (currencies) => ({ type: AGROUP_CURRENCIES, currencies });
 
-export const sumExpenses = (value) => ({ type: SUM_EXPENSES, payload: value });
+export const sumExpenses = (value) => ({ type: SUM_EXPENSES, value });

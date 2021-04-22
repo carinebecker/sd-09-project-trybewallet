@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import getCurrencies from '../Api';
 import Select from './Select';
 import { agroupCurrencies, addExpense, sumExpenses } from '../actions';
-import getCurrencies from '../Api';
 
+const paymentOptions = ['Dinheiro', 'Cartão de débito', 'Cartão de crédito'];
 const tagOptions = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-const paymentOptions = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 
 const INITIAL_STATE = {
   id: 0,
@@ -17,16 +17,17 @@ const INITIAL_STATE = {
   tag: tagOptions[0],
 };
 
-class FormAddExpenses extends React.Component {
+class FormExpense extends React.Component {
   constructor(props) {
     super(props);
-    this.setState = INITIAL_STATE;
+    this.state = INITIAL_STATE;
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
     const { agroupCurrenciesToRedux } = this.props;
-    const currencies = await fetchCurrencies();
+    const currencies = await getCurrencies();
     agroupCurrenciesToRedux(currencies);
   }
 
@@ -37,8 +38,7 @@ class FormAddExpenses extends React.Component {
     });
   }
 
-  async handleClick(event) {
-    event.preventDefault();
+  async handleClick() {
     const { id, value, description, currency, method, tag } = this.state;
     const { addExpenseToRedux, sumExpensesToRedux } = this.props;
     const exchangeRates = await getCurrencies();
@@ -52,7 +52,7 @@ class FormAddExpenses extends React.Component {
       exchangeRates,
     };
     const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
-    const quotation = Object.values(exchangeRates)[currencyIndex].ask;
+    const quotation = Object.values(exchangeRates)[currencyIndex];
     const valueForQuotation = parseFloat(value) * parseFloat(quotation);
     addExpenseToRedux(expensesAdd);
     sumExpensesToRedux(valueForQuotation);
@@ -71,53 +71,47 @@ class FormAddExpenses extends React.Component {
   render() {
     const { currencies } = this.props;
     return (
-      <div>
-        <form>
-          Valor
-          <input
-            data-testid="value-input"
-            name="value"
-            type="text"
-            onChange={ this.handleChange }
-          />
-          Moeda
-          <input
-            data-testid="description-input"
-            name="description"
-            type="text"
-            onChange={ this.handleChange }
-          />
-          <Select
-            textLabel="Método de Pagamento:"
-            name="method"
-            options={ paymentOptions }
-            onChange={ this.handleChange }
-          />
-          <Select
-            textLabel="Moedas:"
-            name="currency"
-            onChange={ this.handleChange }
-            options={ Object.keys(currencies) }
-          />
-          <Select
-            textLabel="Categoria da Despesa:"
-            name="tag"
-            options={ tagOptions }
-            onChange={ this.handleChange }
-          />
-          <button
-            type="submit"
-            onClick={ this.handleClick }
-          >
-            Adicionar despesa
-          </button>
-        </form>
-      </div>
+      <form id="add-expense-form">
+        <input
+          data-testid="value-input"
+          name="value"
+          onChange={ this.handleChange }
+        />
+        <input
+          data-testid="description-input"
+          name="description"
+          onChange={ this.handleChange }
+        />
+        <Select
+          textLabel="Moedas:"
+          name="currency"
+          onChange={ this.handleChange }
+          options={ Object.keys(currencies) }
+        />
+        <Select
+          textLabel="Método de Pagamento:"
+          name="method"
+          onChange={ this.handleChange }
+          options={ paymentOptions }
+        />
+        <Select
+          textLabel="Categoria da Despesa:"
+          name="tag"
+          onChange={ this.handleChange }
+          options={ tagOptions }
+        />
+        <button
+          type="submit"
+          onClick={ this.handleClick }
+        >
+          Adicionar despesa
+        </button>
+      </form>
     );
   }
 }
 
-FormAddExpenses.propTypes = {
+FormExpense.propTypes = {
   agroupCurrenciesToRedux: PropTypes.func.isRequired,
   addExpenseToRedux: PropTypes.func.isRequired,
   sumExpensesToRedux: PropTypes.func.isRequired,
@@ -135,4 +129,4 @@ const mapDispatchToProps = (dispatch) => ({
   sumExpensesToRedux: (value) => dispatch(sumExpenses(value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormAddExpenses);
+export default connect(mapStateToProps, mapDispatchToProps)(FormExpense);
