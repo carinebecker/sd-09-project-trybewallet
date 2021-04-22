@@ -38,7 +38,8 @@ class FormExpense extends React.Component {
     });
   }
 
-  async handleClick() {
+  async handleClick(event) {
+    event.preventDefault();
     const { id, value, description, currency, method, tag } = this.state;
     const { addExpenseToRedux, sumExpensesToRedux } = this.props;
     const exchangeRates = await getCurrencies();
@@ -52,7 +53,7 @@ class FormExpense extends React.Component {
       exchangeRates,
     };
     const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
-    const quotation = Object.values(exchangeRates)[currencyIndex];
+    const quotation = Object.values(exchangeRates)[currencyIndex].ask;
     const valueForQuotation = parseFloat(value) * parseFloat(quotation);
     addExpenseToRedux(expensesAdd);
     sumExpensesToRedux(valueForQuotation);
