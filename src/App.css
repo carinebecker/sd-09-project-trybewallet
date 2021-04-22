@@ -39,3 +39,27 @@
     transform: rotate(360deg);
   }
 }
+
+.login-section {
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  justify-content: center;
+  margin: 150px 450px;
+  width: 30%;
+}
+
+.login-button {
+  background-color: rgb(88, 187, 88);
+  border-radius: 5px;
+  margin-top: 15px;
+  width: 185px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
