@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import { updateExpenses } from '../actions';
 
 class ExpenseAddForm extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   createrExpenses() {
     const { stateProps } = this.props;
     const expenses = stateProps;
