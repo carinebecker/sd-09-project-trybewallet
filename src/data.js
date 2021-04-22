@@ -14,4 +14,16 @@ const tagExpense = [
   'Saúde',
 ];
 
-export { payMethods, tagExpense };
+const tableHeader = [
+  'Descrição',
+  'Tag',
+  'Método de pagamento',
+  'Valor',
+  'Moeda',
+  'Câmbio utilizado',
+  'Valor convertido',
+  'Moeda de conversão',
+  'Editar/Excluir',
+];
+
+export { payMethods, tagExpense, tableHeader };
