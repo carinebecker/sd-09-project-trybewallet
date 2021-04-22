@@ -7,6 +7,7 @@ export const WALLET = 'WALLET';
 export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_FAILURE = 'REQUEST_CURRENCIES_FAILURE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const loginUser = (email) => ({
   type: USER,
@@ -50,3 +51,8 @@ export function fetchCurrencies() {
       );
   };
 }
+
+export const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  expenses,
+});
