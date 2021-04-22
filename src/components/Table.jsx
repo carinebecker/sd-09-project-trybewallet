@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 class TableHeader extends Component {
   render() {
     const { expenses } = this.props;
-    const roundValue = (value) => Math.round(value * 100) / 100;
+    const rv = (value) => Math.round(value * 100) / 100;
     return (
       <table className="table table-dark">
         <thead>
           <tr>
             <th>Descrição</th>
-            <th>Tag</th>
+            <th>Categoria</th>
             <th>Método de pagamento</th>
             <th>Valor</th>
             <th>Moeda</th>
@@ -28,9 +28,9 @@ class TableHeader extends Component {
               <td>{expense.tag}</td>
               <td>{expense.method}</td>
               <td>{expense.value}</td>
-              <td>{expense.eRates[expense.curr].name}</td>
-              <td>{roundValue(expense.eRates[expense.curr].ask)}</td>
-              <td>{roundValue(expense.value * expense.eRates[expense.curr].ask)}</td>
+              <td>{expense.exchangeRates[expense.currency].name}</td>
+              <td>{rv(expense.exchangeRates[expense.currency].ask)}</td>
+              <td>{rv(expense.value * expense.exchangeRates[expense.currency].ask)}</td>
               <td>Real</td>
               <td>
                 <button type="button">Editar</button>
