@@ -97,7 +97,7 @@ class Login extends React.Component {
     }
     return (
       <div>
-        <div>Hello, TrybeWallet!!!</div>
+        <div>Hello, TrybeWallet!</div>
         <br />
         <div>Login</div>
         <form>
