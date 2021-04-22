@@ -11,7 +11,7 @@ class TableHeader extends Component {
         <thead>
           <tr>
             <th>Descrição</th>
-            <th>Categoria</th>
+            <th>Tag</th>
             <th>Método de pagamento</th>
             <th>Valor</th>
             <th>Moeda</th>
