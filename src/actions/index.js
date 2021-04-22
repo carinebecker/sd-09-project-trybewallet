@@ -1,3 +1,5 @@
+import fetchMoedas from '../services/requireApi';
+
 export const EMAIL_USER = 'EMAIL_USER';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const SET_EXPENSE = 'SET_EXPENSE';
@@ -30,13 +32,6 @@ const addExpenseActionError = (error) => ({
   type: ERROR_EXPENSE,
   error,
 });
-
-async function fetchMoedas() {
-  const endPoint = 'https://economia.awesomeapi.com.br/json/all';
-  const response = await fetch(endPoint);
-  const data = await response.json();
-  return data;
-}
 
 const addExpenseThunk = (dispesaAtual) => (
   (dispatch) => {
