@@ -16,6 +16,13 @@ class ExpensesTable extends Component {
     this.removeItem = this.removeItem.bind(this);
   }
 
+  componentDidMount() {
+    const { expenses } = this.props;
+    if (expenses.length) {
+      this.generateTableContent();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { isFetching, expenses } = this.props;
     const { isNewContent } = this.state;
@@ -38,10 +45,9 @@ class ExpensesTable extends Component {
 
   generateTableContent() {
     const { expenses } = this.props;
-    console.log(expenses);
     const tableContent = expenses.map((expense, index) => {
       const { description, tag, method, value, exchangeRates, currency } = expense;
-      const formattedValue = `${currency} ${Number(value).toFixed(2)}`;
+      const formattedValue = `${Number(value)}`;
       const currencyName = exchangeRates[currency].name.split('/')[0];
       let exchange = exchangeRates[currency].ask;
       const exchangedValue = Math.round((value * exchange) * 100) / 100;
