@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import FormAddExpenses from './FormAddExpenses';
 
 class Wallet extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class Wallet extends React.Component {
           {/* Valor vai ser atualizado pelo estado */}
           <p data-testid="header-currency-field"> BRL </p>
         </header>
+        <FormAddExpenses />
       </div>);
   }
 }
