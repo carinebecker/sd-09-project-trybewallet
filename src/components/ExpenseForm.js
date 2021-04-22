@@ -154,7 +154,7 @@ class ExpenseForm extends React.Component {
   renderTagExpense() {
     return (
       <label htmlFor="tag-input">
-        Metodo de pagamento:
+        Categoria:
         <select
           data-testid="tag-input"
           id="tag-input"

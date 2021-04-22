@@ -3,7 +3,6 @@ import Header from './Header';
 import Body from './Body';
 
 class ExpenseTable extends React.Component {
-
   render() {
     return (
       <section>

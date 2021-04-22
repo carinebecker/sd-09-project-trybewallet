@@ -14,10 +14,23 @@ class Body extends React.Component {
             <td>{ exp.method }</td>
             <td>{ exp.value }</td>
             <td>{ exp.currency }</td>
-            <td>Câmbio utilizado</td>
-            <td>Valor convertido</td>
-            <td>BRL</td>
-            <td>eDITAR/EXCLUIR</td>
+            <td>
+              {
+                exp.exchangeRates[exp.currency].name.split('/')[0]
+              }
+            </td>
+            <td>
+              {
+                parseFloat(exp.exchangeRates[exp.currency].ask).toFixed(2)
+              }
+            </td>
+            <td>
+              {
+                parseFloat(exp.exchangeRates[exp.currency].ask * exp.value).toFixed(2)
+              }
+            </td>
+            <td>Real</td>
+            <td>eDIT EXCLUIR</td>
           </tr>
         )) }
       </>
