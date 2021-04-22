@@ -69,8 +69,8 @@ class FormExpense extends React.Component {
       method: 'Dinheiro',
       tag: tagOptions[0],
     });
-    // const form = document.getElementById('add-expense-form');
-    // form.reset();
+    const form = document.getElementById('add-expense-form');
+    form.reset();
   }
 
   render() {
