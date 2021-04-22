@@ -1,6 +1,7 @@
 import { REQUEST_EXCHANGE_RATES,
   SET_EXPENSE_SUCCESS,
-  REQUEST_EXCHANGE_RATES_ERROR }
+  REQUEST_EXCHANGE_RATES_ERROR,
+  REMOVE_EXPENSE }
   from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -24,6 +25,11 @@ function walletReducer(state = INITIAL_STATE, { type, payload }) {
   case REQUEST_EXCHANGE_RATES_ERROR:
     return {
       currencies: payload.error,
+    };
+  case REMOVE_EXPENSE:
+    return {
+      ...state,
+      expenses: state.expenses.filter((expense) => expense !== payload.item),
     };
   default:
     return state;

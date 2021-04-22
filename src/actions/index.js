@@ -1,6 +1,8 @@
 import fetchExchange from '../services/api';
 import { LOGIN, REQUEST_EXCHANGE_RATES,
-  SET_EXPENSE_SUCCESS, REQUEST_EXCHANGE_RATES_ERROR } from './actionTypes';
+  SET_EXPENSE_SUCCESS,
+  REQUEST_EXCHANGE_RATES_ERROR,
+  REMOVE_EXPENSE } from './actionTypes';
 
 export const login = (credentials) => ({ type: LOGIN, credentials });
 
@@ -23,6 +25,12 @@ const requestExchangeRatesError = (error) => ({
   type: REQUEST_EXCHANGE_RATES_ERROR,
   payload: { error,
     isFetching: false,
+  },
+});
+
+export const removeExpense = (item) => ({
+  type: REMOVE_EXPENSE,
+  payload: { item,
   },
 });
 
