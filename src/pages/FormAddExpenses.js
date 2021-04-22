@@ -105,7 +105,7 @@ class FormExpense extends React.Component {
           type="submit"
           onClick={ this.handleClick }
         >
-          Adicionar despesa
+          Adicionar despesa :
         </button>
       </form>
     );
