@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { login } from '../actions';
 import './Login.css';
+import Wallet from '../assets/images/wallet.svg';
 
 class Login extends React.Component {
   constructor(props) {
@@ -47,37 +48,47 @@ class Login extends React.Component {
     const { email, password, loggedIn } = this.state;
     const isButtonDisabled = !this.validateLoginFields(email, password);
     return (
-      <div className="login-container">
-        <input
-          id="input-email"
-          name="email"
-          data-testid="email-input"
-          type="email"
-          value={ email }
-          onChange={ this.handleInputChange }
-          placeholder="Login"
-        />
-        <input
-          id="input-password"
-          name="password"
-          data-testid="password-input"
-          type="password"
-          value={ password }
-          onChange={ this.handleInputChange }
-          placeholder="Password"
-        />
-        {loggedIn ? (
-          <Redirect to="/carteira" />
-        )
-          : (
-            <button
-              type="button"
-              disabled={ isButtonDisabled }
-              onClick={ this.handleClick }
-            >
-              Entrar
-            </button>
-          )}
+      <div className="login-page">
+        <div className="logo-container f-row">
+          <img src={ Wallet } alt="Logo" />
+          <h1>Trybe Wallet</h1>
+        </div>
+        <div className="login-container f-column">
+          <input
+            id="input-email"
+            name="email"
+            data-testid="email-input"
+            type="email"
+            value={ email }
+            onChange={ this.handleInputChange }
+            placeholder="Login"
+            className="input"
+          />
+          <input
+            id="input-password"
+            name="password"
+            data-testid="password-input"
+            type="password"
+            value={ password }
+            onChange={ this.handleInputChange }
+            placeholder="Password"
+            className="input"
+          />
+          {loggedIn ? (
+            <Redirect to="/carteira" />
+          )
+            : (
+              <button
+                type="button"
+                disabled={ isButtonDisabled }
+                onClick={ this.handleClick }
+                className={ isButtonDisabled
+                  ? 'disabled-btn round-btn' : 'login-btn round-btn' }
+              >
+                Entrar
+              </button>
+            )}
+        </div>
       </div>
     );
   }

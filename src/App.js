@@ -5,7 +5,7 @@ import Wallet from './pages/Wallet';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Switch>
         <Route exact path="/"><Login /></Route>
         <Route path="/carteira"><Wallet /></Route>
