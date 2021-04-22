@@ -19,10 +19,9 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: [...state.expenses, action.expenses],
     };
   case UPDATE_EXPENSES:
-    console.log(state);
     return {
       ...state,
-      expenses: [action.expenses],
+      expenses: action.expenses,
     };
   default:
     return state;

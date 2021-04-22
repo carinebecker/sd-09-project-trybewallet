@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { updateExpenses } from '../actions';
 
 class ExpenseAddForm extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   createrExpenses() {
     const { stateProps } = this.props;
     const expenses = stateProps;
@@ -54,12 +58,8 @@ class ExpenseAddForm extends React.Component {
   handleClickDelete({ target: { id } }) {
     const { stateProps, expensesUpdateDispatched } = this.props;
     const ids = Number(id);
-    // expensesUpdateDispatched([]);
-    stateProps.map((e) => {
-      if (e.id !== ids) {
-        expensesUpdateDispatched(e);
-      }
-    });
+    const newExpenses = stateProps.map((e) => e).filter((expense) => expense.id !== ids);
+    expensesUpdateDispatched(newExpenses);
   }
 
   handleClickEdit() {

@@ -10,14 +10,11 @@ export const user = (email) => ({
   email,
 });
 
-export const wallet = (expenses) => {
-  console.log(expenses);
-  return {
-    type: INPUT_WALLET,
-    currencies: [],
-    expenses,
-  };
-};
+export const wallet = (expenses) => ({
+  type: INPUT_WALLET,
+  currencies: [],
+  expenses,
+});
 
 export const requestCurrecy = (response) => ({
   type: REQUEST_CURRENCY,
@@ -29,12 +26,8 @@ export const getCurrencies = () => async (dispatch) => {
   dispatch(requestCurrecy(Object.keys(currencies)));
 };
 
-export const updateExpenses = (newExpenses) => {
-  console.log(newExpenses);
-  return {
-
-    type: UPDATE_EXPENSES,
-    currencies: [],
-    expenses: newExpenses,
-  };
-};
+export const updateExpenses = (newExpenses) => ({
+  type: UPDATE_EXPENSES,
+  currencies: [],
+  expenses: newExpenses,
+});
