@@ -19,10 +19,12 @@ class Wallet extends React.Component {
 
   handleTotalValue() {
     const { expensesState } = this.props;
-
-    const sumTotal = expensesState
-      .map(({ value, currency, exchangeRates }) => exchangeRates[currency].ask * value);
-    return sumTotal.reduce((acc, cur) => acc + cur, 0).toFixed(2);
+    if (expensesState.length > 0) {
+      const sumTotal = expensesState
+        .map(({ value, currency, exchangeRates }) => exchangeRates[currency].ask * value);
+      return sumTotal.reduce((acc, cur) => acc + cur, 0).toFixed(2);
+    }
+    return 0;
   }
 
   render() {
@@ -33,7 +35,11 @@ class Wallet extends React.Component {
           <h1>Wallet</h1>
           <ul>
             <li data-testid="email-field">{ emailStore }</li>
-            <li data-testid="total-field">{ this.handleTotalValue() }</li>
+            <li
+              data-testid="total-field"
+            >
+              { `Despesa total: R$ ${this.handleTotalValue()}` }
+            </li>
             <li data-testid="header-currency-field">BRL</li>
           </ul>
         </header>

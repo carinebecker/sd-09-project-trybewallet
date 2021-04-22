@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { updateExpenses } from '../actions';
 
 class ExpenseAddForm extends React.Component {
   createrExpenses() {
@@ -9,33 +10,60 @@ class ExpenseAddForm extends React.Component {
 
     if (expenses !== undefined) {
       return expenses
-        .map(({ id,
-          value,
-          description,
-          currency,
-          method,
-          tag,
-          exchangeRates }) => {
+        .map(({ id, value, description, currency, method, tag, exchangeRates }) => {
           const { name, ask } = exchangeRates[currency];
           const total = value * Number(ask);
           return (
-            <tr key={ id }>
+            <tr key={ id } id={ id }>
               <td name={ description }>{ description }</td>
               <td name={ tag }>{ tag }</td>
               <td name={ method }>{ method }</td>
               <td name={ Number(ask).toFixed(2) }>
                 { `${Number(ask).toFixed(2)}` }
               </td>
-              <td name={ name }>{ name }</td>
+              <td name={ name.split('/')[0] }>{ name.split('/')[0] }</td>
               <td name={ value }>{ value }</td>
               <td>{ `${total.toFixed(2)}` }</td>
               <td>Real</td>
-              <button type="button" data-testid="edit-btn">Editar</button>
-              <button type="button" data-testid="delete-btn">Exluir</button>
+              <td>
+                <button
+                  id={ id }
+                  type="button"
+                  data-testid="edit-btn"
+                // onClick={ this.handleClickEdit.bind(this) }
+                >
+                  Editar
+                </button>
+              </td>
+              <td>
+                <button
+                  id={ id }
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ this.handleClickDelete.bind(this) }
+                >
+                  Exluir
+                </button>
+              </td>
             </tr>
           );
         });
     }
+  }
+
+  handleClickDelete({ target: { id } }) {
+    const { stateProps, expensesUpdateDispatched } = this.props;
+    const ids = Number(id);
+    // expensesUpdateDispatched([]);
+    stateProps.map((e) => {
+      if (e.id !== ids) {
+        expensesUpdateDispatched(e);
+      }
+    });
+  }
+
+  handleClickEdit() {
+    console.log('edit');
   }
 
   render() {
@@ -65,8 +93,13 @@ const mapStateToProps = (state) => ({
   wallet: state.wallet,
 });
 
-export default connect(mapStateToProps)(ExpenseAddForm);
+const mapDispatchToProps = (dispatch) => ({
+  expensesUpdateDispatched: (expenses) => dispatch(updateExpenses(expenses)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseAddForm);
 
 ExpenseAddForm.propTypes = {
   stateProps: PropTypes.array,
+  expensesDispatched: PropTypes.func,
 }.isRequired;

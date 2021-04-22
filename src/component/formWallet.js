@@ -45,12 +45,14 @@ class FormWallet extends React.Component {
 
   async handleClick() {
     const { expensesDispatched } = this.props;
+    const { id } = this.state;
+
     const data = await currencyApi();
     await this.setState(() => ({
       exchangeRates: data,
     }));
+
     expensesDispatched(this.state);
-    const { id } = this.state;
     this.setState({
       id: id + 1,
       value: 0,
