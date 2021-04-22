@@ -7,8 +7,12 @@ class ExpenseTable extends React.Component {
     return (
       <section>
         <table>
-          <Header />
-          <Body />
+          <thead>
+            <Header />
+          </thead>
+          <tbody>
+            <Body />
+          </tbody>
         </table>
       </section>
     );

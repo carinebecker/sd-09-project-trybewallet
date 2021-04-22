@@ -208,7 +208,6 @@ const mapStateToProps = ({ wallet: { currencies, isFetching, expenses } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   wallet: (expenses) => dispatch(walletCreate(expenses)),
-  // faz um dispatch que chama o fetch
   getExchangeRates: () => dispatch(fetchCurrencies()),
 });
 
@@ -216,7 +215,7 @@ ExpenseForm.propTypes = {
   getExchangeRates: PropTypes.func.isRequired,
   wallet: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetching: PropTypes.string.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
