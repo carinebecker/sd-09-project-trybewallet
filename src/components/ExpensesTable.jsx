@@ -43,18 +43,18 @@ class ExpensesTable extends React.Component {
   toggleIsEdit() {
     this.setState({
       isEdit: false,
-      id: undefined,
+      // id: undefined,
     });
   }
 
   anotherRender() {
     const { expenses } = this.props;
-    const  { handleClick, handleEditClick } = this;
+    const { handleClick, handleEditClick } = this;
     return (
       expenses.map((expense) => {
         const { description, tag, method, value, exchangeRates, id } = expense;
         return (
-          <tr key={id}>
+          <tr key={ id }>
             <td>{ description }</td>
             <td>{ tag }</td>
             <td>{ method }</td>
@@ -88,32 +88,30 @@ class ExpensesTable extends React.Component {
 
   render() {
     const { editId, isEdit } = this.state;
-    const  { toggleIsEdit } = this;
+    const { toggleIsEdit } = this;
 
     return (
       <>
-      <table>
-        <thead>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
-          { this.anotherRender() }
-        </tbody>
-      </table>
-      {
-        isEdit && <GenericForm id={editId} toggleIsEdit={toggleIsEdit} />
-      }
-    </>
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.anotherRender() }
+          </tbody>
+        </table>
+        { isEdit && <GenericForm id={ editId } toggleIsEdit={ toggleIsEdit } /> }
+      </>
     );
   }
 }
