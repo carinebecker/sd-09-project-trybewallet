@@ -14,9 +14,10 @@ class DeleteButton extends React.Component {
     const { expenseId, removeExpense, value, total } = this.props;
     let newTotal = 0;
     if (expensesArray.length !== 1) {
-      newTotal = (Number(total) - Number(value)).toFixed(2);
+      newTotal = (parseFloat(total) - parseFloat(value)).toFixed(2);
     }
-    removeExpense(expensesArray, expenseId, Number(newTotal));
+    removeExpense(expensesArray, expenseId, parseFloat(newTotal));
+    console.log(newTotal);
   }
 
   render() {
