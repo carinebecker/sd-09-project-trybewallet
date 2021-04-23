@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrency, addExpense, updateExpense } from '../actions';
 
+const alimentacao = 'Alimentação';
 class ExpenseForm extends React.Component {
   constructor() {
     super();
@@ -15,7 +16,7 @@ class ExpenseForm extends React.Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: 'Alimentação',
+      tag: alimentacao,
     };
   }
 
@@ -43,7 +44,7 @@ class ExpenseForm extends React.Component {
         description: '',
         currency: 'USD',
         method: 'Dinheiro',
-        tag: 'Alimentação',
+        tag: alimentacao,
       });
     }
   }
@@ -83,7 +84,7 @@ class ExpenseForm extends React.Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: 'Alimentação',
+      tag: alimentacao,
     });
   }
 
@@ -137,7 +138,7 @@ class ExpenseForm extends React.Component {
         data-testid="tag-input"
         onChange={ this.formFieldsControl }
       >
-        <option value="alimentacao">Alimentação</option>
+        <option value={ alimentacao }>Alimentação</option>
         <option value="lazer">Lazer</option>
         <option value="trabalho">Trabalho</option>
         <option value="transporte">Transporte</option>
