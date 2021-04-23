@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   id: 0,
-  expense: 0,
+  value: 0,
   description: '',
   currency: '',
   method: '',
@@ -13,6 +13,8 @@ const expenseReducer = (state = INITIAL_STATE, action) => {
     return { ...state, [action.name]: action.value };
   case 'DEFAULT_VALUE':
     return { ...state, expense: action.default };
+  case 'SET_ID':
+    return { ...state, id: state.id + 1 };
   default:
     return state;
   }

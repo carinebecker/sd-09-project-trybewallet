@@ -36,3 +36,28 @@ export const setExpenseValue = () => ({
   type: 'DEFAULT_VALUE',
   default: 0,
 });
+
+export const deleteItemFromState = (expenses, id, newTotal) => {
+  const newExpenses = expenses
+    .filter((expense) => expense.id !== id);
+  return ({
+    type: 'REMOVE_TABLE_ITEM',
+    expenses: newExpenses,
+    total: newTotal,
+  });
+};
+
+export const setNewId = () => ({
+  type: 'SET_ID',
+});
+
+export const editExpense = (id, editor) => ({
+  type: 'EDIT_EXPENSE',
+  id,
+  editor,
+});
+
+export const deleteExpense = (expenses) => ({
+  type: 'DELETE_EXPENSE',
+  expenses,
+});

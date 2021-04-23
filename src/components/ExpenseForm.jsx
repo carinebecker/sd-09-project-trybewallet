@@ -4,6 +4,7 @@ import { string, number, func } from 'prop-types';
 import getCurrencyApi from '../services/currenciesApi';
 import { fetchCurrency, addNewExpense } from '../actions';
 import AddExpenseButton from './AddExpenseButton';
+import ExpenseTable from './ExpenseTable';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -17,8 +18,7 @@ class ExpenseForm extends React.Component {
   }
 
   componentDidMount() {
-    const { getCurrencies } = this.props;
-    getCurrencies();
+    this.fetchCurrenciesApi();
   }
 
   async fetchCurrenciesApi() {
@@ -136,10 +136,11 @@ class ExpenseForm extends React.Component {
       <div>
         {this.expenseValueInput()}
         {this.descriptionExpenseInput()}
-        {this.selectCurrencyInput(this.fetchCurrenciesApi())}
+        {this.selectCurrencyInput()}
         {this.paymentMethodInput()}
         {this.tagInput()}
         <AddExpenseButton />
+        <ExpenseTable />
       </div>
     );
   }

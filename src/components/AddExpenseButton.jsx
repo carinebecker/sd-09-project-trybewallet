@@ -2,15 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { number, string, func, arrayOf } from 'prop-types';
 import getCurrencyApi from '../services/currenciesApi';
-import { setDataToGlobalState, setExpenseValue, setTotalValue } from '../actions';
+import {
+  setDataToGlobalState,
+  setExpenseValue,
+  setNewId,
+  setTotalValue,
+} from '../actions';
 
 class AddExpenseButton extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {
-      id: 0,
-    };
+    // this.state = {
+    //   id: 0,
+    // };
 
     this.setTotalValue = this.setTotalValue.bind(this);
     this.setDataToGlobalState = this.setDataToGlobalState.bind(this);
@@ -25,6 +30,8 @@ class AddExpenseButton extends React.Component {
   async setDataToGlobalState() {
     const curencies = await getCurrencyApi();
     const {
+      id,
+      setId,
       expense,
       description,
       currency,
@@ -33,7 +40,7 @@ class AddExpenseButton extends React.Component {
       sendNewExpenseObj,
       setDefaultValue,
     } = this.props;
-    const { id } = this.state;
+    setId();
     const newObj = {
       id,
       value: this.convertExpense(currency, curencies, expense),
@@ -44,7 +51,6 @@ class AddExpenseButton extends React.Component {
       exchangeRates: curencies,
     };
     sendNewExpenseObj(newObj);
-    this.setState({ id: id + 1 });
     setDefaultValue();
   }
 
@@ -78,10 +84,11 @@ const mapStateToProps = (state) => ({
   total: state.wallet.total,
 });
 
-const mapDispatchToProps = (dispach) => ({
-  sendNewExpenseObj: (expenseObj) => dispach(setDataToGlobalState(expenseObj)),
-  sendTotalToState: (total) => dispach(setTotalValue(total)),
-  setDefaultValue: () => dispach(setExpenseValue()),
+const mapDispatchToProps = (dispatch) => ({
+  sendNewExpenseObj: (expenseObj) => dispatch(setDataToGlobalState(expenseObj)),
+  sendTotalToState: (total) => dispatch(setTotalValue(total)),
+  setDefaultValue: () => dispatch(setExpenseValue()),
+  setId: () => dispatch(setNewId()),
 });
 
 AddExpenseButton.propTypes = {

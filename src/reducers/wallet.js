@@ -3,6 +3,7 @@ const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   total: 0,
+  editor: false,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -27,6 +28,12 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: action.expenses,
       total: action.total,
+    };
+  case 'EDIT_EXPENSE':
+    return {
+      ...state,
+      id: action.id,
+      editor: action.editor,
     };
   default:
     return state;
