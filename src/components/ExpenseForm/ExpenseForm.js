@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import { payMethods, tagExpense } from '../../data';
 import { fetchCurrencies, walletCreate } from '../../actions';
+import Select from './Select';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -20,8 +21,6 @@ class ExpenseForm extends React.Component {
 
     this.renderCurrencyInput = this.renderCurrencyInput.bind(this);
     this.getCurrencyOptions = this.getCurrencyOptions.bind(this);
-    this.renderPaymentMethod = this.renderPaymentMethod.bind(this);
-    this.renderTagExpense = this.renderTagExpense.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -102,56 +101,8 @@ class ExpenseForm extends React.Component {
     );
   }
 
-  renderPaymentMethod() {
-    const { method } = this.state;
-    return (
-      <label htmlFor="method-input">
-        Metodo de pagamento:
-        <select
-          data-testid="method-input"
-          id="method-input"
-          onChange={ this.handleChange }
-          name="method"
-          value={ method }
-        >
-          { payMethods
-            .map((payMethod, index) => (
-              <option
-                key={ index }
-              >
-                { payMethod }
-              </option>)) }
-        </select>
-      </label>
-    );
-  }
-
-  renderTagExpense() {
-    const { tag } = this.state;
-    return (
-      <label htmlFor="tag-input">
-        Categoria:
-        <select
-          data-testid="tag-input"
-          id="tag-input"
-          onChange={ this.handleChange }
-          name="tag"
-          value={ tag }
-        >
-          { tagExpense
-            .map((tagExp, index) => (
-              <option
-                key={ index }
-              >
-                { tagExp }
-              </option>)) }
-        </select>
-      </label>
-    );
-  }
-
   render() {
-    const { loading, value, description } = this.state;
+    const { loading, value, description, method, tag } = this.state;
     if (loading) {
       return <p>Carregando</p>;
     }
@@ -170,9 +121,21 @@ class ExpenseForm extends React.Component {
             handleChange={ this.handleChange }
             label="Descrição: "
           />
+
           { this.renderCurrencyInput() }
-          { this.renderPaymentMethod() }
-          { this.renderTagExpense() }
+
+          <Select
+            name="method"
+            value={ method }
+            handleChange={ this.handleChange }
+            label="Metodo de pagamento: "
+          />
+          <Select
+            name="tag"
+            value={ tag }
+            handleChange={ this.handleChange }
+            label="Categoria: "
+          />
           <button
             type="button"
             onClick={ this.handleClick }
