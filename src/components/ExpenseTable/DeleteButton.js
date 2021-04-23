@@ -11,12 +11,10 @@ class DeleteButton extends React.Component {
   }
 
   handleClick() {
-    // render formulario
-    /*  const { expenses, id, changeExp } = this.props;
+    const { expenses, id, changeExp } = this.props;
     const expList = expenses;
     const newExpenses = expList.filter((expense) => expense.id !== id);
-    changeExp(newExpenses); */
-    console.log('click');
+    changeExp(newExpenses);
   }
 
   render() {
