@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Input from './Input';
-import { payMethods, tagExpense } from '../../data';
-import { fetchCurrencies, walletCreate } from '../../actions';
+import { fetchCurrencies, loginUser, walletCreate } from '../../actions';
 import Select from './Select';
+import Button from './Button';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class ExpenseForm extends React.Component {
     this.getCurrencyOptions = this.getCurrencyOptions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.elementsEdit = this.elementsEdit.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +71,16 @@ class ExpenseForm extends React.Component {
           tag: '',
         });
       });
+  }
+
+  elementsEdit(expenseEdit) {
+    this.setState({
+      value: expenseEdit.value,
+      description: expenseEdit.description,
+      currency: expenseEdit.currency,
+      method: expenseEdit.method,
+      tag: expenseEdit.tag,
+    });
   }
 
   renderCurrencyInput() {
@@ -139,8 +150,9 @@ class ExpenseForm extends React.Component {
             type="button"
             onClick={ this.handleClick }
           >
-            Adicionar despesa
+            Adicionar despesa !!
           </button>
+          <Button elementsEdit={ this.elementsEdit } />
         </form>
       </section>
     );
@@ -163,7 +175,7 @@ ExpenseForm.propTypes = {
   wallet: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetching: PropTypes.string.isRequired,
-  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currencies: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
