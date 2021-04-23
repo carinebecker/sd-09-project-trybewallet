@@ -6,6 +6,7 @@ export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_FAILURE = 'REQUEST_CURRENCIES_FAILURE';
 export const CHANGE_EXPENSE = 'CHANGE_EXPENSE';
+export const CHANGE_BUTTON = 'CHANGE_BUTTON';
 
 export const loginUser = (email) => ({
   type: USER,
@@ -45,4 +46,9 @@ export function fetchCurrencies() {
 export const changeExpense = (expenses) => ({
   type: CHANGE_EXPENSE,
   expenses,
+});
+
+export const changeButton = (idEdit) => ({
+  type: CHANGE_BUTTON,
+  idEdit,
 });

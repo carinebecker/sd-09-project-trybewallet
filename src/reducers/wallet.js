@@ -1,11 +1,13 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 import { WALLET, REQUEST_CURRENCIES_SUCCESS, REQUEST_CURRENCIES,
-  CHANGE_EXPENSE } from '../actions';
+  CHANGE_EXPENSE, CHANGE_BUTTON } from '../actions';
 
 const INITIAL_STATE = {
   isFetching: '',
   currencies: [],
   expenses: [],
+  actionButton: 'Adicionar Despesa',
+  idEdit: '',
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -30,6 +32,12 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: action.expenses,
+    };
+  case CHANGE_BUTTON:
+    return {
+      ...state,
+      actionButton: 'Editar Despesa',
+      idEdit: action.idEdit,
     };
   default:
     return state;
