@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { payMethods, tagExpense } from '../data';
-import { fetchCurrencies, walletCreate } from '../actions';
-import ValueInput from './ExpenseForm/ValueInput';
+import Input from './Input';
+import { payMethods, tagExpense } from '../../data';
+import { fetchCurrencies, walletCreate } from '../../actions';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -18,7 +18,6 @@ class ExpenseForm extends React.Component {
       tag: '',
     };
 
-    this.renderDescriptionInput = this.renderDescriptionInput.bind(this);
     this.renderCurrencyInput = this.renderCurrencyInput.bind(this);
     this.getCurrencyOptions = this.getCurrencyOptions.bind(this);
     this.renderPaymentMethod = this.renderPaymentMethod.bind(this);
@@ -73,23 +72,6 @@ class ExpenseForm extends React.Component {
           tag: '',
         });
       });
-  }
-
-  renderDescriptionInput() {
-    const { description } = this.state;
-    return (
-      <label htmlFor="description-input">
-        Descrição:
-        <input
-          data-testid="description-input"
-          id="description-input"
-          name="description"
-          type="text"
-          onChange={ this.handleChange }
-          value={ description }
-        />
-      </label>
-    );
   }
 
   renderCurrencyInput() {
@@ -169,15 +151,25 @@ class ExpenseForm extends React.Component {
   }
 
   render() {
-    const { loading, value } = this.state;
+    const { loading, value, description } = this.state;
     if (loading) {
       return <p>Carregando</p>;
     }
     return (
       <section>
         <form>
-          <ValueInput value={ value } handleChange={ this.handleChange } />
-          { this.renderDescriptionInput() }
+          <Input
+            name="value"
+            value={ value }
+            handleChange={ this.handleChange }
+            label="Valor da despesa: "
+          />
+          <Input
+            name="description"
+            value={ description }
+            handleChange={ this.handleChange }
+            label="Descrição: "
+          />
           { this.renderCurrencyInput() }
           { this.renderPaymentMethod() }
           { this.renderTagExpense() }

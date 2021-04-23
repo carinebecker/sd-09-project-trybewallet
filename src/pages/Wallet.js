@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpenseForm from '../components/ExpenseForm';
+import ExpenseForm from '../components/ExpenseForm/ExpenseForm';
 import ExpenseTable from '../components/ExpenseTable/ExpenseTable';
 import Header from '../components/Header';
 
