@@ -37,7 +37,6 @@ class ExpenseForm extends React.Component {
   }
 
   handleChange({ target }) {
-    console.log(target);
     const { name, value } = target;
     this.setState({
       [name]: value,
