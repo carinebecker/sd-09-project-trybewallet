@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
 
 class Body extends React.Component {
   render() {
@@ -33,6 +34,7 @@ class Body extends React.Component {
             <td>Real</td>
             <td>
               <DeleteButton id={ exp.id } />
+              <EditButton id={ exp.id } />
             </td>
           </tr>
         )) }

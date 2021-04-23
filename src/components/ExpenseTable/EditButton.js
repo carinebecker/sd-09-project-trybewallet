@@ -1,27 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeExpense } from '../../actions';
+import { changeButton } from '../../actions';
 
 class EditButton extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const { expenses, id, changeExp } = this.props;
-    const expList = expenses;
-    const newExpenses = expList.filter((expense) => expense.id !== id);
-    changeExp(newExpenses);
-  }
-
   render() {
+    const { changeButtonForEdit, id } = this.props;
     return (
       <button
         data-testid="edit-btn"
-        onClick={ this.handleClick }
+        onClick={ () => changeButtonForEdit(id) }
         type="button"
       >
         Editar
@@ -30,18 +18,12 @@ class EditButton extends React.Component {
   }
 }
 
-const mapStateToProps = ({ wallet: { expenses } }) => ({
-  expenses,
-});
-
 const mapDispatchToProps = (dispatch) => ({
-  changeExp: (expenses) => dispatch(changeExpense(expenses)),
+  changeButtonForEdit: (idEdit) => dispatch(changeButton(idEdit)),
 });
 
 EditButton.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  id: PropTypes.number.isRequired,
-  changeExp: PropTypes.func.isRequired,
+  changeButtonForEdit: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editutton);
+export default connect(null, mapDispatchToProps)(EditButton);
