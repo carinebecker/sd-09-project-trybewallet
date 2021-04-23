@@ -10,16 +10,17 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case 'ADD_EXPENSE':
     return { ...state, expenses: [...state.expenses, action.payload] };
   case 'DELETE_EXPENSE':
-    console.log(state, 'estado');
-    console.log(action, 'ação');
-    const newArray = []
-    state.expenses.filter((expenseId, id) => (expenseId !== id));
-    return { ...state };
+    return { ...state, expenses: [...action.payload] };
+  case 'EDIT_EXPENSE':
+    return { ...state, expense: action.payload };
+  case 'UPDATE_EXPENSE':
+    return { ...state,
+      expenses: state.expenses.map((_expense) => ((
+        _expense.id === action.expense.id) ? action.expense : _expense)),
+    };
   default:
     return state;
   }
 };
 
 export default walletReducer;
-
-// dúvida: o que eu passo para currencies?

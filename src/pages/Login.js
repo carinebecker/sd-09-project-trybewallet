@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import action from '../actions';
 
 class Login extends React.Component {
@@ -42,6 +43,7 @@ class Login extends React.Component {
   render() {
     const { button, email } = this.state;
     const { emailDispath } = this.props;
+
     return (
       <div>
         <form>
@@ -84,3 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  emailDispath: PropTypes.object,
+}.isRequired;

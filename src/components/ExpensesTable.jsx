@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import TableButtons from './TableButtons';
 import Thead from './Thead';
 
 class Table extends React.Component {
   render() {
     const { expenses } = this.props;
-    const coin = 'Real Brasileiro';
+    const coin = 'Real';
     return (
       <table>
         <Thead />
@@ -56,3 +57,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Table);
+
+Table.propTypes = {
+  expenses: PropTypes.array,
+}.isRequired;
