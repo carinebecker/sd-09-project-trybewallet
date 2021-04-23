@@ -178,7 +178,6 @@ class ExpenseForm extends React.Component {
     }
     return (
       <section>
-        <h1>Formulario de adição de despesa</h1>
         <form>
           { this.renderValueInput() }
           { this.renderDescriptionInput() }

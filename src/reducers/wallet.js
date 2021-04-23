@@ -1,6 +1,6 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 import { WALLET, REQUEST_CURRENCIES_SUCCESS, REQUEST_CURRENCIES,
-  DELETE_EXPENSE } from '../actions';
+  CHANGE_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   isFetching: '',
@@ -26,7 +26,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       isFetching: true,
     });
-  case DELETE_EXPENSE:
+  case CHANGE_EXPENSE:
     return {
       ...state,
       expenses: action.expenses,

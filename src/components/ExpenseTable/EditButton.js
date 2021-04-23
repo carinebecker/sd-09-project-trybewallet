@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeExpense } from '../../actions';
 
-class DeleteButton extends React.Component {
+class EditButton extends React.Component {
   constructor(props) {
     super(props);
 
@@ -11,22 +11,20 @@ class DeleteButton extends React.Component {
   }
 
   handleClick() {
-    // render formulario
-    /*  const { expenses, id, changeExp } = this.props;
+    const { expenses, id, changeExp } = this.props;
     const expList = expenses;
     const newExpenses = expList.filter((expense) => expense.id !== id);
-    changeExp(newExpenses); */
-    console.log('click');
+    changeExp(newExpenses);
   }
 
   render() {
     return (
       <button
-        data-testid="delete-btn"
+        data-testid="edit-btn"
         onClick={ this.handleClick }
         type="button"
       >
-        Deletar
+        Editar
       </button>
     );
   }
@@ -40,10 +38,10 @@ const mapDispatchToProps = (dispatch) => ({
   changeExp: (expenses) => dispatch(changeExpense(expenses)),
 });
 
-DeleteButton.propTypes = {
+EditButton.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.number.isRequired,
   changeExp: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteButton);
+export default connect(mapStateToProps, mapDispatchToProps)(Editutton);
