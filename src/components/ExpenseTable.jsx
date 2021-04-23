@@ -23,7 +23,7 @@ class ExpenseTable extends React.Component {
   }
 
   tableOfExpenses(expenses) {
-    const { id } = this.props;
+    // const { id } = this.props;
     return (
       expenses.length !== 0 && expenses.map((expense) => (
         <tr key={ expense.id }>
