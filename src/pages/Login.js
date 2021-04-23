@@ -17,6 +17,7 @@ class Login extends React.Component {
     this.handlPassChange = this.handlPassChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.btnEnable = this.btnEnable.bind(this);
+    this.handleClickSaveEmail = this.handleClickSaveEmail.bind(this);
   }
 
   handleEmailChange({ target }) {
@@ -36,9 +37,7 @@ class Login extends React.Component {
   }
 
   btnEnable() {
-    const { getUserEmail } = this.props;
-    const { validEmail, validPassword, email } = this.state;
-    getUserEmail(email);
+    const { validEmail, validPassword } = this.state;
     if (validEmail && validPassword) {
       this.setState({
         disable: false,
@@ -48,6 +47,12 @@ class Login extends React.Component {
         disable: true,
       });
     }
+  }
+
+  handleClickSaveEmail() {
+    const { getUserEmail } = this.props;
+    const { email } = this.state;
+    getUserEmail(email);
   }
 
   render() {
@@ -73,7 +78,13 @@ class Login extends React.Component {
           data-testid="password-input"
         />
         <Link to="/carteira">
-          <button type="button" disabled={ disable }>Entrar</button>
+          <button
+            type="button"
+            disabled={ disable }
+            onClick={ this.handleClickSaveEmail }
+          >
+            Entrar
+          </button>
         </Link>
       </div>
     );
