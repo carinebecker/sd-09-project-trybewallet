@@ -6,7 +6,8 @@ export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_FAILURE = 'REQUEST_CURRENCIES_FAILURE';
 export const CHANGE_EXPENSE = 'CHANGE_EXPENSE';
-export const CHANGE_BUTTON = 'CHANGE_BUTTON';
+export const CHANGE_BUTTON_EDIT = 'CHANGE_BUTTON_EDIT';
+export const CHANGE_BUTTON_ADD = 'CHANGE_BUTTON_ADD';
 
 export const loginUser = (email) => ({
   type: USER,
@@ -48,7 +49,11 @@ export const changeExpense = (expenses) => ({
   expenses,
 });
 
-export const changeButton = (idEdit) => ({
-  type: CHANGE_BUTTON,
+export const changeButtonEdit = (idEdit) => ({
+  type: CHANGE_BUTTON_EDIT,
   idEdit,
+});
+
+export const changeButtonAdd = () => ({
+  type: CHANGE_BUTTON_ADD,
 });

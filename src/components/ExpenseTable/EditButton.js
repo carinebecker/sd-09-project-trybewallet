@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeButton } from '../../actions';
+import { changeButtonEdit } from '../../actions';
 
 class EditButton extends React.Component {
   render() {
@@ -19,11 +19,12 @@ class EditButton extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  changeButtonForEdit: (idEdit) => dispatch(changeButton(idEdit)),
+  changeButtonForEdit: (idEdit) => dispatch(changeButtonEdit(idEdit)),
 });
 
 EditButton.propTypes = {
   changeButtonForEdit: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(EditButton);
