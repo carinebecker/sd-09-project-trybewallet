@@ -14,15 +14,28 @@ class Wallet extends React.Component {
   }
 
   render() {
-    return (
+    const { isFetching } = this.props;
+    console.log(`isFetching: ${isFetching}`);
+    const walletContent = (
       <div>
         <Header />
         <Form />
         <ExpenseTable />
       </div>
     );
+
+    return (
+      <>
+        {isFetching && 'Loading...'}
+        {!isFetching && walletContent}
+      </>
+    );
   }
 }
+
+const mapStateToProps = (state) => ({
+  isFetching: state.wallet.isFetching,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencyTypes: () => dispatch(fetchCurrencyTypes()),
@@ -32,4 +45,4 @@ Wallet.propTypes = {
   getCurrencyTypes: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

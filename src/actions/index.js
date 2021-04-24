@@ -1,11 +1,12 @@
 // Coloque aqui suas actions
 import {
   SAVE_USER_DATA,
-  // SAVE_CURRENCY_DATA,
+  SAVE_EXPENSE_DATA,
   REQUEST_CURRENCY_DATA,
   RECEIVE_CURRENCY_DATA_FAILURE,
   RECEIVE_CURRENCY_DATA_SUCCESS,
 } from './actionTypes';
+
 import getCurrencyTypes from '../services/awesomeApi';
 
 export const saveUserData = (user) => ({
@@ -13,6 +14,13 @@ export const saveUserData = (user) => ({
   email: user.email,
   password: user.password,
 });
+
+export const saveExpenseData = (expense) => ({
+  type: SAVE_EXPENSE_DATA,
+  expenses: expense,
+});
+
+// export const getExpenseData = ()
 
 const requestCurrencyData = () => ({
   type: REQUEST_CURRENCY_DATA,
@@ -38,5 +46,3 @@ export function fetchCurrencyTypes() {
       );
   };
 }
-
-// export default { saveUserData, fetchCurrencyTypes };
