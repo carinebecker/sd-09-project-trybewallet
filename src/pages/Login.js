@@ -43,7 +43,7 @@ class Login extends React.Component {
             data-testid="password-input"
             id="pswd-input"
             onChange={ ({ target }) => {
-              if (target.value.length < 6) {
+              if (target.value.length < '123456'.length) {
                 document.getElementById('login-btn').disabled = true;
               } else document.getElementById('login-btn').disabled = false;
             } }
