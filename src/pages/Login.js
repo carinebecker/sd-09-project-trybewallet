@@ -19,18 +19,21 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, senha, button, redirect } = this.state;
+    const { button, redirect } = this.state;
     const { saveEmail } = this.props;
+
     const validateInput = () => {
+      const { email, senha } = this.state;
       const reg = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
-      if (reg.test(email) && senha.length >= '123456'.length) {
+      if (reg.test(email) && senha.length >= '123456'.length) { // estado fica desatualizado
         this.setState({ button: false });
-        saveEmail(email);
+        saveEmail(email); // envia valor desatualizado
       } else this.setState({ button: true });
     };
-    const handleChange = (target) => {
+    const handleChange = async (target) => {
       this.setState({ [target.name]: target.value }, () => validateInput());
     };
+
     return (
       <section className="login-section">
         { redirect ? (<Redirect to="/carteira" />) : null }
@@ -40,7 +43,6 @@ class Login extends React.Component {
             type="text"
             data-testid="email-input"
             name="email"
-            value={ email }
             onChange={ ({ target }) => handleChange(target) }
           />
         </label>
@@ -50,7 +52,6 @@ class Login extends React.Component {
             type="password"
             data-testid="password-input"
             name="senha"
-            value={ senha }
             onChange={ ({ target }) => handleChange(target) }
           />
         </label>
