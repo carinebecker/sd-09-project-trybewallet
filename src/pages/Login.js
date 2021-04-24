@@ -11,23 +11,18 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      senha: '',
     };
   }
 
   render() {
-    const { email, senha } = this.state;
+    const { email } = this.state;
     const { sendLogin } = this.props;
-
-    const validateEmail = (email) => {
-      this.setState({ email });
+    const validateEmail = (info) => {
+      this.setState({ email: info });
       const reg = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
-      if (reg.test(email)) {
-        document.getElementById('login-btn').disabled = false;
-      } else {
-        document.getElementById('login-btn').disabled = true;
-      }
-    }
+      if (reg.test(info)) document.getElementById('login-btn').disabled = false;
+      else document.getElementById('login-btn').disabled = true;
+    };
 
     return (
       <section className="login-section">
@@ -37,7 +32,7 @@ class Login extends React.Component {
             type="text"
             data-testid="email-input"
             id="email-input"
-            onChange={ ({target}) => validateEmail(target.value) }
+            onChange={ ({ target }) => validateEmail(target.value) }
             required
           />
         </label>
@@ -50,9 +45,7 @@ class Login extends React.Component {
             onChange={ ({ target }) => {
               if (target.value.length < 6) {
                 document.getElementById('login-btn').disabled = true;
-              } else {
-                document.getElementById('login-btn').disabled = false;
-              }
+              } else document.getElementById('login-btn').disabled = false;
             } }
             required
           />
