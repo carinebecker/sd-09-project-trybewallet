@@ -26,10 +26,6 @@
   padding: 8px;
 }
 
-.expTable tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
 .expTable tr:hover {
   background-color: #ddd;
 }
@@ -42,11 +38,11 @@
   text-align: left;
 }
 
-input[type=text], select {
+input[type = text], select {
   border: 1px solid #ccc;
   border-radius: 3px;
   margin: 8px 5px;
-  padding: 10px 10px;
+  padding: 10px;
 }
 
 form {
@@ -74,7 +70,7 @@ button {
 }
 
 .button-login:hover:enabled {
-  background-color: #45a049;
+  background-color: #4CAF50;
 }
 
 .button-login:disabled {
@@ -109,8 +105,8 @@ button {
 }
 
 .form-login {
-  background-color: #f2f2f2;
-  border: 1px solid #ddd;
+  background-color: #F2F2F2;
+  border: 1px solid #dddddd;
   border-radius: 5px;
   display: inline-block;
   padding: 20px;
