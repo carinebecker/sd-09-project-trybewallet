@@ -7,18 +7,18 @@ import './Header.css';
 
 class Header extends React.Component {
   render() {
-    const { email, wallet } = this.props;
+    const { email, expenses } = this.props;
     return (
       <header className="header">
         <MdMonetizationOn size={ 50 } />
         <div className="user">
           <div>
             Email:
-            <span data-testid="email-field">{ email }</span>
+            <span data-testid="email-field">{ ` ${email}` }</span>
           </div>
           <div>
             Dispesa Total:
-            <span data-testid="total-field">R$ 0,00</span>
+            <span data-testid="total-field">{(expenses === undefined) ? ` R$ 0,00` : 'xablau'}</span>
             {/* <span data-testid="total-field">{ `R$ ${wallet.expenses.value}` }</span> */}
             <span data-testid="header-currency-field">BRL</span>
           </div>
@@ -29,7 +29,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  wallet: state.wallet,
+  expenses: state.wallet.expenses,
   email: state.user.email,
 });
 

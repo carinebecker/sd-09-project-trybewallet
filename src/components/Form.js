@@ -23,11 +23,15 @@ class Form extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  /* =================================================
+    MUDAR A CHAMADA DA API AQUI NO FORM.JS
+  ================================================= */
+
   componentDidMount() {
     const { getCurrencies } = this.props;
-    /* const currencies = getCurrencies.map((currency) => currency.code);
-    console.log(currencies); */
-    console.log(getCurrencies);
+    this.setState(() => ({ currencyTypes: getCurrencies}));
+    // const currencies = getCurrencies.map((currency) => currency.code);
+    // console.log(getCurrencies);
   }
 
   handleInputChange({ target }) {
@@ -36,7 +40,8 @@ class Form extends React.Component {
   }
 
   render() {
-    const { value, currency, method, tag, description } = this.state;
+    const { value, currency, method, tag, description, currencyTypes } = this.state;
+    console.log(currencyTypes);
     return (
       <form className="container-form" action="">
         <label htmlFor="value">
@@ -72,12 +77,12 @@ class Form extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  getCurrencies: state.wallet,
-  getExpenses: state.wallet.expenses,
+  getCurrencies: state.wallet.currencies,
+  // getExpenses: state.wallet.expenses,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+/* const mapDispatchToProps = (dispatch) => ({
   setExpenses: ({ value, currency, method, tag, description }) => dispatch(saveExpenseData({ value, currency, method, tag, description })),
-});
+}); */
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default connect(mapStateToProps)(Form);

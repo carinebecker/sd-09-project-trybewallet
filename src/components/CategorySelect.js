@@ -17,7 +17,10 @@ class CategorySelect extends React.Component {
             onChange={ onChange }
             data-testid="tag-input"
           >
-            <option value="recreation">Lazer</option>
+            <option value="food">Alimentação</option>
+            <option value="leisure">Lazer</option>
+            <option value="transport">Transporte</option>
+            <option value="health">Saúde</option>
           </select>
         </label>
       </div>

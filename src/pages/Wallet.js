@@ -15,7 +15,6 @@ class Wallet extends React.Component {
 
   render() {
     const { isFetching } = this.props;
-    console.log(`isFetching: ${isFetching}`);
     const walletContent = (
       <div>
         <Header />
@@ -43,6 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Wallet.propTypes = {
   getCurrencyTypes: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
