@@ -21,7 +21,7 @@
   width: 100%;
 }
 
-.expTable td, .expTable th {
+.expTable td , .expTable th {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -38,7 +38,14 @@
   text-align: left;
 }
 
-input[type = text], select {
+input[ type = "text" ] {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin: 8px 5px;
+  padding: 10px;
+}
+
+select {
   border: 1px solid #ccc;
   border-radius: 3px;
   margin: 8px 5px;
@@ -69,14 +76,6 @@ button {
   background-color: #a12f1b;
 }
 
-.button-login:hover:enabled {
-  background-color: #4CAF50;
-}
-
-.button-login:disabled {
-  background: #dddddd;
-}
-
 .button-login {
   background-color: #4CAF50;
   border: none;
@@ -86,6 +85,14 @@ button {
   margin: 8px 0;
   padding: 14px 20px;
   width: 100%;
+}
+
+.button-login:disabled {
+  background: #ddd;
+}
+
+.button-login:hover:enabled {
+  background-color: #4CAF50;
 }
 
 .input-login {
@@ -101,12 +108,12 @@ button {
 .main-login {
   position: absolute;
   text-align: center;
-  width:100%;
+  width: 100%;
 }
 
 .form-login {
   background-color: #F2F2F2;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   border-radius: 5px;
   display: inline-block;
   padding: 20px;
