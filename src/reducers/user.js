@@ -2,9 +2,7 @@
 import { LOGIN } from '../actions';
 
 const initialState = {
-  user: {
-    email: '',
-  },
+  email: '',
 };
 
 const user = (state = initialState, action) => {
@@ -12,10 +10,7 @@ const user = (state = initialState, action) => {
   case LOGIN:
     return {
       ...state,
-      user: {
-        ...state.user,
-        email: action.email,
-      },
+      email: action.email,
     };
   default:
     return state;

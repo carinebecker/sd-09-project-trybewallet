@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 import '../App.css';
 import { loginAction } from '../actions/index';
@@ -11,29 +12,36 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
+      senha: '',
+      redirect: false,
+      button: true,
     };
   }
 
   render() {
-    const { email } = this.state;
-    const { sendLogin } = this.props;
-    const validateEmail = (info) => {
-      this.setState({ email: info });
-      const reg = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
-      if (reg.test(info)) document.getElementById('login-btn').disabled = false;
-      else document.getElementById('login-btn').disabled = true;
+    const { email, senha, button, redirect } = this.state;
+    const { saveEmail } = this.props;
+    const validateInput = () => {
+      const reg = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+      if (reg.test(email) && senha.length >= '123456'.length) {
+        this.setState({ button: false });
+        saveEmail(email);
+      } else this.setState({ button: true });
     };
-
+    const handleChange = (target) => {
+      this.setState({ [target.name]: target.value }, () => validateInput());
+    };
     return (
       <section className="login-section">
+        { redirect ? (<Redirect to="/carteira" />) : null }
         <label htmlFor="email-input">
           Email
           <input
             type="text"
             data-testid="email-input"
-            id="email-input"
-            onChange={ ({ target }) => validateEmail(target.value) }
-            required
+            name="email"
+            value={ email }
+            onChange={ ({ target }) => handleChange(target) }
           />
         </label>
         <label htmlFor="pswd-input">
@@ -41,21 +49,17 @@ class Login extends React.Component {
           <input
             type="password"
             data-testid="password-input"
-            id="pswd-input"
-            onChange={ ({ target }) => {
-              if (target.value.length < '123456'.length) {
-                document.getElementById('login-btn').disabled = true;
-              } else document.getElementById('login-btn').disabled = false;
-            } }
-            required
+            name="senha"
+            value={ senha }
+            onChange={ ({ target }) => handleChange(target) }
           />
         </label>
         <div>
           <button
             type="button"
             className="login-button"
-            id="login-btn"
-            onClick={ () => sendLogin(email) }
+            disabled={ button }
+            onClick={ () => this.setState({ redirect: true }) }
           >
             Entrar
           </button>
@@ -70,7 +74,7 @@ Login.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  sendLogin: (email) => dispatch(loginAction(email)),
+  saveEmail: (email) => dispatch(loginAction(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
