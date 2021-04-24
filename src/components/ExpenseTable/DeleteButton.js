@@ -23,6 +23,7 @@ class DeleteButton extends React.Component {
         data-testid="delete-btn"
         onClick={ this.handleClick }
         type="button"
+        className="deletar"
       >
         Deletar
       </button>

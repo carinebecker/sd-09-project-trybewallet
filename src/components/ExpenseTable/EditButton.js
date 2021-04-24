@@ -11,6 +11,7 @@ class EditButton extends React.Component {
         data-testid="edit-btn"
         onClick={ () => changeButtonForEdit(id) }
         type="button"
+        className="Editar"
       >
         Editar
       </button>

@@ -6,7 +6,7 @@ class ExpenseTable extends React.Component {
   render() {
     return (
       <section>
-        <table>
+        <table className="expTable">
           <thead>
             <Header />
           </thead>

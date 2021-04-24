@@ -209,7 +209,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 ExpenseForm.defaultProps = {
-  currencies: [],
+  currencies: {},
 };
 
 ExpenseForm.propTypes = {

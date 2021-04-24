@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { loginUser } from '../actions';
+import logo from '../logo.svg';
+import imgWallet from '../imgWallet.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -59,29 +61,34 @@ class Login extends React.Component {
       return <Redirect to="/carteira" />;
     }
     return (
-      <main>
-        <h3>Login</h3>
-        <input
-          data-testid="email-input"
-          name="email"
-          onChange={ this.handleChange }
-          placeholder="Endereço de e-mail"
-          type="email"
-        />
-        <input
-          data-testid="password-input"
-          name="password"
-          onChange={ this.handleChange }
-          placeholder="Senha"
-          type="password"
-        />
-        <button
-          disabled={ validated }
-          onClick={ this.handleClick }
-          type="submit"
-        >
-          Entrar
-        </button>
+      <main className="main-login">
+        <form className="form-login">
+          <img src={ imgWallet } alt="Logo Wallet" />
+          <input
+            data-testid="email-input"
+            name="email"
+            onChange={ this.handleChange }
+            placeholder="Endereço de e-mail"
+            type="email"
+            className="input-login"
+          />
+          <input
+            data-testid="password-input"
+            name="password"
+            onChange={ this.handleChange }
+            placeholder="Senha"
+            type="password"
+            className="input-login"
+          />
+          <button
+            disabled={ validated }
+            onClick={ this.handleClick }
+            type="submit"
+            className="button-login"
+          >
+            Entrar
+          </button>
+        </form>
       </main>
     );
   }

@@ -15,7 +15,6 @@ class Body extends React.Component {
             <td>{ exp.tag }</td>
             <td>{ exp.method }</td>
             <td>{ exp.value }</td>
-            <td>{ exp.currency }</td>
             <td>
               {
                 exp.exchangeRates[exp.currency].name.split('/')[0]

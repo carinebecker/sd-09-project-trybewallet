@@ -16,6 +16,7 @@ class Button extends React.Component {
       <button
         type="button"
         onClick={ () => handleClick(msgButton, idEdit) }
+        className={ msgButton.split(' ')[0] }
       >
         { msgButton }
       </button>
@@ -28,7 +29,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-  actionButton: PropTypes.string.isRequired,
+  actionButton: PropTypes.bool.isRequired,
   idEdit: PropTypes.number,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   elementsEdit: PropTypes.func.isRequired,
