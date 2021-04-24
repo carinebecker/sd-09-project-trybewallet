@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { removeItem } from '../actions';
 
 class TableHeader extends Component {
+  removeHandler(id) {
+    const { removeExpense } = this.props;
+    removeExpense(id);
+  }
+
   render() {
     const { expenses } = this.props;
     const rv = (value) => Math.round(value * 100) / 100;
@@ -22,7 +28,7 @@ class TableHeader extends Component {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => (
+          {expenses.map((expense, index) => (
             <tr key={ expense.id }>
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
@@ -34,7 +40,13 @@ class TableHeader extends Component {
               <td>Real</td>
               <td>
                 <button type="button">Editar</button>
-                <button type="button">Excluir</button>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.removeHandler(index) }
+                >
+                  Excluir
+                </button>
               </td>
             </tr>
           ))}
@@ -48,8 +60,13 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (id) => dispatch(removeItem(id)),
+});
+
 TableHeader.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(TableHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);
