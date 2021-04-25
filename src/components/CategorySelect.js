@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class CategorySelect extends React.Component {
   render() {
-    const { onChange, tag } = this.props;
+    const { onChange } = this.props;
     return (
       <div>
         <label htmlFor="tag">
@@ -14,10 +14,10 @@ class CategorySelect extends React.Component {
             onChange={ onChange }
             data-testid="tag-input"
           >
-            <option value={ tag }>Alimentação</option>
-            <option value={ tag }>Lazer</option>
-            <option value={ tag }>Transporte</option>
-            <option value={ tag }>Saúde</option>
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
           </select>
         </label>
       </div>
@@ -27,7 +27,6 @@ class CategorySelect extends React.Component {
 
 CategorySelect.propTypes = {
   onChange: PropTypes.func.isRequired,
-  tag: PropTypes.string.isRequired,
 };
 
 export default CategorySelect;

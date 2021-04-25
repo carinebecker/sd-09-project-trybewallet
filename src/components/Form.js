@@ -24,8 +24,6 @@ class Form extends React.Component {
   }
 
   componentDidMount() {
-    // const { getCurrencies } = this.props;
-    // this.setState(() => ({ currencyTypes: getCurrencies }));
     this.updatesCurrencyTypesState();
   }
 
@@ -40,7 +38,7 @@ class Form extends React.Component {
   }
 
   render() {
-    const { value, currency, method, tag, description, currencyTypes } = this.state;
+    const { value, description, currencyTypes } = this.state;
     // console.log(currencyTypes);
     return (
       <form className="container-form" action="">
@@ -58,11 +56,10 @@ class Form extends React.Component {
         </label>
         <CurrencySelect
           onChange={ this.handleInputChange }
-          currency={ currency }
           currencyTypes={ currencyTypes }
         />
-        <MethodSelect onChange={ this.handleInputChange } method={ method } />
-        <CategorySelect onChange={ this.handleInputChange } tag={ tag } />
+        <MethodSelect onChange={ this.handleInputChange } />
+        <CategorySelect onChange={ this.handleInputChange } />
         <label htmlFor="description">
           Descricao:
           <input
