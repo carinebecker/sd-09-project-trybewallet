@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
-import { saveExpenseData } from '../actions';
+import PropTypes from 'prop-types';
+// import { saveExpenseData } from '../actions';
 
 import CurrencySelect from './CurrencySelect';
 import MethodSelect from './MethodSelect';
@@ -25,7 +25,7 @@ class Form extends React.Component {
 
   componentDidMount() {
     const { getCurrencies } = this.props;
-    this.setState(() => ({ currencyTypes: getCurrencies}));
+    this.setState(() => ({ currencyTypes: getCurrencies }));
     // const currencies = getCurrencies.map((currency) => currency.code);
     // console.log(getCurrencies);
   }
@@ -84,5 +84,13 @@ const mapStateToProps = (state) => ({
 /* const mapDispatchToProps = (dispatch) => ({
   setExpenses: ({ value, currency, method, tag, description }) => dispatch(saveExpenseData({ value, currency, method, tag, description })),
 }); */
+
+Form.propTypes = {
+  getCurrencies: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+    }),
+  ).isRequired,
+};
 
 export default connect(mapStateToProps)(Form);

@@ -11,13 +11,12 @@ class MethodSelect extends React.Component {
           <select
             name="method"
             id="method"
-            value={ method }
             onChange={ onChange }
             data-testid="method-input"
           >
-            <option value="cash">Dinheiro</option>
-            <option value="credit-card">Cartão de crédito</option>
-            <option value="debit-card">Cartão de débito</option>
+            <option value={ method }>Dinheiro</option>
+            <option value={ method }>Cartão de crédito</option>
+            <option value={ method }>Cartão de débito</option>
           </select>
         </label>
       </div>
@@ -30,4 +29,4 @@ MethodSelect.propTypes = {
   method: PropTypes.string.isRequired,
 };
 
-export default MethodSelect
+export default MethodSelect;

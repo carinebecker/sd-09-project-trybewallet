@@ -23,11 +23,7 @@ class Wallet extends React.Component {
       </div>
     );
 
-    return (
-      <>
-        {isFetching ? 'Loading...' : walletContent}
-      </>
-    );
+    return isFetching ? 'Loading...' : walletContent;
   }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { MdMonetizationOn } from 'react-icons/md';
 
 import './Header.css';
@@ -18,8 +18,9 @@ class Header extends React.Component {
           </div>
           <div>
             Dispesa Total:
-            <span data-testid="total-field">{(expenses === undefined) ? ` R$ 0,00` : 'xablau'}</span>
-            {/* <span data-testid="total-field">{ `R$ ${wallet.expenses.value}` }</span> */}
+            <span data-testid="total-field">
+              {(expenses === undefined) ? ' R$ 0,00' : 'xablau'}
+            </span>
             <span data-testid="header-currency-field">BRL</span>
           </div>
         </div>
@@ -33,13 +34,13 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
 });
 
-/* Header.propTypes = {
-  wallet: PropTypes.shape({
+Header.propTypes = {
+  expenses: PropTypes.shape({
     optionalProperty: PropTypes.arrayOf(),
-    requiredProperty: PropTypes.number.isRequired
-  }),
-  email: PropTypes.string,
-}; */
+    requiredProperty: PropTypes.number,
+  }).isRequired,
+  email: PropTypes.string.isRequired,
+};
 
 // export default Header;
 export default connect(mapStateToProps)(Header);

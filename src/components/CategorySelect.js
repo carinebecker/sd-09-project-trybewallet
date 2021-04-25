@@ -11,14 +11,13 @@ class CategorySelect extends React.Component {
           <select
             name="tag"
             id="tag"
-            value={ tag }
             onChange={ onChange }
             data-testid="tag-input"
           >
-            <option value="food">Alimentação</option>
-            <option value="leisure">Lazer</option>
-            <option value="transport">Transporte</option>
-            <option value="health">Saúde</option>
+            <option value={ tag }>Alimentação</option>
+            <option value={ tag }>Lazer</option>
+            <option value={ tag }>Transporte</option>
+            <option value={ tag }>Saúde</option>
           </select>
         </label>
       </div>
@@ -31,4 +30,4 @@ CategorySelect.propTypes = {
   tag: PropTypes.string.isRequired,
 };
 
-export default CategorySelect
+export default CategorySelect;
