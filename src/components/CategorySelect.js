@@ -1,7 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class CategorySelect extends React.Component {
   render() {
@@ -27,5 +25,10 @@ class CategorySelect extends React.Component {
     );
   }
 }
+
+CategorySelect.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  tag: PropTypes.string.isRequired,
+};
 
 export default CategorySelect

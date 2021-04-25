@@ -25,8 +25,7 @@ class Wallet extends React.Component {
 
     return (
       <>
-        {isFetching && 'Loading...'}
-        {!isFetching && walletContent}
+        {isFetching ? 'Loading...' : walletContent}
       </>
     );
   }

@@ -23,10 +23,6 @@ class Form extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  /* =================================================
-    MUDAR A CHAMADA DA API AQUI NO FORM.JS
-  ================================================= */
-
   componentDidMount() {
     const { getCurrencies } = this.props;
     this.setState(() => ({ currencyTypes: getCurrencies}));
@@ -41,7 +37,7 @@ class Form extends React.Component {
 
   render() {
     const { value, currency, method, tag, description, currencyTypes } = this.state;
-    console.log(currencyTypes);
+    // console.log(currencyTypes);
     return (
       <form className="container-form" action="">
         <label htmlFor="value">
@@ -56,7 +52,11 @@ class Form extends React.Component {
             data-testid="value-input"
           />
         </label>
-        <CurrencySelect onChange={ this.handleInputChange } currency={ currency } />
+        <CurrencySelect
+          onChange={ this.handleInputChange }
+          currency={ currency }
+          currencyTypes={ currencyTypes }
+        />
         <MethodSelect onChange={ this.handleInputChange } method={ method } />
         <CategorySelect onChange={ this.handleInputChange } tag={ tag } />
         <label htmlFor="description">

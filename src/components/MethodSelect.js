@@ -1,7 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class MethodSelect extends React.Component {
   render() {
@@ -26,5 +24,10 @@ class MethodSelect extends React.Component {
     );
   }
 }
+
+MethodSelect.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  method: PropTypes.string.isRequired,
+};
 
 export default MethodSelect

@@ -1,11 +1,12 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class CurrencySelect extends React.Component {
   render() {
-    const { onChange, currency } = this.props;
+    const { onChange, currency, currencyTypes } = this.props;
+    const typeOptions = currencyTypes.map(({ code }) => 
+      <option key={ code } value={ currency } data-testid={ currency }>{ code }</option>
+    );
     return (
       <div>
         <label htmlFor="currency">
@@ -14,15 +15,31 @@ class CurrencySelect extends React.Component {
             name="currency"
             id="currency"
             data-testid="currency-input"
-            value={ currency }
             onChange={ onChange }
           >
-            <option value="brl" data-testid="BRL">BRL</option>
+            {typeOptions}
           </select>
         </label>
       </div>
     );
   }
 }
+
+CurrencySelect.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  currency: PropTypes.string.isRequired,
+  currencyTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+    }).isRequired,
+  ),
+};
+
+/* product: PropTypes.shape({
+  id: PropTypes.number,
+  title: PropTypes.string,
+  thumbnail: PropTypes.string,
+  price: PropTypes.number,
+}).isRequired, */
 
 export default CurrencySelect;
