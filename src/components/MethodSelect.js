@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class MethodSelect extends React.Component {
   render() {
-    const { onChange } = this.props;
+    const { onChange, method } = this.props;
     return (
       <div>
         <label htmlFor="method">
@@ -12,6 +12,7 @@ class MethodSelect extends React.Component {
             name="method"
             id="method"
             onChange={ onChange }
+            value={ method }
             data-testid="method-input"
           >
             <option value="Dinheiro">Dinheiro</option>
@@ -26,6 +27,7 @@ class MethodSelect extends React.Component {
 
 MethodSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
+  method: PropTypes.string.isRequired,
 };
 
 export default MethodSelect;

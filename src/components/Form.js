@@ -28,8 +28,13 @@ class Form extends React.Component {
   }
 
   updatesCurrencyTypesState() {
-    const { getCurrencies } = this.props;
-    this.setState(() => ({ currencyTypes: getCurrencies }));
+    const { currencies } = this.props;
+    this.setState(() => ({
+      currency: currencies[0].code,
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      currencyTypes: currencies,
+    }));
   }
 
   handleInputChange({ target }) {
@@ -38,7 +43,7 @@ class Form extends React.Component {
   }
 
   render() {
-    const { value, description, currencyTypes } = this.state;
+    const { value, description, currency, method, tag, currencyTypes } = this.state;
     // console.log(currencyTypes);
     return (
       <form className="container-form" action="">
@@ -55,11 +60,12 @@ class Form extends React.Component {
           />
         </label>
         <CurrencySelect
-          onChange={ this.handleInputChange }
           currencyTypes={ currencyTypes }
+          onChange={ this.handleInputChange }
+          currency={ currency }
         />
-        <MethodSelect onChange={ this.handleInputChange } />
-        <CategorySelect onChange={ this.handleInputChange } />
+        <MethodSelect onChange={ this.handleInputChange } method={ method } />
+        <CategorySelect onChange={ this.handleInputChange } tag={ tag } />
         <label htmlFor="description">
           Descricao:
           <input
@@ -78,7 +84,7 @@ class Form extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  getCurrencies: state.wallet.currencies,
+  currencies: state.wallet.currencies,
   // getExpenses: state.wallet.expenses,
 });
 
@@ -87,7 +93,7 @@ const mapStateToProps = (state) => ({
 }); */
 
 Form.propTypes = {
-  getCurrencies: PropTypes.arrayOf(
+  currencies: PropTypes.arrayOf(
     PropTypes.shape({
       code: PropTypes.string,
     }),
