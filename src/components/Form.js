@@ -24,10 +24,14 @@ class Form extends React.Component {
   }
 
   componentDidMount() {
+    // const { getCurrencies } = this.props;
+    // this.setState(() => ({ currencyTypes: getCurrencies }));
+    this.updatesCurrencyTypesState();
+  }
+
+  updatesCurrencyTypesState() {
     const { getCurrencies } = this.props;
     this.setState(() => ({ currencyTypes: getCurrencies }));
-    // const currencies = getCurrencies.map((currency) => currency.code);
-    // console.log(getCurrencies);
   }
 
   handleInputChange({ target }) {
