@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, subExpense } from '../../actions';
+import { deleteExpense/* , subExpense */ } from '../../actions';
 import './styles.css';
 
 import editIcon from '../../images/edit_white_24dp.svg';
@@ -9,7 +9,7 @@ import deleteIcon from '../../images/delete_white_24dp.svg';
 
 class WalletExpenseTable extends Component {
   renderExpenses(expenses) {
-    const { deleteThisExpense, subtractThisExpense } = this.props;
+    const { deleteThisExpense/* , subtractThisExpense */ } = this.props;
     const expenseInfo = expenses.map(
       ({ id,
         description,
@@ -45,7 +45,7 @@ class WalletExpenseTable extends Component {
               type="button"
               data-testid="delete-btn"
               onClick={ () => {
-                subtractThisExpense(converted);
+                /* subtractThisExpense(converted); */
                 deleteThisExpense(id);
               } }
             >
@@ -89,13 +89,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteThisExpense: (id) => dispatch(deleteExpense(id)),
-  subtractThisExpense: (value) => dispatch(subExpense(value)),
+  /* subtractThisExpense: (value) => dispatch(subExpense(value)), */
 });
 
 WalletExpenseTable.propTypes = {
   expense: PropTypes.objectOf({}),
   deleteThisExpense: PropTypes.func,
-  subtractThisExpense: PropTypes.func,
+  /* subtractThisExpense: PropTypes.func, */
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletExpenseTable);

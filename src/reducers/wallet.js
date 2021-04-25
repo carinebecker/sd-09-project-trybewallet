@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
-  expenses: [],
-  total: 0,
+  expenses: [], /*
+  total: 0, */
 };
 
 const addExpense = (state = INITIAL_STATE, action) => {
@@ -13,8 +13,8 @@ const addExpense = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.payload) };
-  case 'SUB_EXPENSE':
-    return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) };
+  /* case 'SUB_EXPENSE':
+    return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) }; */
   default:
     return state;
   }
