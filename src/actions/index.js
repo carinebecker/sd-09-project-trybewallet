@@ -5,9 +5,16 @@ export const getUserEmail = (email) => ({
   userEmail: email,
 });
 
-export const ADD_EXPENSES = 'ADD_EXPENSES';
+export const PREPEND_EXPENSES = 'PREPEND_EXPENSES';
 
-export const addExpenses = (currExpenses) => ({
-  type: ADD_EXPENSES,
-  expenses: currExpenses,
+export const prependExpenses = (data) => ({
+  type: PREPEND_EXPENSES,
+  expense: data,
 });
+
+// export const APPEND_EXPENSES = 'APPEND_EXPENSES';
+
+// export const appendExpenses = (data) => ({
+//   type: APPEND_EXPENSES,
+//   expenses: data,
+// });

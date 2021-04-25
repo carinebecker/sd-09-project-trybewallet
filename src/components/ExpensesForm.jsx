@@ -1,23 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addExpenses } from '../actions';
+import { prependExpenses } from '../actions';
 
 class ExpensesForm extends Component {
   constructor() {
     super();
 
     this.state = {
-      currency: [],
-      expenses: {
-        id: 0,
-        value: '',
-        description: '',
-        currency: '',
-        method: '',
-        tag: '',
-        exchangeRates: {},
-      },
+      currencies: [],
+      id: 0,
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: {},
     };
 
     this.getCurrency = this.getCurrency.bind(this);
@@ -27,7 +25,8 @@ class ExpensesForm extends Component {
     this.methodInput = this.methodInput.bind(this);
     this.tagInput = this.tagInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.addExpense = this.addExpense.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.setId = this.setId.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +40,7 @@ class ExpensesForm extends Component {
       const result = await response.json();
       const entries = Object.entries(result);
 
-      this.setState({ currency: entries });
+      this.setState({ currencies: entries });
     } catch (error) {
       console.log(error);
     }
@@ -49,9 +48,7 @@ class ExpensesForm extends Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.setState((prevState) => (
-      { expenses: { ...prevState.expenses, [name]: value } }
-    ));
+    this.setState({ [name]: value });
   }
 
   expenseValueInput() {
@@ -85,7 +82,7 @@ class ExpensesForm extends Component {
   }
 
   currencyinput() {
-    const { currency } = this.state;
+    const { currencies } = this.state;
     return (
       <label htmlFor="currency-input">
         Moeda
@@ -96,7 +93,7 @@ class ExpensesForm extends Component {
           onChange={ this.handleChange }
         >
           {
-            currency.map((value) => (
+            currencies.map((value) => (
               value[0] === 'USDT'
                 ? ''
                 : (
@@ -125,9 +122,9 @@ class ExpensesForm extends Component {
           name="method"
           onChange={ this.handleChange }
         >
-          <option value="Dinheiro" data-testid="">Dinheiro</option>
-          <option value="Cartão de crédito" data-testid="">Cartão de crédito</option>
-          <option value="Cartão de débito" data-testid="">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
       </label>
     );
@@ -153,11 +150,13 @@ class ExpensesForm extends Component {
     );
   }
 
-  addExpense() {
-    const { expenses } = this.state;
-    const { expensesDispatcher } = this.props;
-    // const { id, value, description, currency, method, tag, exchangeRates } = expenses;
-    expensesDispatcher(expenses);
+  handleClick(event) {
+    event.preventDefault();
+    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const data = { id, value, description, currency, method, tag, exchangeRates };
+    const { expenseDispatcher } = this.props;
+    this.setId();
+    expenseDispatcher(data);
   }
 
   render() {
@@ -172,7 +171,7 @@ class ExpensesForm extends Component {
             { this.methodInput() }
             { this.tagInput() }
           </div>
-          <button type="submit" onClick={ () => this.addExpense() }>
+          <button type="submit" onClick={ (event) => this.handleClick(event) }>
             Adicionar despesa
           </button>
         </form>
@@ -186,7 +185,11 @@ ExpensesForm.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  expensesDispatcher: (expense) => dispatch(addExpenses(expense)),
+  expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
 });
 
-export default connect(null, mapDispatchToProps)(ExpensesForm);
+const mapStateToProps = (state) => ({
+  expensesState: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);
