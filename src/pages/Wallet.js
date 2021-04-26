@@ -16,7 +16,7 @@ class Wallet extends React.Component {
       total += value * exchangeRates[currency].ask;
       return total;
     }, 0);
-    return expenseValue.toFixed(2);
+    return parseFloat(expenseValue).toFixed(2);
   }
 
   render() {

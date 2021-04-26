@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 const walletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'GET_CURRENCY':
-    return { ...state, currencies: action.payload };
+    return { ...state, currencies: Object.keys(action.payload) };
   case 'ADD_EXPENSE':
     return { ...state, expenses: [...state.expenses, action.payload] };
   case 'DELETE_EXPENSE':

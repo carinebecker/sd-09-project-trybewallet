@@ -2,9 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrency, addExpense, updateExpense } from '../actions';
+import fetchApi from '../services/api';
 import FormButtons from './FormButtons';
 
-const alimentacao = 'Alimentação';
+const initialState = {
+  value: '',
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
+
 class ExpenseForm extends React.Component {
   constructor() {
     super();
@@ -17,7 +25,7 @@ class ExpenseForm extends React.Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: alimentacao,
+      tag: 'Alimentação',
     };
   }
 
@@ -26,20 +34,12 @@ class ExpenseForm extends React.Component {
   }
 
   componentDidUpdate(lastProps) {
-    console.log(lastProps, 'lastProps');
     const { expense } = this.props;
     if (expense && !lastProps.expense) {
-      console.log(lastProps.expense);
       this.setStateFunc(expense);
     }
     if (!expense && lastProps.expense) {
-      this.setStateFunc({
-        value: '',
-        description: '',
-        currency: 'USD',
-        method: 'Dinheiro',
-        tag: alimentacao,
-      });
+      this.setStateFunc(initialState);
     }
   }
 
@@ -66,9 +66,9 @@ class ExpenseForm extends React.Component {
     });
   }
 
-  generateExchangeRates() {
-    this.fetchCurrency();
-    const { expenses, currencies, setExpense, expense, upExpense } = this.props;
+  async generateExchangeRates() {
+    const response = await fetchApi();
+    const { expenses, setExpense, expense, upExpense } = this.props;
     const { value, description, currency, method, tag } = this.state;
     if (expense) {
       upExpense(expense.id, this.state);
@@ -80,17 +80,11 @@ class ExpenseForm extends React.Component {
         currency,
         method,
         tag,
-        exchangeRates: currencies,
+        exchangeRates: response,
       };
       setExpense(expenseObj);
     }
-    this.setState({
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: alimentacao,
-    });
+    this.setState(initialState);
   }
 
   renderSelectCurrency(currencies) {
@@ -98,12 +92,13 @@ class ExpenseForm extends React.Component {
     return (
       <select
         name="currency"
-        id="moeda"
+        id="currency"
         data-testid="currency-input"
-        defaultValue={ currencyState }
+        //defaultValue={ currencyState }
+        value={ currencyState }
         onChange={ this.formFieldsControl }
       >
-        {Object.keys(currencies).map((currency) => (
+        {currencies.map((currency) => (
           <option
             key={ currency }
             value={ currency }
@@ -122,7 +117,7 @@ class ExpenseForm extends React.Component {
       <select
         name="method"
         value={ method }
-        id="pagamento"
+        id="method"
         data-testid="method-input"
         onChange={ this.formFieldsControl }
       >
@@ -139,7 +134,7 @@ class ExpenseForm extends React.Component {
       <select
         name="tag"
         value={ tag }
-        id="despesa"
+        id="tag"
         data-testid="tag-input"
         onChange={ this.formFieldsControl }
       >
@@ -157,18 +152,8 @@ class ExpenseForm extends React.Component {
     const { currencies } = this.props;
     return (
       <form>
-        <label htmlFor="despesa">
-          Valor da despesa
-          <input
-            type="text"
-            name="value"
-            value={ value }
-            data-testid="value-input"
-            onChange={ this.formFieldsControl }
-          />
-        </label>
-        <label htmlFor="descricao">
-          descrição da despesa
+        <label htmlFor="description">
+          {/* descrição da despesa */}
           <input
             type="text"
             name="description"
@@ -177,16 +162,26 @@ class ExpenseForm extends React.Component {
             onChange={ this.formFieldsControl }
           />
         </label>
-        <label htmlFor="moeda">
-          Moeda
+        <label htmlFor="value">
+          {/* Valor da despesa */}
+          <input
+            type="text"
+            name="value"
+            value={ value }
+            data-testid="value-input"
+            onChange={ this.formFieldsControl }
+          />
+        </label>
+        <label htmlFor="currency">
+          {/* Moeda */}
           {this.renderSelectCurrency(currencies)}
         </label>
-        <label htmlFor="pagamento">
-          Método de pagamento
+        <label htmlFor="method">
+         {/* Pagamento */}
           {this.renderSelectPaymentMethod()}
         </label>
-        <label htmlFor="tipoDespesa">
-          Tipo de despesa
+        <label htmlFor="tag">
+          {/* Tipo de despesa */}
           {this.renderSelectExpenseTag()}
         </label>
         <FormButtons generateExchangeRates={ this.generateExchangeRates } />
