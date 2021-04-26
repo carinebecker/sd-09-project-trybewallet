@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap') ;
 
 body {
   background: #252525;
   box-sizing: border-box;
   color: white;
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: Josefin Sans, sans-serif;
   font-size: 16px;
-  height: 100vh;  
+  height: 100vh;
   margin: 0;
   padding: 0;
   width: 100vw;
