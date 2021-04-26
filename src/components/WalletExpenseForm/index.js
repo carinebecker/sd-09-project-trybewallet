@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getCurrencies from '../../services/api';
-import { addExpense, sumExpenses } from '../../actions';
+import { addExpense, sumExpenses, editExpense } from '../../actions';
 import './styles.css';
 
 class WalletExpenseForm extends Component {
@@ -16,6 +16,7 @@ class WalletExpenseForm extends Component {
       currency: 'USD',
       method: '',
       tag: '',
+      editMode: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.fetchCurrencies = this.fetchCurrencies.bind(this);
@@ -79,7 +80,15 @@ class WalletExpenseForm extends Component {
     expenseForm.reset();
   }
 
+  async submitEditedExpense(event) {
+    event.preventDefault();
+
+    const expenseForm = document.getElementById('expense-form');
+    expenseForm.reset();
+  }
+
   valueInput() {
+    const { value } = this.state;
     return (
       <label htmlFor="value-input">
         Valor:
@@ -89,12 +98,14 @@ class WalletExpenseForm extends Component {
           name="value"
           data-testid="value-input"
           onChange={ this.handleChange }
+          value={ value }
         />
       </label>
     );
   }
 
   descriptionInput() {
+    const { description } = this.state;
     return (
       <label htmlFor="description-input">
         Descrição:
@@ -104,13 +115,14 @@ class WalletExpenseForm extends Component {
           name="description"
           data-testid="description-input"
           onChange={ this.handleChange }
+          value={ description }
         />
       </label>
     );
   }
 
   currencyInput() {
-    const { currencies } = this.state;
+    const { currencies, currency } = this.state;
     return (
       <select
         data-testid="currency-input"
@@ -118,16 +130,17 @@ class WalletExpenseForm extends Component {
         name="currency"
         onChange={ this.handleChange }
         defaultValue="Escolha a moeda"
+        value={ currency }
       >
         <option disabled>Escolha a moeda</option>
         {
-          currencies.map((currency) => ((currency !== 'USDT') ? (
+          currencies.map((thisCurrency) => ((thisCurrency !== 'USDT') ? (
             <option
-              key={ currency }
-              value={ currency }
-              data-testid={ currency }
+              key={ thisCurrency }
+              value={ thisCurrency }
+              data-testid={ thisCurrency }
             >
-              { currency }
+              { thisCurrency }
             </option>
           ) : ''))
         }
@@ -136,6 +149,7 @@ class WalletExpenseForm extends Component {
   }
 
   methodInput() {
+    const { method } = this.state;
     return (
       <select
         data-testid="method-input"
@@ -143,6 +157,7 @@ class WalletExpenseForm extends Component {
         name="method"
         onChange={ this.handleChange }
         defaultValue="Forma de pagamento"
+        value={ method }
       >
         <option disabled>Forma de pagamento</option>
         <option key="dinheiro">Dinheiro</option>
@@ -153,6 +168,7 @@ class WalletExpenseForm extends Component {
   }
 
   tagInput() {
+    const { tag } = this.state;
     return (
       <select
         data-testid="tag-input"
@@ -160,6 +176,7 @@ class WalletExpenseForm extends Component {
         name="tag"
         onChange={ this.handleChange }
         defaultValue="Categoria"
+        value={ tag }
       >
         <option disabled>Categoria</option>
         <option key="alimentacao">Alimentação</option>
@@ -182,8 +199,31 @@ class WalletExpenseForm extends Component {
     );
   }
 
+  editInput() {
+    return (
+      <input
+        className="edit-button"
+        type="submit"
+        value="Editar despesa"
+        onClick={ this.submitEditedExpense }
+      />
+    );
+  }
+
+  // enableEdit(expense) {
+  // const { id, value, description, currency, method, tag, editMode } = expense[0];
+  // console.log(description);
+  /* this.setState({
+      editMode: true,
+    }); */
+  // }
+
   render() {
-    const { value, description, currency, method, tag } = this.state;
+    const { expense } = this.props;
+    if (expense) {
+      this.enableEdit(expense);
+    }
+    const { value, description, currency, method, tag, editMode } = this.state;
     return (
       <form id="expense-form" className="expense-form-class">
         { this.valueInput(value) }
@@ -191,7 +231,7 @@ class WalletExpenseForm extends Component {
         { this.currencyInput(currency) }
         { this.methodInput(method) }
         { this.tagInput(tag) }
-        { this.submitInput() }
+        { editMode ? this.editInput() : this.submitInput() }
       </form>
     );
   }
@@ -199,11 +239,13 @@ class WalletExpenseForm extends Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  expense: state.wallet.expense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (expenses) => dispatch(addExpense(expenses)),
   totalExpensesValue: (value) => dispatch(sumExpenses(value)),
+  editExpense,
 });
 
 WalletExpenseForm.propTypes = {

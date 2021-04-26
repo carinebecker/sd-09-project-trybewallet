@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense/* , subExpense */ } from '../../actions';
+import { deleteExpense, editExpense } from '../../actions';
 import './styles.css';
 
 import editIcon from '../../images/edit_white_24dp.svg';
@@ -9,7 +9,7 @@ import deleteIcon from '../../images/delete_white_24dp.svg';
 
 class WalletExpenseTable extends Component {
   renderExpenses(expenses) {
-    const { deleteThisExpense/* , subtractThisExpense */ } = this.props;
+    const { deleteThisExpense, editThisExpense } = this.props;
     const expenseInfo = expenses.map(
       ({ id,
         description,
@@ -29,14 +29,16 @@ class WalletExpenseTable extends Component {
           <td>{ value }</td>
           <td>{ currencyName }</td>
           <td>{ exchange }</td>
-          <td>
-            { converted }
-          </td>
+          <td>{ converted }</td>
           <td>Real</td>
           <td>
             <button
               className="edit-button"
               type="button"
+              data-testid="edit-btn"
+              onClick={ () => {
+                editThisExpense(id);
+              } }
             >
               <img src={ editIcon } alt="Edit button" />
             </button>
@@ -45,7 +47,6 @@ class WalletExpenseTable extends Component {
               type="button"
               data-testid="delete-btn"
               onClick={ () => {
-                /* subtractThisExpense(converted); */
                 deleteThisExpense(id);
               } }
             >
@@ -89,12 +90,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteThisExpense: (id) => dispatch(deleteExpense(id)),
+  editThisExpense: (id) => dispatch(editExpense(id)),
   /* subtractThisExpense: (value) => dispatch(subExpense(value)), */
 });
 
 WalletExpenseTable.propTypes = {
   expense: PropTypes.objectOf({}),
   deleteThisExpense: PropTypes.func,
+  editThisExpense: PropTypes.func,
   /* subtractThisExpense: PropTypes.func, */
 }.isRequired;
 

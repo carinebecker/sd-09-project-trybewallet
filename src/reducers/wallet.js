@@ -13,6 +13,12 @@ const addExpense = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.payload) };
+  case 'EDIT_EXPENSE':
+    return {
+      ...state,
+      expense: state.expenses.filter((expense) => expense.id === action.payload),
+      // ...editExpense(state, payload),
+    };
   /* case 'SUB_EXPENSE':
     return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) }; */
   default:

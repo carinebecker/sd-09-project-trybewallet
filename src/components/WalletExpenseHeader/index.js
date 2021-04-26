@@ -34,14 +34,15 @@ class WalletExpenseHeader extends Component {
     const { email } = this.props;
     return (
       <header className="header-component">
-        TrybeWallet
+        <h1>TrybeWallet</h1>
         <div className="header-info">
           <div className="header-email">
-            E-mail:
+            <strong>E-mail:</strong>
             <span data-testid="email-field">{ email }</span>
           </div>
           <div className="header-currency">
-            Despesa total: R$
+            <strong>Despesa total:</strong>
+            R$
             <span data-testid="total-field">
               { this.calcTotal() }
             </span>

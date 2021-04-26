@@ -8,6 +8,7 @@
 }
 
 .header-info {
+  align-items: center;
   display: flex;
   justify-content: flex-end;
 }
