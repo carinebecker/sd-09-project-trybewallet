@@ -94,7 +94,6 @@ class ExpenseForm extends React.Component {
         name="currency"
         id="currency"
         data-testid="currency-input"
-        //defaultValue={ currencyState }
         value={ currencyState }
         onChange={ this.formFieldsControl }
       >
@@ -177,7 +176,7 @@ class ExpenseForm extends React.Component {
           {this.renderSelectCurrency(currencies)}
         </label>
         <label htmlFor="method">
-         {/* Pagamento */}
+          {/* Pagamento */}
           {this.renderSelectPaymentMethod()}
         </label>
         <label htmlFor="tag">
