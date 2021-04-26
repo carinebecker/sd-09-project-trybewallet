@@ -17,7 +17,7 @@ class Wallet extends React.Component {
   async valueReducer(value) {
     const { totalValue } = this.state;
     const soma = totalValue + value;
-    this.setState({ totalValue: soma });
+    this.setState({ totalValue: soma }); // retorna NaN se não tem valor
   }
 
   render() {

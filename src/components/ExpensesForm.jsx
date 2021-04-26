@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import getCurrencies from '../api/getCurrencies';
 import { prependExpenses } from '../actions';
 
 class ExpensesForm extends Component {
@@ -18,7 +19,7 @@ class ExpensesForm extends Component {
       exchangeRates: {},
     };
 
-    this.getCurrency = this.getCurrency.bind(this);
+    this.populateCurrencies = this.populateCurrencies.bind(this);
     this.currencyinput = this.currencyinput.bind(this);
     this.descriptionInput = this.descriptionInput.bind(this);
     this.expenseValueInput = this.expenseValueInput.bind(this);
@@ -30,20 +31,14 @@ class ExpensesForm extends Component {
   }
 
   componentDidMount() {
-    this.getCurrency();
+    this.populateCurrencies();
   }
 
-  async getCurrency() {
-    const endpoint = 'https://economia.awesomeapi.com.br/json/all';
-    try {
-      const response = await fetch(endpoint);
-      const result = await response.json();
+  populateCurrencies() {
+    getCurrencies().then((result) => {
       const entries = Object.entries(result);
-
       this.setState({ currencies: entries });
-    } catch (error) {
-      console.log(error);
-    }
+    });
   }
 
   initialState() {
