@@ -12,15 +12,15 @@ class TableButtons extends Component {
   }
 
   findId() {
-    const { expenses, expense, deleteExpense } = this.props;
+    const { expenses, expense, delExpense } = this.props;
     const idFilter = expenses.filter((element) => element.id !== expense);
-    deleteExpense(idFilter);
+    delExpense(idFilter);
   }
 
   editExpanse() {
-    const { expenses, expense, editExpense } = this.props;
+    const { expenses, expense, editExistingExpense } = this.props;
     const findId = expenses.find(({ id }) => expense === id);
-    editExpense(findId);
+    editExistingExpense(findId);
     // Criar chave no estado global
     // conectar a chave(informações) com o formulario
   }
@@ -52,8 +52,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteExpense: (expense) => dispatch(deleteExpense(expense)),
-  editExpense: (expense) => dispatch(editExpense(expense)),
+  delExpense: (expense) => dispatch(deleteExpense(expense)),
+  editExistingExpense: (expense) => dispatch(editExpense(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableButtons);
