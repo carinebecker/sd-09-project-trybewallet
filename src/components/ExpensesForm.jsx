@@ -26,7 +26,7 @@ class ExpensesForm extends Component {
     this.tagInput = this.tagInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.setId = this.setId.bind(this);
+    this.initialState = this.initialState.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +44,16 @@ class ExpensesForm extends Component {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  initialState() {
+    this.setState({
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+    });
   }
 
   handleChange({ target }) {
@@ -154,8 +164,10 @@ class ExpensesForm extends Component {
     event.preventDefault();
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
-    const { expenseDispatcher } = this.props;
-    this.setId();
+    const { expenseDispatcher, valueReducer } = this.props;
+    this.setState({ id: id + 1 });
+    valueReducer(parseFloat(value)); // fazer o cambio para real na hora de mandar o value
+    this.initialState();
     expenseDispatcher(data);
   }
 
