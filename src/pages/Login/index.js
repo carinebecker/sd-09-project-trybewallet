@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addUser } from '../actions';
+import { addUser } from '../../actions';
+import trybeWallet from '../../images/trybe_small.png';
+import './style.css';
 
 class Login extends React.Component {
   constructor() {
@@ -55,8 +57,12 @@ class Login extends React.Component {
   render() {
     const { validEmail, validPassword } = this.state;
     return (
-      <div>
-        <form>
+      <main className="main-content">
+        <img
+          alt="Trybe Wallet"
+          src={ trybeWallet }
+        />
+        <form className="form-content">
           <label htmlFor="email">
             Email:
             <input
@@ -83,7 +89,7 @@ class Login extends React.Component {
             Entrar
           </button>
         </form>
-      </div>
+      </main>
     );
   }
 }

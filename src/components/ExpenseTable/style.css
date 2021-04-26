@@ -1,0 +1,90 @@
+table {
+  width: 100vw;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row th {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+}
+
+.description {
+  text-align: center;
+  width: 20%;
+}
+
+.tag {
+  text-align: center;
+  width: 10%;
+}
+
+.method {
+  text-align: center;
+  width: 10%;
+}
+
+.value {
+  text-align: center;
+  width: 5%;
+}
+
+.currency {
+  text-align: center;
+  width: 10%;
+}
+
+.current-currency {
+  text-align: center;
+  width: 7%;
+}
+
+.converted-value {
+  text-align: center;
+  width: 10%;
+}
+
+.converted-currency {
+  text-align: center;
+  width: 10%;
+}
+
+.edit-remove {
+  display: flex;
+  justify-content: space-around;
+  width: 18%;
+}
+
+.edit-remove button {
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  height: 25px;
+  margin: 7px 0;
+  width: 120px;
+}
+
+.edit {
+  background-color: #1263c0;
+}
+
+.remove {
+  background-color: rgb(228, 58, 58);
+}
+
+.even {
+  background-color: #454545;
+}
+
+.odd {
+  background-color: #252525;
+}

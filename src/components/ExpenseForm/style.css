@@ -1,0 +1,47 @@
+label {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+}
+
+.expense-form {
+  align-items: center;
+  background-color: #2fc18c;
+  color: #454545;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 20px 10px;
+}
+
+.expense-form div {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  width: 80vw;
+}
+
+.expense-form div > div {
+  width: auto;
+}
+
+.expense-form div > span {
+  font-weight: 700;
+}
+
+.expense-form button {
+  background-color: #252525;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  height: 40px;
+  width: 200px;
+}
+
+.expense-form button:disabled {
+  background-color: #12a56d;
+  color: #0e7a4f;
+  cursor: default;
+}

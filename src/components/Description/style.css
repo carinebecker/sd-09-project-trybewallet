@@ -1,0 +1,8 @@
+.description-input{
+  border: none;
+  border-radius: 5px;
+  height: 25px;
+  margin: 0 30px 0 10px;
+  padding: 0 10px;
+  width: 300px;
+}

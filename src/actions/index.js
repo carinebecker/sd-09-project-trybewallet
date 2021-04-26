@@ -1,6 +1,11 @@
-export const ADD_USER = 'ADD_USER';
+import addUser from './userAction';
+import {
+  receiveCurrenciesSucces,
+  receiveCurrenciesFailure,
+} from './walletActions';
 
-export const addUser = (email) => ({
-  type: ADD_USER,
-  email,
-});
+export {
+  addUser,
+  receiveCurrenciesSucces,
+  receiveCurrenciesFailure,
+};
