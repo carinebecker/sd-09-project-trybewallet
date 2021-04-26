@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrency, addExpense, updateExpense } from '../actions';
+import FormButtons from './FormButtons';
 
 const alimentacao = 'Alimentação';
 class ExpenseForm extends React.Component {
@@ -24,22 +25,15 @@ class ExpenseForm extends React.Component {
     this.fetchCurrency();
   }
 
-  componentWillUpdate(nextProps) {
-    console.log(nextProps, 'nextProps');
+  componentDidUpdate(lastProps) {
+    console.log(lastProps, 'lastProps');
     const { expense } = this.props;
-    if (!expense && nextProps.expense) {
-      console.log(nextProps.expense);
-      this.setState({
-        value: nextProps.expense.value,
-        description: nextProps.expense.description,
-        currency: nextProps.expense.currency,
-        method: nextProps.expense.method,
-        tag: nextProps.expense.tag,
-        exchangeRates: nextProps.expense.exchangeRates,
-      });
+    if (expense && !lastProps.expense) {
+      console.log(lastProps.expense);
+      this.setStateFunc(expense);
     }
-    if (expense && !nextProps.expense) {
-      this.setState({
+    if (!expense && lastProps.expense) {
+      this.setStateFunc({
         value: '',
         description: '',
         currency: 'USD',
@@ -47,6 +41,17 @@ class ExpenseForm extends React.Component {
         tag: alimentacao,
       });
     }
+  }
+
+  setStateFunc(expense) {
+    this.setState({
+      value: expense.value,
+      description: expense.description,
+      currency: expense.currency,
+      method: expense.method,
+      tag: expense.tag,
+      exchangeRates: expense.exchangeRates,
+    });
   }
 
   async fetchCurrency() {
@@ -63,12 +68,12 @@ class ExpenseForm extends React.Component {
 
   generateExchangeRates() {
     this.fetchCurrency();
-    const { expenses, currencies, addExpense, expense, updateExpense } = this.props;
+    const { expenses, currencies, setExpense, expense, upExpense } = this.props;
     const { value, description, currency, method, tag } = this.state;
     if (expense) {
-      updateExpense(expense.id, this.state);
+      upExpense(expense.id, this.state);
     } else {
-      const expense = {
+      const expenseObj = {
         id: expenses.length,
         value,
         description,
@@ -77,7 +82,7 @@ class ExpenseForm extends React.Component {
         tag,
         exchangeRates: currencies,
       };
-      addExpense(expense);
+      setExpense(expenseObj);
     }
     this.setState({
       value: '',
@@ -184,13 +189,7 @@ class ExpenseForm extends React.Component {
           Tipo de despesa
           {this.renderSelectExpenseTag()}
         </label>
-        <button
-          type="button"
-          onClick={ this.generateExchangeRates }
-        >
-          Adicionar despesa
-        </button>
-        <button type="button" onClick={ this.generateExchangeRates }> Editar despesa </button>
+        <FormButtons generateExchangeRates={ this.generateExchangeRates } />
       </form>
     );
   }
@@ -205,8 +204,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrency: () => dispatch(fetchCurrency()),
-  addExpense: (expense) => dispatch(addExpense(expense)),
-  updateExpense: (id, expense) => dispatch(updateExpense(id, expense)),
+  setExpense: (expense) => dispatch(addExpense(expense)),
+  upExpense: (id, expense) => dispatch(updateExpense(id, expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
