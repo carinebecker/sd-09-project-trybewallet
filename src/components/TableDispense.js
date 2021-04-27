@@ -2,6 +2,8 @@ import React from 'react';
 import { shape, arrayOf, string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import deleteExpenseAction from '../actions/deleteExpenseAction';
+import { enableEditAction } from '../actions/editAction';
+import '../css/TableDispense.css';
 
 class TableDispense extends React.Component {
   constructor(props) {
@@ -9,34 +11,54 @@ class TableDispense extends React.Component {
 
     this.rowExpense = this.rowExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  handleEdit(idExpense) {
+    const { wallet: { expenses }, enableEditAction: enableEdit } = this.props;
+    const expenseForEditing = expenses
+      .filter((expense) => expense.id === idExpense);
+
+    enableEdit(expenseForEditing);
   }
 
   deleteExpense(id) {
-    const { wallet: { expenses }, deleteExpenseAction: updateStateGlobal } = this.props;
+    const { wallet: { expenses }, deleteExpenseAction: deleteItemOfGlobal } = this.props;
     const withoutExpenseDelete = expenses
       .filter((expense) => expense.id !== id);
-    updateStateGlobal(withoutExpenseDelete);
+    deleteItemOfGlobal(withoutExpenseDelete);
   }
 
   rowExpense() {
     const { wallet: { expenses } } = this.props;
     return expenses.map((expense) => (
       <tr key={ expense.id }>
-        <td>{expense.description}</td>
-        <td>{expense.tag}</td>
-        <td>{expense.method}</td>
-        <td>{expense.value}</td>
-        <td>{expense.exchangeRates[expense.currency].name}</td>
-        <td>
-          {Number(expense.exchangeRates[expense.currency].ask).toFixed(2)}
+        <td className="column">
+          { console.log(expenses.exchangeRates) }
+          { expense.description }
         </td>
-        <td>
-          {Number(expense.value)
+        <td className="column">
+          { expense.tag }
+        </td>
+        <td className="column">
+          { expense.method }
+        </td>
+        <td className="column">{ expense.value }</td>
+        <td className="column">
+          { expense.exchangeRates[expense.currency]
+            && expense.exchangeRates[expense.currency].name }
+        </td>
+        <td className="column">
+          { expense.exchangeRates[expense.currency]
+            && Number(expense.exchangeRates[expense.currency].ask).toFixed(2) }
+        </td>
+        <td className="column">
+          { expense.exchangeRates[expense.currency]
+            && Number(expense.value)
             * Number(expense.exchangeRates[expense.currency].ask)}
         </td>
         <td>Real</td>
-        <td>{ expense.id }</td>
-        <td>
+        <td className="column">
           <button
             type="button"
             data-testid="delete-btn"
@@ -44,7 +66,13 @@ class TableDispense extends React.Component {
           >
             Deletar
           </button>
-          <button type="button" data-testid="edite-btn">Editar</button>
+          <button
+            type="button"
+            data-testid="edit-btn"
+            onClick={ () => this.handleEdit(expense.id) }
+          >
+            Editar
+          </button>
         </td>
       </tr>
     ));
@@ -52,7 +80,7 @@ class TableDispense extends React.Component {
 
   render() {
     return (
-      <table>
+      <table className="tableDispenses">
         <thead>
           <tr>
             <td>Descrição</td>
@@ -90,11 +118,13 @@ TableDispense.propTypes = {
     })),
   }),
   deleteExpenseAction: func,
+  enableEditAction: func,
 };
 
 TableDispense.defaultProps = {
   wallet: {},
   deleteExpenseAction: () => {},
+  enableEditAction: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -103,6 +133,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   deleteExpenseAction,
+  enableEditAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableDispense);

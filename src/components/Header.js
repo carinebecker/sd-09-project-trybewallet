@@ -11,10 +11,12 @@ class Header extends React.Component {
 
   calcConvertion() {
     const { wallet: { expenses } } = this.props;
+    console.log(expenses);
     let total = 0;
     expenses.forEach((expense) => {
       const { value, currency, exchangeRates } = expense;
-      const exchangeValue = exchangeRates[currency].ask;
+      console.log(exchangeRates);
+      const exchangeValue = exchangeRates[currency] && exchangeRates[currency].ask;
       total += value * Number(exchangeValue);
     });
     return total;

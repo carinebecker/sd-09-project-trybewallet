@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { func } from 'prop-types';
+import { func, string, arrayOf, shape } from 'prop-types';
 import InputGeneric from './InputGeneric';
 import expensesAction from '../actions/expensesAction';
+import { editAction } from '../actions/editAction';
 
 class FormDispense extends React.Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class FormDispense extends React.Component {
     this.fecthCurrency = this.fecthCurrency.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.options = this.options.bind(this);
 
     this.state = {
       id: 0,
@@ -62,17 +65,60 @@ class FormDispense extends React.Component {
     }));
   }
 
+  handleEdit(idElementEdit) {
+    const { wallet, editAction: sendEdited } = this.props;
+    const { value, currency, method, tag, description } = this.state;
+    const { expenses } = wallet;
+    expenses.forEach((expense) => {
+      if (expense.id === idElementEdit) {
+        expense.value = value;
+        expense.currency = currency;
+        expense.method = method;
+        expense.tag = tag;
+        expense.description = description;
+      }
+    });
+    sendEdited(expenses);
+  }
+
+  options() {
+    const currency = [
+      'USD',
+      'CAD',
+      'EUR',
+      'GBP',
+      'ARS',
+      'BTC',
+      'LTC',
+      'JPY',
+      'CHF',
+      'AUD',
+      'CNY',
+      'ILS',
+      'ETH',
+      'XRP',
+    ];
+    return (
+      currency.map((curr) => <option key={ curr } data-testid={ curr }>{curr}</option>)
+    );
+  }
+
   inputsForm() {
     const {
       value,
       description,
-      currencyList } = this.state;
+      currency,
+    } = this.state;
+    const { enableEdit } = this.props;
+    const { elementEdit, editing } = enableEdit;
+
     return (
       <div>
         <InputGeneric
           type="number"
           dataTestId="value-input"
           name="value"
+          placeholder={ editing && elementEdit[0].value }
           value={ value }
           functionChange={ this.handleChange }
         />
@@ -80,26 +126,27 @@ class FormDispense extends React.Component {
           type="text"
           dataTestId="description-input"
           name="description"
+          placeholder={ editing && elementEdit[0].description }
           value={ description }
           functionChange={ this.handleChange }
         />
         <select
           data-testid="currency-input"
           name="currency"
+          value={ currency }
           onChange={ this.handleChange }
         >
           <option value="">Selecione a moeda</option>
-          {currencyList.map((currency) => (
-            <option key={ currency } data-testid={ currency } value={ currency }>
-              {currency}
-            </option>
-          ))}
+          { this.options() }
         </select>
       </div>
     );
   }
 
   render() {
+    const { method, tag } = this.state;
+    const { enableEdit } = this.props;
+    const { elementEdit, editing } = enableEdit;
     return (
       <section>
         { this.inputsForm() }
@@ -107,6 +154,7 @@ class FormDispense extends React.Component {
           data-testid="method-input"
           onChange={ this.handleChange }
           name="method"
+          selected={ editing && method === elementEdit[0].method }
         >
           <option value="Dinheiro">Dinheiro</option>
           <option value="Cartão de crédito">Cartão de crédito</option>
@@ -116,6 +164,7 @@ class FormDispense extends React.Component {
           data-testid="tag-input"
           onChange={ this.handleChange }
           name="tag"
+          selected={ editing && tag === elementEdit[0].tag }
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
@@ -123,18 +172,63 @@ class FormDispense extends React.Component {
           <option value="Transporte">Transporte</option>
           <option value="Saúde">Saúde</option>
         </select>
-        <button type="button" onClick={ this.handleClick }>Adicionar despesa</button>
+        <button
+          type="button"
+          onClick={ editing
+            ? () => this.handleEdit(elementEdit[0].id)
+            : this.handleClick }
+        >
+          { editing ? 'Editar despesa' : 'Adicionar despesa' }
+        </button>
       </section>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  wallet: state.wallet,
+  enableEdit: state.enableEditReducer,
+});
+
 const mapDispatchToProps = {
   expensesAction,
+  editAction,
 };
 
 FormDispense.propTypes = {
   expensesAction: func.isRequired,
+  editAction: func.isRequired,
+  enableEdit: shape({
+    elementEdit: arrayOf(shape({
+      id: string,
+      description: string,
+      tag: string,
+      method: string,
+      value: string,
+      exchangeRates: shape({
+        name: string,
+        ask: string,
+      }),
+    })),
+  }),
+  wallet: shape({
+    elementEdit: arrayOf(shape({
+      id: string,
+      description: string,
+      tag: string,
+      method: string,
+      value: string,
+      exchangeRates: shape({
+        name: string,
+        ask: string,
+      }),
+    })),
+  }),
 };
 
-export default connect(null, mapDispatchToProps)(FormDispense);
+FormDispense.defaultProps = {
+  enableEdit: {},
+  wallet: {},
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormDispense);
