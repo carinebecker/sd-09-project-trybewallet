@@ -35,16 +35,12 @@ class WalletExpenseForm extends Component {
 
   async fetchCurrencies() {
     const apiCurrencies = await getCurrencies();
-    this.setState({
-      currencies: Object.keys(apiCurrencies),
-    });
+    this.setState({ currencies: Object.keys(apiCurrencies) });
   }
 
   handleChange({ target }) {
     const { name } = target;
-    this.setState({
-      [name]: target.value,
-    });
+    this.setState({ [name]: target.value });
   }
 
   async submitExpense(event) {
@@ -52,21 +48,11 @@ class WalletExpenseForm extends Component {
     const { dispatchExpense, totalExpensesValue } = this.props;
     const { id, value, description, currency, method, tag } = this.state;
     const exchangeRates = await getCurrencies();
-    const expenseKeys = {
-      id,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates,
-    };
+    const expenseKeys = { id, value, description, currency, method, tag, exchangeRates };
     const currencyIndex = Object.keys(exchangeRates).indexOf(currency);
     const currencyQuote = Object.values(exchangeRates)[currencyIndex].ask;
     const valueForQuote = parseFloat(value) * parseFloat(currencyQuote);
-    dispatchExpense(
-      expenseKeys,
-    );
+    dispatchExpense(expenseKeys);
     totalExpensesValue(valueForQuote);
     this.setState({
       id: id + 1,
@@ -210,18 +196,16 @@ class WalletExpenseForm extends Component {
     );
   }
 
-  // enableEdit(expense) {
-  // const { id, value, description, currency, method, tag, editMode } = expense[0];
-  // console.log(description);
-  /* this.setState({
-      editMode: true,
-    }); */
-  // }
+  enableEdit(expense) {
+    const { value, description, currency, method, tag } = expense[0];
+    this.setState({ value, description, currency, method, tag, editMode: true });
+  }
 
   render() {
     const { expense } = this.props;
     if (expense) {
-      this.enableEdit(expense);
+      console.log(expense);
+      // this.enableEdit(expense);
     }
     const { value, description, currency, method, tag, editMode } = this.state;
     return (
