@@ -17,7 +17,7 @@ export const fetchCurrency = () => (dispatch) => {
   getCurrencyApi()
     .then((response) => {
       delete response.USDT;
-      dispatch(requestCurrency(response));
+      dispatch(requestCurrency(Object.keys(response)));
     });
 };
 

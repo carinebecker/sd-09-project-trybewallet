@@ -72,7 +72,7 @@ class EditSelectedItem extends React.Component {
         data-testid="currency-input"
       >
         <option>Selecione uma moeda</option>
-        { Object.keys(currencyArray)
+        { currencyArray
           .map((coin) => (
             <option value={ coin } data-testid={ coin } key={ coin }>{coin}</option>
           )) }
