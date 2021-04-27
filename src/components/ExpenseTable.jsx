@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf } from 'prop-types';
-import { Link } from 'react-router-dom';
 import DeleteButton from './DeleteButton';
 import { editId, editingItem } from '../actions';
 
