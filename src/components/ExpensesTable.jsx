@@ -1,7 +1,7 @@
 import React from 'react';
 import { arrayOf, objectOf, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button } from 'reactstrap';
+import { Table, Button } from 'react-bootstrap';
 import { deleteExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
@@ -31,7 +31,7 @@ class ExpensesTable extends React.Component {
               <Button
                 type="button"
                 data-testid="edit-btn"
-                color="primary"
+                variant="primary"
                 onClick={ () => getExpense(expense) }
               >
                 Editar
@@ -40,7 +40,7 @@ class ExpensesTable extends React.Component {
               <Button
                 type="button"
                 data-testid="delete-btn"
-                color="danger"
+                variant="danger"
                 onClick={ () => delExpense(expense) }
               >
                 Excluir

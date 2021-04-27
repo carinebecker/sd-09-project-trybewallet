@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { string, arrayOf, object } from 'prop-types';
-import { Alert } from 'reactstrap';
+import { Alert } from 'react-bootstrap';
 
 class Header extends React.Component {
   constructor(props) {

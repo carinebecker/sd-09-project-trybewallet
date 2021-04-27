@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, FormGroup, Label, Input, Col, Button } from 'reactstrap';
+import { Form, Col, Button } from 'react-bootstrap';
 import { setEmail } from '../actions';
 
 class Login extends React.Component {
@@ -52,10 +52,10 @@ class Login extends React.Component {
       <section>
         <h1>Login</h1>
         <Form>
-          <FormGroup>
+          <Form.Group>
             <Col sm={ 2 }>
-              <Label htmlFor="email-input">Email:</Label>
-              <Input
+              <Form.Label htmlFor="email-input">Email:</Form.Label>
+              <Form.Control
                 type="email"
                 data-testid="email-input"
                 name="email"
@@ -63,11 +63,11 @@ class Login extends React.Component {
                 onChange={ this.handleChange }
               />
             </Col>
-          </FormGroup>
-          <FormGroup>
+          </Form.Group>
+          <Form.Group>
             <Col sm={ 2 }>
-              <Label htmlFor="password-input">Senha:</Label>
-              <Input
+              <Form.Label htmlFor="password-input">Senha:</Form.Label>
+              <Form.Control
                 type="password"
                 data-testid="password-input"
                 name="password"
@@ -75,11 +75,11 @@ class Login extends React.Component {
                 onChange={ this.handleChange }
               />
             </Col>
-          </FormGroup>
+          </Form.Group>
           <Link to="/carteira">
             <Button
               type="button"
-              color={ colorButon }
+              variant={ colorButon }
               disabled={ isNotValidated }
               onClick={ () => addEmail(email) }
             >
