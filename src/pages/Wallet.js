@@ -53,9 +53,7 @@ class Wallet extends React.Component {
   createExpenses() {
     const { addExpenses } = this.props;
     this.getExchangeRates();
-    this.setState(({ id }) => ({
-      id: id + 1,
-    }));
+    this.setState(({ id }) => ({ id: id + 1 }));
     addExpenses(this.state);
     this.clearFields();
   }

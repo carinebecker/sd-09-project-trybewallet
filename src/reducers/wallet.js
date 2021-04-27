@@ -34,7 +34,6 @@ const reducerWallet = (state = INITIAL_STATE, action) => {
       expenses: state.expenses.filter((expense) => expense !== action.expense),
     };
   case EDIT_EXPENSE:
-    console.log(action.expense);
     return {
       ...state,
       expenses: state.expenses.map((expense) => (
