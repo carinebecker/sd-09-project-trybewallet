@@ -1,7 +1,6 @@
 import React from 'react';
 import { arrayOf, objectOf, func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Table, Button } from 'react-bootstrap';
 import { deleteExpense } from '../actions';
 
 class ExpensesTable extends React.Component {
@@ -28,23 +27,22 @@ class ExpensesTable extends React.Component {
             <td>{ parseFloat(ask * value).toFixed(2) }</td>
             <td>Real</td>
             <td>
-              <Button
+              <button
                 type="button"
                 data-testid="edit-btn"
-                variant="primary"
                 onClick={ () => getExpense(expense) }
               >
                 Editar
-              </Button>
+              </button>
 
-              <Button
+              <button
                 type="button"
                 data-testid="delete-btn"
                 variant="danger"
                 onClick={ () => delExpense(expense) }
               >
                 Excluir
-              </Button>
+              </button>
             </td>
           </tr>
         );
@@ -58,7 +56,7 @@ class ExpensesTable extends React.Component {
       'Valor convertido', 'Moeda de conversão', 'Editar/Excluir',
     ];
     return (
-      <Table striped>
+      <table>
         <thead>
           <tr>
             { titleTable.map((title) => <th key={ title }>{ title }</th>) }
@@ -67,7 +65,7 @@ class ExpensesTable extends React.Component {
         <tbody>
           { this.renderTableRows() }
         </tbody>
-      </Table>
+      </table>
     );
   }
 }

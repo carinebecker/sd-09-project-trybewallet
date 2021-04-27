@@ -1,7 +1,6 @@
 import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Button } from 'react-bootstrap';
 
 import Header from '../components/Header';
 import { saveExpenses, editExpense } from '../actions';
@@ -78,42 +77,40 @@ class Wallet extends React.Component {
 
   renderValue(value) {
     return (
-      <Form.Group>
-        <Form.Label>Valor:</Form.Label>
-        <Form.Control
+      <div>
+        {/* <label>Valor:</label> */}
+        <input
           type="text"
           data-testid="value-input"
           name="value"
           value={ value }
           onChange={ this.handleChange }
         />
-      </Form.Group>
+      </div>
     );
   }
 
   renderDescription(value) {
     return (
-      <Form.Group>
-        <Form.Label>Descrição:</Form.Label>
-        <Form.Control
+      <div>
+        {/* <label>Descrição:</label> */}
+        <input
           type="text"
           data-testid="description-input"
           name="description"
           value={ value }
           onChange={ this.handleChange }
         />
-      </Form.Group>
+      </div>
     );
   }
 
   renderCurrency(value) {
     const { exchangeRates } = this.state;
     return (
-      <Form.Group>
-        <Form.Label>Moeda:</Form.Label>
-        <Form.Control
-          as="select"
-          size="lg"
+      <div>
+        {/* <label>Moeda:</label> */}
+        <select
           name="currency"
           data-testid="currency-input"
           value={ value }
@@ -122,18 +119,16 @@ class Wallet extends React.Component {
           <option>Selecione</option>
           { Object.keys(exchangeRates).map((code) => (
             <option data-testid={ code } key={ code }>{code}</option>)) }
-        </Form.Control>
-      </Form.Group>
+        </select>
+      </div>
     );
   }
 
   renderMethod(value) {
     return (
-      <Form.Group>
-        <Form.Label>Pagamento:</Form.Label>
-        <Form.Control
-          as="select"
-          size="lg"
+      <div>
+        {/* <label>Pagamento:</label> */}
+        <select
           name="method"
           data-testid="method-input"
           value={ value }
@@ -143,18 +138,16 @@ class Wallet extends React.Component {
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
-        </Form.Control>
-      </Form.Group>
+        </select>
+      </div>
     );
   }
 
   renderTag(value) {
     return (
-      <Form.Group>
-        <Form.Label>Categoria:</Form.Label>
-        <Form.Control
-          as="select"
-          size="lg"
+      <div>
+        {/* <label>Categoria:</label> */}
+        <select
           name="tag"
           data-testid="tag-input"
           value={ value }
@@ -166,8 +159,8 @@ class Wallet extends React.Component {
           <option>Trabalho</option>
           <option>Transporte</option>
           <option>Saúde</option>
-        </Form.Control>
-      </Form.Group>
+        </select>
+      </div>
     );
   }
 
@@ -177,27 +170,25 @@ class Wallet extends React.Component {
     return (
       <section>
         <Header />
-        <Form>
+        <div>
           { this.renderValue(value) }
           { this.renderDescription(description) }
           { this.renderCurrency(currency) }
           { this.renderMethod(method) }
           { this.renderTag(tag) }
-          <Button
+          <button
             type="button"
-            variant="secondary"
             onClick={ this.createExpenses }
           >
             Adicionar despesa
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="secondary"
             onClick={ () => edtExpense(this.state) }
           >
             Editar despesa
-          </Button>
-        </Form>
+          </button>
+        </div>
         <ExpensesTable getExpense={ this.getExpense } />
       </section>
     );

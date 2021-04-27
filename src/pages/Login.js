@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
 import { setEmail } from '../actions';
 
 class Login extends React.Component {
@@ -16,7 +15,7 @@ class Login extends React.Component {
       email: '',
       password: '',
       isNotValidated: true,
-      colorButon: 'danger',
+      // colorButon: 'danger',
     };
   }
 
@@ -35,58 +34,50 @@ class Login extends React.Component {
     if (emailValidated && passwordValidated) {
       this.setState({
         isNotValidated: false,
-        colorButon: 'success',
+        // colorButon: 'success',
       });
     } else {
       this.setState({
         isNotValidated: true,
-        colorButon: 'danger',
+        // colorButon: 'danger',
       });
     }
   }
 
   render() {
     const { addEmail } = this.props;
-    const { email, password, isNotValidated, colorButon } = this.state;
+    const { email, password, isNotValidated } = this.state;
     return (
       <section>
         <h1>Login</h1>
-        <Form>
-          <Form.Group>
-            <Col sm={ 2 }>
-              <Form.Label htmlFor="email-input">Email:</Form.Label>
-              <Form.Control
-                type="email"
-                data-testid="email-input"
-                name="email"
-                value={ email }
-                onChange={ this.handleChange }
-              />
-            </Col>
-          </Form.Group>
-          <Form.Group>
-            <Col sm={ 2 }>
-              <Form.Label htmlFor="password-input">Senha:</Form.Label>
-              <Form.Control
-                type="password"
-                data-testid="password-input"
-                name="password"
-                value={ password }
-                onChange={ this.handleChange }
-              />
-            </Col>
-          </Form.Group>
+        <div>
+          {/* <label htmlFor="email-input">Email:</label> */}
+          <input
+            type="email"
+            data-testid="email-input"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+          />
+
+          {/* <label htmlFor="password-input">Senha:</label> */}
+          <input
+            type="password"
+            data-testid="password-input"
+            name="password"
+            value={ password }
+            onChange={ this.handleChange }
+          />
           <Link to="/carteira">
-            <Button
+            <button
               type="button"
-              variant={ colorButon }
               disabled={ isNotValidated }
               onClick={ () => addEmail(email) }
             >
               Entrar
-            </Button>
+            </button>
           </Link>
-        </Form>
+        </div>
       </section>
     );
   }

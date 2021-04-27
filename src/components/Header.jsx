@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { string, arrayOf, object } from 'prop-types';
-import { Alert } from 'react-bootstrap';
 
 class Header extends React.Component {
   constructor(props) {
@@ -27,18 +26,18 @@ class Header extends React.Component {
     const { email } = this.props;
     return (
       <header>
-        <Alert color="dark">
-          <h2>My Wallet</h2>
-          <span data-testid="email-field">
-            Email:
-            { email }
-          </span>
-          <span data-testid="total-field">
-            Despesa:
-            { this.calculateTotalExpenses() }
-          </span>
-          <span data-testid="header-currency-field">BRL</span>
-        </Alert>
+        {/* <Alert color="dark"> */}
+        <h2>My Wallet</h2>
+        <span data-testid="email-field">
+          Email:
+          { email }
+        </span>
+        <span data-testid="total-field">
+          Despesa:
+          { this.calculateTotalExpenses() }
+        </span>
+        <span data-testid="header-currency-field">BRL</span>
+        {/* </Alert> */}
       </header>
     );
   }
