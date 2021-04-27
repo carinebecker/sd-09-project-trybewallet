@@ -3,7 +3,8 @@ const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   total: 0,
-  editor: false,
+  id: '',
+  sequenceId: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -13,10 +14,10 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       currencies: action.currencies,
     };
-  case 'ADD_NEW_EXPENSE':
+  case 'NEW_EXPENSE':
     return {
       ...state,
-      expenses: [...state.expenses, action.expenseObj],
+      expenses: [...state.expenses, action.expense],
     };
   case 'SET_TOTAL':
     return {
@@ -29,11 +30,23 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: action.expenses,
       total: action.total,
     };
-  case 'EDIT_EXPENSE':
+  case 'SET_EXPENSES':
+    return {
+      ...state,
+      expenses: action.expenses,
+    };
+  case 'EDIT_ID':
     return {
       ...state,
       id: action.id,
-      editor: action.editor,
+    };
+  case 'EDIT_EXPENSE':
+    return {
+      ...state,
+      expenses: [...state.expenses.map((item) => {
+        if (item.id === action.id) return action.expense;
+        return item;
+      })],
     };
   default:
     return state;

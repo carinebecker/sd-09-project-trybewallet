@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { setSequenceId, fetchCurrencyExpense } from '../actions';
+import { editExpense, editingItem } from '../actions';
 
-class ExpenseForm extends React.Component {
+class EditSelectedItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,17 +23,19 @@ class ExpenseForm extends React.Component {
     this.renderTag = this.renderTag.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
     this.renderButton = this.renderButton.bind(this);
-    this.setCurrency = this.setCurrency.bind(this);
-    this.addExpense = this.addExpense.bind(this);
+    this.editExpense = this.editExpense.bind(this);
+    this.getSetState = this.getSetState.bind(this);
   }
 
   componentDidMount() {
-    const { currencyArray } = this.props;
-    this.setCurrency(currencyArray);
+    const { getId, getExpense } = this.props;
+    const expenseEdit = getExpense.find((item) => item.id === getId);
+    console.log(expenseEdit);
+    this.getSetState(expenseEdit);
   }
 
-  setCurrency(currencyArray) {
-    this.setState((state) => ({ ...state, currency: currencyArray }));
+  getSetState(expenseEdit) {
+    this.setState({ ...expenseEdit });
   }
 
   handleInputs({ target }) {
@@ -53,12 +54,11 @@ class ExpenseForm extends React.Component {
     });
   }
 
-  addExpense() {
-    const { getSequenceId, setSequence, addNewExpense } = this.props;
-    const expenseState = { ...this.state, id: getSequenceId };
-    setSequence();
-    addNewExpense(expenseState);
-    this.saveExpense();
+  editExpense() {
+    const { editExpenseArray, setEditing } = this.props;
+    const expenseObj = this.state;
+    editExpenseArray(expenseObj, expenseObj.id);
+    setEditing();
   }
 
   renderSelection() {
@@ -148,14 +148,12 @@ class ExpenseForm extends React.Component {
 
   renderButton() {
     return (
-      <Link to="/carteira">
-        <button
-          type="button"
-          onClick={ this.addExpense }
-        >
-          Adicionar despesa
-        </button>
-      </Link>
+      <button
+        type="button"
+        onClick={ this.editExpense }
+      >
+        Editar despesa
+      </button>
     );
   }
 
@@ -178,17 +176,18 @@ class ExpenseForm extends React.Component {
 
 const mapStateToProps = (state) => ({
   currencyArray: state.wallet.currencies,
-  getSequenceId: state.expenseReducer.sequenceId,
+  getExpense: state.wallet.expenses,
+  getId: state.wallet.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSequence: () => dispatch(setSequenceId()),
-  addNewExpense: (expense) => dispatch(fetchCurrencyExpense(expense)),
+  editExpenseArray: (expense, id) => dispatch(editExpense(expense, id)),
+  setEditing: () => dispatch(editingItem()),
 });
 
-ExpenseForm.propTypes = {
+EditSelectedItem.propTypes = {
   saveExpense: PropTypes.func,
   currencies: PropTypes.arrayOf({}),
 }.isRequired;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EditSelectedItem);

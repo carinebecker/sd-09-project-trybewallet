@@ -1,14 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { arrayOf } from 'prop-types';
+import { Link } from 'react-router-dom';
 import DeleteButton from './DeleteButton';
-import EditExpenseItem from './EditExpenseItem';
+import { editId, editingItem } from '../actions';
 
 class ExpenseTable extends React.Component {
   constructor() {
     super();
     this.convertCurrencyName = this.convertCurrencyName.bind(this);
     this.tableOfExpenses = this.tableOfExpenses.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(id) {
+    const { saveId, setEditing } = this.props;
+    saveId(id);
+    setEditing();
   }
 
   convertCurrencyName(Acronym, exchangeRates, value) {
@@ -23,7 +31,6 @@ class ExpenseTable extends React.Component {
   }
 
   tableOfExpenses(expenses) {
-    // const { id } = this.props;
     return (
       expenses.length !== 0 && expenses.map((expense) => (
         <tr key={ expense.id }>
@@ -52,7 +59,13 @@ class ExpenseTable extends React.Component {
                 expense.currency, expense.exchangeRates, expense.value,
               ).value * 1).toFixed(2) }
             />
-            <EditExpenseItem />
+            <button
+              data-testid="edit-btn"
+              type="button"
+              onClick={ () => this.handleClick(expense.id) }
+            >
+              Editar
+            </button>
           </td>
         </tr>
       ))
@@ -92,8 +105,13 @@ const mapStateToProps = (state) => ({
   id: state.expenseReducer.id,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  saveId: (id) => dispatch(editId(id)),
+  setEditing: () => dispatch(editingItem()),
+});
+
 ExpenseTable.propTypes = {
   expenses: arrayOf,
 }.isRequired;
 
-export default connect(mapStateToProps)(ExpenseTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

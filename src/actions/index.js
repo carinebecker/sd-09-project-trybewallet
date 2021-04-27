@@ -6,6 +6,8 @@ export const userEmailDispatch = (email) => ({
   email,
 });
 
+export const editingItem = () => ({ type: 'EDITING_ITEM' });
+
 export const requestCurrency = (currencies) => ({
   type: 'REQUEST_CURRENCY',
   currencies,
@@ -13,19 +15,24 @@ export const requestCurrency = (currencies) => ({
 
 export const fetchCurrency = () => (dispatch) => {
   getCurrencyApi()
-    .then((response) => dispatch(requestCurrency(response)));
+    .then((response) => {
+      delete response.USDT;
+      dispatch(requestCurrency(response));
+    });
 };
 
-export const addNewExpense = (name, value) => ({
+export const addNewExpense = (expense) => ({
   type: 'NEW_EXPENSE',
-  name,
-  value,
+  expense,
 });
 
-export const setDataToGlobalState = (expenseObj) => ({
-  type: 'ADD_NEW_EXPENSE',
-  expenseObj,
-});
+export const fetchCurrencyExpense = (expense) => (dispatch) => {
+  getCurrencyApi()
+    .then((response) => {
+      delete response.USDT;
+      dispatch(addNewExpense({ ...expense, exchangeRates: response }));
+    });
+};
 
 export const setTotalValue = (total) => ({
   type: 'SET_TOTAL',
@@ -51,13 +58,33 @@ export const setNewId = () => ({
   type: 'SET_ID',
 });
 
-export const editExpense = (id, editor) => ({
-  type: 'EDIT_EXPENSE',
-  id,
-  editor,
-});
-
 export const deleteExpense = (expenses) => ({
   type: 'DELETE_EXPENSE',
   expenses,
+});
+
+export const setEdit = (condition, expense) => ({
+  type: 'SET_EDIT',
+  condition,
+  expense,
+});
+
+export const setExpenses = (expenses) => ({
+  type: 'SET_EXPENSES',
+  expenses,
+});
+
+export const editExpense = (expense, id) => ({
+  type: 'EDIT_EXPENSE',
+  expense,
+  id,
+});
+
+export const editId = (id) => ({
+  type: 'EDIT_ID',
+  id,
+});
+
+export const setSequenceId = () => ({
+  type: 'SET_SEQUENCE_ID',
 });
