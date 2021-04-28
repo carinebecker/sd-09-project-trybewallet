@@ -4,19 +4,6 @@ import PropTypes from 'prop-types';
 import { deleteExpenses, wallet, updateExpenses } from '../actions';
 
 class ExpenseAddForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: 0,
-      value: 0,
-      description: '',
-      currency: '',
-      method: '',
-      tag: '',
-      exchangeRates: '',
-    };
-  }
-
   createrExpenses() {
     const { stateProps } = this.props;
     const expenses = stateProps;
