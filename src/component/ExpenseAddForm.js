@@ -1,9 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updateExpenses } from '../actions';
+import { deleteExpenses, wallet, updateExpenses } from '../actions';
 
 class ExpenseAddForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: 0,
+      value: 0,
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+      exchangeRates: '',
+    };
+  }
+
   createrExpenses() {
     const { stateProps } = this.props;
     const expenses = stateProps;
@@ -30,7 +43,7 @@ class ExpenseAddForm extends React.Component {
                   id={ id }
                   type="button"
                   data-testid="edit-btn"
-                // onClick={ this.handleClickEdit.bind(this) }
+                  onClick={ (e) => this.handleClickEdit(e) }
                 >
                   Editar
                 </button>
@@ -54,12 +67,27 @@ class ExpenseAddForm extends React.Component {
   handleClickDelete({ target: { id } }) {
     const { stateProps, expensesUpdateDispatched } = this.props;
     const ids = Number(id);
-    const newExpenses = stateProps.map((e) => e).filter((expense) => expense.id !== ids);
+    const newExpenses = stateProps.filter((expense) => expense.id !== ids);
     expensesUpdateDispatched(newExpenses);
   }
 
-  handleClickEdit() {
-    console.log('edit');
+  handleClickEdit({ target }) {
+    const { stateProps, editExpensesDispatched } = this.props;
+    const ids = Number(target.id);
+
+    const editExpenses = stateProps.filter((expense) => expense.id === ids);
+
+    const newObject = {
+      id: editExpenses[0].id,
+      value: editExpenses[0].value,
+      description: editExpenses[0].description,
+      currency: editExpenses[0].currency,
+      method: editExpenses[0].method,
+      tag: editExpenses[0].tag,
+      exchangeRates: editExpenses[0].exchangeRates,
+    };
+
+    editExpensesDispatched(newObject);
   }
 
   render() {
@@ -90,12 +118,13 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  expensesUpdateDispatched: (expenses) => dispatch(updateExpenses(expenses)),
+  expensesUpdateDispatched: (expenses) => dispatch(deleteExpenses(expenses)),
+  expensesDispatched: (expenses) => dispatch(wallet(expenses)),
+  editExpensesDispatched: (updateExpense) => dispatch(updateExpenses(updateExpense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseAddForm);
 
 ExpenseAddForm.propTypes = {
   stateProps: PropTypes.array,
-  expensesDispatched: PropTypes.func,
 }.isRequired;

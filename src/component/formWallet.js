@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { wallet } from '../actions';
+import { wallet, editedExpenses } from '../actions';
 import currencyApi from '../services/requestApi';
 
 const methodList = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
@@ -38,28 +38,6 @@ class FormWallet extends React.Component {
     ));
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
-    this.setState({ [name]: value });
-  }
-
-  async handleClick() {
-    const { expensesDispatched } = this.props;
-    const { id } = this.state;
-
-    const data = await currencyApi();
-    await this.setState(() => ({
-      exchangeRates: data,
-    }));
-
-    expensesDispatched(this.state);
-    this.setState({
-      id: id + 1,
-      value: 0,
-      description: '',
-    });
-  }
-
   createSelect(array, name, data, onChange) {
     return (
       <select
@@ -84,6 +62,45 @@ class FormWallet extends React.Component {
       data-testid={ data }
       onChange={ this.handleChange }
     />);
+  }
+
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  }
+
+  handleClickEditExpense() {
+    const { updateExpensesState, editedExpensesDispatched } = this.props;
+    const { value, description, currency, method, tag } = this.state;
+
+    const expenseEdited = {
+      id: updateExpensesState.id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: updateExpensesState.exchangeRates,
+    };
+    console.log(expenseEdited);
+    editedExpensesDispatched(updateExpensesState.id, expenseEdited);
+  }
+
+  async handleClickAdd() {
+    const { expensesDispatched } = this.props;
+    const { id } = this.state;
+
+    const data = await currencyApi();
+    await this.setState(() => ({
+      exchangeRates: data,
+    }));
+    console.log(this.state);
+    expensesDispatched(this.state);
+    this.setState({
+      id: id + 1,
+      value: 0,
+      description: '',
+    });
   }
 
   render() {
@@ -118,8 +135,11 @@ class FormWallet extends React.Component {
             Tag:
             { this.createSelect(tagList, 'tag', 'tag-input', this.handleChange) }
           </label>
-          <button type="button" onClick={ this.handleClick.bind(this) }>
-            Adicionar despesa:
+          <button type="button" onClick={ this.handleClickAdd.bind(this) }>
+            Adicionar despesa
+          </button>
+          <button type="button" onClick={ this.handleClickEditExpense.bind(this) }>
+            Editar despesa
           </button>
         </form>
       </div>
@@ -129,10 +149,12 @@ class FormWallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   listCurrenciesState: state.wallet.currencies,
+  updateExpensesState: state.wallet.updateExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   expensesDispatched: (expenses) => dispatch(wallet(expenses)),
+  editedExpensesDispatched: (id, newExpense) => dispatch(editedExpenses(id, newExpense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormWallet);
@@ -140,4 +162,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(FormWallet);
 FormWallet.propTypes = {
   listCurrenciesState: PropTypes.func.isRequired,
   expensesDispatched: PropTypes.func.isRequired,
+  updateExpensesState: PropTypes.objectOf.isRequired,
+  editedExpensesDispatched: PropTypes.func.isRequired,
 };
