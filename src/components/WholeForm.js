@@ -86,7 +86,7 @@ class WholeForm extends Component {
       dispatchEditExpense,
     } = this.props;
     if (name === 'Adicionar despesa') {
-      const fetchFunc = await this.fetchCurrenciesAPI();
+      const fetchFunc = await this.currenciesAPI();
       const expenseDetailed = {
         id,
         value,
@@ -144,7 +144,7 @@ class WholeForm extends Component {
       <option
         data-testid={ item }
         key={ `${item}-option` }
-        value={ stateKey }
+        value={ item }
       >
         { item }
       </option>
@@ -213,7 +213,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToprops = (dispatch) => ({
-  addExpense: (expenseDetails) => dispatch(expenseSave(expenseDetails)),
+  dispatchSaveExpense: (expenseDetails) => dispatch(expenseSave(expenseDetails)),
   dispatchEditExpense: (editedExpenses) => dispatch(editExpense(editedExpenses)),
 });
 
