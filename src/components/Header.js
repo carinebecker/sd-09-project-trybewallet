@@ -3,6 +3,11 @@ import { string, arrayOf } from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.convertedValues = this.convertedValues.bind(this);
+  // }
+
   convertedValues() {
     const { expenses } = this.props;
     let total = 0;
@@ -35,7 +40,7 @@ const mapStateToProps = (state) => ({
 
 Header.propTypes = {
   email: string,
-  expenses: arrayOf([]),
+  expenses: arrayOf({}),
 }.isRequired;
 
 export default connect(mapStateToProps, null)(Header);
