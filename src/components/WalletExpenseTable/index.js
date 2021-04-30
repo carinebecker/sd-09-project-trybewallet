@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, editExpense } from '../../actions';
+import { deleteExpense, editID, toggleEditMode } from '../../actions';
 import './styles.css';
 
 import editIcon from '../../images/edit_white_24dp.svg';
 import deleteIcon from '../../images/delete_white_24dp.svg';
 
 class WalletExpenseTable extends Component {
+  editExpense(setIdEdit, setEditMode, id) {
+    setIdEdit(id);
+    setEditMode();
+  }
+
   renderExpenses(expenses) {
-    const { deleteThisExpense, editThisExpense } = this.props;
+    const { deleteThisExpense, setIdEdit, setEditMode } = this.props;
     const expenseInfo = expenses.map(
       ({ id,
         description,
@@ -19,7 +24,7 @@ class WalletExpenseTable extends Component {
         currency,
         exchangeRates,
         currencyName = exchangeRates[currency].name,
-        exchange = (Math.round(exchangeRates[currency].ask * 100) / 100),
+        exchange = (Math.round(exchangeRates[currency].ask * 100) / 100).toFixed(2),
         converted = (Math.round(value * exchangeRates[currency].ask * 100) / 100) },
       index) => (
         <tr key={ index }>
@@ -36,9 +41,7 @@ class WalletExpenseTable extends Component {
               className="edit-button"
               type="button"
               data-testid="edit-btn"
-              onClick={ () => {
-                editThisExpense(id);
-              } }
+              onClick={ () => this.editExpense(setIdEdit, setEditMode, id) }
             >
               <img src={ editIcon } alt="Edit button" />
             </button>
@@ -90,15 +93,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteThisExpense: (id) => dispatch(deleteExpense(id)),
-  editThisExpense: (id) => dispatch(editExpense(id)),
-  /* subtractThisExpense: (value) => dispatch(subExpense(value)), */
+  setIdEdit: (id) => dispatch(editID(id)),
+  setEditMode: () => dispatch(toggleEditMode()),
 });
 
 WalletExpenseTable.propTypes = {
-  expense: PropTypes.objectOf({}),
   deleteThisExpense: PropTypes.func,
   editThisExpense: PropTypes.func,
-  /* subtractThisExpense: PropTypes.func, */
+  setEditMode: PropTypes.func,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletExpenseTable);

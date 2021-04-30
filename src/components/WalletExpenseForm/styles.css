@@ -19,6 +19,13 @@ body {
 
 .submit-button {
   background-color: #009879;
+}
+
+.edit-submit-button {
+  background-color: sandybrown;
+}
+
+.submit-button , .edit-submit-button {
   border: 0;
   border-radius: 5px;
   color: whitesmoke;
@@ -26,6 +33,6 @@ body {
   padding: 10px;
 }
 
-.submit-button:hover {
+.submit-button:hover , .edit-submit-button:hover {
   cursor: pointer;
 }

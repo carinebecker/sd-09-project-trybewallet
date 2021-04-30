@@ -1,14 +1,19 @@
 const INITIAL_STATE = {
-  expenses: [], /*
-  total: 0, */
+  currencies: [],
+  expenses: [],
+  idCounter: 0,
+  editMode: false,
+  idEditing: '',
 };
 
 const addExpense = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'ADD_EXPENSE':
-    return { ...state, expenses: [...state.expenses, ...action.payload] };
-  case 'SUM_EXPENSES':
-    return { ...state, total: parseFloat((state.total + action.payload).toFixed(2)) };
+    return { ...state, expenses: [...state.expenses, action.payload] };
+  case 'SET_CURRENCIES':
+    return { ...state, currencies: action.payload };
+  case 'SET_ID_COUNTER':
+    return { ...state, idCounter: state.idCounter + 1 };
   case 'DELETE_EXPENSE':
     return {
       ...state,
@@ -16,11 +21,17 @@ const addExpense = (state = INITIAL_STATE, action) => {
   case 'EDIT_EXPENSE':
     return {
       ...state,
-      expense: state.expenses.filter((expense) => expense.id === action.payload),
-      // ...editExpense(state, payload),
+      expenses: [...state.expenses.map((item) => {
+        if (item.id === action.payload.id) {
+          return action.payload;
+        }
+        return item;
+      })],
     };
-  /* case 'SUB_EXPENSE':
-    return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) }; */
+  case 'EDIT_MODE':
+    return { ...state, editMode: !state.editMode };
+  case 'EDIT_ID':
+    return { ...state, idEditing: action.payload };
   default:
     return state;
   }
