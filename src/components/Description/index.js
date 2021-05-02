@@ -11,6 +11,7 @@ class Description extends Component {
         <input
           type="text"
           name="description"
+          id="input-description"
           data-testid="description-input"
           onChange={ onChange }
           value={ fieldContent }

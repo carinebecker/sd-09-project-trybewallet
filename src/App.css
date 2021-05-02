@@ -12,7 +12,7 @@ body {
   width: 100vw;
 }
 
-button , input:focus {
+button , input:focus, select:focus {
   outline: 0 auto -webkit-focus-ring-color;
   outline-offset: 0;
 }

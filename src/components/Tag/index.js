@@ -25,6 +25,7 @@ class Tag extends Component {
         <span>Categoria:</span>
         <select
           name="tag"
+          id="input-tag"
           data-testid="tag-input"
           value={ fieldContent }
           onChange={ onChange }

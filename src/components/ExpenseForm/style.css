@@ -18,6 +18,7 @@ label {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   width: 80vw;
 }
 
@@ -29,8 +30,8 @@ label {
   font-weight: 700;
 }
 
-.expense-form button {
-  background-color: #252525;
+.expense-form-button {
+  background-color: black;
   border: none;
   border-radius: 5px;
   color: white;
@@ -40,7 +41,7 @@ label {
   width: 200px;
 }
 
-.expense-form button:disabled {
+.expense-form-button:disabled {
   background-color: #12a56d;
   color: #0e7a4f;
   cursor: default;

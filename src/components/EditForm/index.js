@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addExpense, fetchCurrencies } from '../../actions/walletActions';
-import './style.css';
+import { editing, fetchCurrencies, updateExpenses } from '../../actions/walletActions';
+import '../ExpenseForm/style.css';
 import Value from '../Value';
 import Description from '../Description';
 import Currency from '../Currency';
 import Method from '../Method';
 import Tag from '../Tag';
 
-class ExpenseForm extends React.Component {
+class EditForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,18 +19,18 @@ class ExpenseForm extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      disable: true,
     };
 
     this.getCurrencies = this.getCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.resetFields = this.resetFields.bind(this);
     this.saveExpense = this.saveExpense.bind(this);
-    this.validateFields = this.validateFields.bind(this);
+    this.setFields = this.setFields.bind(this);
   }
 
   componentDidMount() {
     this.getCurrencies();
+    this.setFields();
   }
 
   async getCurrencies() {
@@ -38,11 +38,22 @@ class ExpenseForm extends React.Component {
     await fetchCurrenciesAPI();
   }
 
+  setFields() {
+    const { expenseId, expenses } = this.props;
+    const expense = expenses.find((element) => element.id === expenseId);
+    this.setState({
+      value: expense.value,
+      description: expense.description,
+      currency: expense.currency,
+      method: expense.method,
+      tag: expense.tag,
+    });
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
-    this.validateFields();
   }
 
   resetFields() {
@@ -52,27 +63,15 @@ class ExpenseForm extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      disable: true,
     });
   }
 
-  validateFields() {
-    const { value, description, currency, method, tag } = this.state;
-    if (value > 0
-      && description !== ''
-      && currency !== ''
-      && method !== ''
-      && tag !== '') {
-      this.setState({ disable: false });
-    }
-  }
-
   saveExpense() {
-    const { sendExpense, currencies, expenses } = this.props;
+    const { expenseId, currencies, editingExpense, expenses, updateExpense } = this.props;
     this.getCurrencies();
     const { value, description, currency, method, tag } = this.state;
-    const newExpense = {
-      id: expenses.length,
+    const updatedExpense = {
+      id: expenseId,
       value,
       description,
       currency,
@@ -80,8 +79,10 @@ class ExpenseForm extends React.Component {
       tag,
       exchangeRates: currencies,
     };
+    expenses[expenseId] = updatedExpense;
     this.resetFields();
-    sendExpense(newExpense);
+    editingExpense(false);
+    updateExpense(expenses);
   }
 
   render() {
@@ -107,7 +108,7 @@ class ExpenseForm extends React.Component {
           disabled={ disable }
           onClick={ this.saveExpense }
         >
-          Adicionar despesa
+          Editar despesa
         </button>
       </form>
     );
@@ -123,14 +124,17 @@ const mapStateToPops = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrenciesAPI: () => dispatch(fetchCurrencies()),
-  sendExpense: (expenses) => dispatch(addExpense(expenses)),
+  editingExpense: (bool) => dispatch(editing(bool)),
+  updateExpense: (expenses) => dispatch(updateExpenses(expenses)),
 });
 
-ExpenseForm.propTypes = {
+EditForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  editingExpense: PropTypes.func.isRequired,
+  expenseId: PropTypes.number.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchCurrenciesAPI: PropTypes.func.isRequired,
-  sendExpense: PropTypes.func.isRequired,
+  updateExpense: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToPops, mapDispatchToProps)(ExpenseForm);
+export default connect(mapStateToPops, mapDispatchToProps)(EditForm);

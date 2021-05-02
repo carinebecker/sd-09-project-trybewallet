@@ -10,20 +10,23 @@ class Currency extends Component {
         <span>Moeda:</span>
         <select
           name="currency"
+          id="input-currency"
           data-testid="currency-input"
           value={ fieldContent }
           onChange={ onChange }
           className="currency-input"
           required
         >
-          {currencies.map((currency, index) => (
-            <option
-              key={ index }
-              data-testid={ currency }
-            >
-              { currency }
-            </option>
-          ))}
+          {currencies
+            .filter((currency) => currency !== 'USDT')
+            .map((currency, index) => (
+              <option
+                key={ index }
+                data-testid={ currency }
+              >
+                { currency }
+              </option>
+            ))}
         </select>
       </div>
     );

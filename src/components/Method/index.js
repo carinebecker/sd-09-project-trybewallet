@@ -23,6 +23,7 @@ class Method extends Component {
         <span>Forma de Pagamento:</span>
         <select
           name="method"
+          id="input-method"
           data-testid="method-input"
           value={ fieldContent }
           onChange={ onChange }

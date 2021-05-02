@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense } from '../../actions/walletActions';
+import { deleteExpense, editExpense, editing } from '../../actions/walletActions';
 import './style.css';
 
 class ExpenseTable extends Component {
@@ -15,15 +15,26 @@ class ExpenseTable extends Component {
 
     this.expense = this.expense.bind(this);
     this.removeExpense = this.removeExpense.bind(this);
+    this.expenseId = this.expenseId.bind(this);
+  }
+
+  componentDidUpdate() {
+    this.expense();
+  }
+
+  expenseId(id) {
+    const { edit, editingExpense } = this.props;
+    edit(id);
+    editingExpense(true);
   }
 
   expense() {
     const { expenses } = this.props;
     return expenses.map((expense) => {
-      const rates = expense.exchangeRates[expense.currency];
-      const { id, description, tag, method, value } = expense;
+      const { id, description, tag, method, value, exchangeRates } = expense;
+      const rates = exchangeRates[expense.currency];
       const { even, odd } = this.state;
-      const currency = rates.name.split('/')[0];
+      const curr = rates.name.split('/')[0];
       const background = (id % 2 === 0) ? even : odd;
       const currentCurrency = parseFloat(rates.ask).toFixed(2);
       const convertedValue = (rates.ask * value).toFixed(2);
@@ -33,7 +44,7 @@ class ExpenseTable extends Component {
           <td className="tag">{tag}</td>
           <td className="method">{method}</td>
           <td className="value">{value}</td>
-          <td className="currency">{currency}</td>
+          <td className="currency">{curr}</td>
           <td className="current-currency">{currentCurrency}</td>
           <td className="converted-value">{convertedValue}</td>
           <td className="converted-currency">Real</td>
@@ -41,6 +52,8 @@ class ExpenseTable extends Component {
             <button
               type="button"
               className="edit"
+              data-testid="edit-btn"
+              onClick={ () => this.expenseId(id) }
             >
               Editar
             </button>
@@ -93,10 +106,14 @@ const mapStateToProps = ({ wallet: { expenses } }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  edit: (expenseId) => dispatch(editExpense(expenseId)),
+  editingExpense: (bool) => dispatch(editing(bool)),
   removeExpense: (expenses, value) => dispatch(deleteExpense(expenses, value)),
 });
 
 ExpenseTable.propTypes = {
+  edit: PropTypes.func.isRequired,
+  editingExpense: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeExpense: PropTypes.func.isRequired,
 };

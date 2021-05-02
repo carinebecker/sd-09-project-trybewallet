@@ -11,6 +11,7 @@ class Value extends Component {
         <input
           type="number"
           name="value"
+          id="input-value"
           data-testid="value-input"
           onChange={ onChange }
           value={ fieldContent }

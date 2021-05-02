@@ -5,6 +5,10 @@ import trybeWallet from '../../images/trybe_small.png';
 import './style.css';
 
 class Header extends Component {
+  componentDidUpdate() {
+    this.totalExpenses();
+  }
+
   // função baseada na solução do Renato Pereira Feitosa
   totalExpenses() {
     const { expenses } = this.props;
@@ -12,7 +16,7 @@ class Header extends Component {
       (
         accumulatedTotal,
         { value, currency, exchangeRates },
-      ) => accumulatedTotal + value * exchangeRates[currency].ask,
+      ) => parseFloat(accumulatedTotal) + parseFloat(value) * exchangeRates[currency].ask,
       0,
     ).toFixed(2);
   }
