@@ -5,6 +5,7 @@ import {
   fetchCurrencies,
   setTotalExpense,
   setExpense,
+  setEditExpense,
   updateExpenses,
 } from '../actions';
 
@@ -224,6 +225,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchFetchCurrencies: () => dispatch(fetchCurrencies()),
   dispatchSetExpense: (expense) => dispatch(setExpense(expense)),
   dispatchTotalExpense: (totalExpense) => dispatch(setTotalExpense(totalExpense)),
+  dispatchSetEditExpense: (edit) => dispatch(setEditExpense(edit)),
   dispatchUpdateExpenses: (expenses) => dispatch(updateExpenses(expenses)),
 });
 
