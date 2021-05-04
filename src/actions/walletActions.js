@@ -4,20 +4,15 @@ import {
   EDIT_EXPENSE,
   IS_EDITING,
   RECEIVE_CURRENCIES_SUCCESS,
-  RECEIVE_CURRENCIES_FAILURE,
   UPDATE_EXPENSES,
+  UPDATE_TOTAL,
 } from './actionTypes';
 
 import getCurrenciesAPI from '../services/currenciesAPI';
 
-export const receiveCurrenciesSucces = (currencies) => ({
+export const receiveCurrenciesSuccess = (currencies) => ({
   type: RECEIVE_CURRENCIES_SUCCESS,
   currencies,
-});
-
-export const receiveCurrenciesFailure = (error) => ({
-  type: RECEIVE_CURRENCIES_FAILURE,
-  error,
 });
 
 export const addExpense = (expenses) => ({
@@ -35,6 +30,11 @@ export const updateExpenses = (expenses) => ({
   expenses,
 });
 
+export const updateTotal = (total) => ({
+  type: UPDATE_TOTAL,
+  total,
+});
+
 export const editing = (isEditing) => ({
   type: IS_EDITING,
   isEditing,
@@ -49,7 +49,6 @@ export const deleteExpense = (expenses, total) => ({
 export function fetchCurrencies() {
   return (dispatch) => {
     getCurrenciesAPI()
-      .then((currencies) => dispatch(receiveCurrenciesSucces(currencies)))
-      .catch((error) => dispatch(receiveCurrenciesFailure(error)));
+      .then((currencies) => dispatch(receiveCurrenciesSuccess(currencies)));
   };
 }

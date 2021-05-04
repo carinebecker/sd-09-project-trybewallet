@@ -5,24 +5,8 @@ import trybeWallet from '../../images/trybe_small.png';
 import './style.css';
 
 class Header extends Component {
-  componentDidUpdate() {
-    this.totalExpenses();
-  }
-
-  // função baseada na solução do Renato Pereira Feitosa
-  totalExpenses() {
-    const { expenses } = this.props;
-    return expenses.reduce(
-      (
-        accumulatedTotal,
-        { value, currency, exchangeRates },
-      ) => parseFloat(accumulatedTotal) + parseFloat(value) * exchangeRates[currency].ask,
-      0,
-    ).toFixed(2);
-  }
-
   render() {
-    const { email } = this.props;
+    const { email, total } = this.props;
     return (
       <header className="header-content">
         <img
@@ -36,7 +20,7 @@ class Header extends Component {
         <p>
           Despesa total:
           <span data-testid="total-field">
-            {`R$ ${this.totalExpenses()}`}
+            {`R$ ${total}`}
           </span>
         </p>
         <p>
@@ -50,12 +34,12 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  expenses: state.wallet.expenses,
+  total: state.wallet.total,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Header);

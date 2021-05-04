@@ -1,11 +1,7 @@
 import addUser from './userAction';
-import {
-  receiveCurrenciesSucces,
-  receiveCurrenciesFailure,
-} from './walletActions';
+import { receiveCurrenciesSuccess } from './walletActions';
 
 export {
   addUser,
-  receiveCurrenciesSucces,
-  receiveCurrenciesFailure,
+  receiveCurrenciesSuccess,
 };

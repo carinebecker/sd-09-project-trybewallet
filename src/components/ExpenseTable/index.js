@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, editExpense, editing } from '../../actions/walletActions';
+import {
+  deleteExpense,
+  editExpense,
+  editing,
+  updateTotal,
+} from '../../actions/walletActions';
 import './style.css';
 
 class ExpenseTable extends Component {
@@ -29,15 +34,19 @@ class ExpenseTable extends Component {
   }
 
   expense() {
-    const { expenses } = this.props;
+    const { expenses, updateTotalExpenses } = this.props;
+    let total = 0;
     return expenses.map((expense) => {
       const { id, description, tag, method, value, exchangeRates } = expense;
       const rates = exchangeRates[expense.currency];
+      console.log(rates);
       const { even, odd } = this.state;
       const curr = rates.name.split('/')[0];
       const background = (id % 2 === 0) ? even : odd;
       const currentCurrency = parseFloat(rates.ask).toFixed(2);
       const convertedValue = (rates.ask * value).toFixed(2);
+      total += parseFloat(convertedValue);
+      updateTotalExpenses(total);
       return (
         <tr key={ id } className={ background }>
           <td className="description">{description}</td>
@@ -78,44 +87,51 @@ class ExpenseTable extends Component {
   }
 
   render() {
-    return (
-      <table>
-        <thead>
-          <tr className="row">
-            <th className="description">Descrição</th>
-            <th className="tag">Tag</th>
-            <th className="method">Método de pagamento</th>
-            <th className="value">Valor</th>
-            <th className="currency">Moeda</th>
-            <th className="current-currency">Câmbio utilizado</th>
-            <th className="converted-value">Valor convertido</th>
-            <th className="converted-currency">Moeda de conversão</th>
-            <th className="edit-remove">Editar/Excluir</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.expense()}
-        </tbody>
-      </table>
-    );
+    const { isEditing } = this.props;
+    if (isEditing || !isEditing) {
+      return (
+        <table>
+          <thead>
+            <tr className="row">
+              <th className="description">Descrição</th>
+              <th className="tag">Tag</th>
+              <th className="method">Método de pagamento</th>
+              <th className="value">Valor</th>
+              <th className="currency">Moeda</th>
+              <th className="current-currency">Câmbio utilizado</th>
+              <th className="converted-value">Valor convertido</th>
+              <th className="converted-currency">Moeda de conversão</th>
+              <th className="edit-remove">Editar/Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.expense()}
+          </tbody>
+        </table>
+      );
+    }
   }
 }
 
-const mapStateToProps = ({ wallet: { expenses } }) => ({
+const mapStateToProps = ({ wallet: { expenses, isEditing } }) => ({
   expenses,
+  isEditing,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   edit: (expenseId) => dispatch(editExpense(expenseId)),
   editingExpense: (bool) => dispatch(editing(bool)),
   removeExpense: (expenses, value) => dispatch(deleteExpense(expenses, value)),
+  updateTotalExpenses: (total) => dispatch(updateTotal(total)),
 });
 
 ExpenseTable.propTypes = {
   edit: PropTypes.func.isRequired,
   editingExpense: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isEditing: PropTypes.bool.isRequired,
   removeExpense: PropTypes.func.isRequired,
+  updateTotalExpenses: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

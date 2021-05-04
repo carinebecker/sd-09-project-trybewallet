@@ -4,8 +4,8 @@ import {
   EDIT_EXPENSE,
   IS_EDITING,
   RECEIVE_CURRENCIES_SUCCESS,
-  RECEIVE_CURRENCIES_FAILURE,
   UPDATE_EXPENSES,
+  UPDATE_TOTAL,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -15,15 +15,13 @@ const INITIAL_STATE = {
   isEditing: false,
   isFetching: true,
   error: '',
+  total: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case RECEIVE_CURRENCIES_SUCCESS:
     return { ...state, currencies: action.currencies, isFetching: false };
-
-  case RECEIVE_CURRENCIES_FAILURE:
-    return { ...state, error: action.error, isFetching: false };
 
   case ADD_EXPENSE:
     return { ...state, expenses: [...state.expenses, action.expenses] };
@@ -40,6 +38,9 @@ const wallet = (state = INITIAL_STATE, action) => {
 
   case UPDATE_EXPENSES:
     return { ...state, expenses: action.expenses };
+
+  case UPDATE_TOTAL:
+    return { ...state, total: action.total };
 
   case IS_EDITING:
     return { ...state, isEditing: action.isEditing };
