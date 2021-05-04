@@ -10,7 +10,7 @@ const tagOptions = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'
 
 const INITIAL_STATE = {
   id: 0,
-  value: 0,
+  value: 0.00,
   description: '',
   currency: 'USD',
   method: 'Dinheiro',
@@ -63,7 +63,7 @@ class FormExpense extends React.Component {
     sumExpensesToRedux(valueForQuotation);
     this.setState({
       id: id + 1,
-      value: 0,
+      value: 0.00,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -81,6 +81,7 @@ class FormExpense extends React.Component {
           <input
             data-testid="value-input"
             name="value"
+            type="text"
             onChange={ this.handleChange }
           />
           <input
