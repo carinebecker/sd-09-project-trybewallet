@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setExpenseAction, editExpenseAction } from '../actions';
+import { setExpenseAction, setId, editId, editingOldElement } from '../actions';
 
 class ExpensesTable extends Component {
   handleClick(id) {
@@ -11,9 +11,11 @@ class ExpensesTable extends Component {
   }
 
   handleEdit(id) {
-    const { expenses, editAction } = this.props;
+    const { expenses, editIdAction, editingOldElementAction } = this.props;
     const filterItem = expenses.find((expense) => expense.id === id);
-    editAction(filterItem);
+    // console.log(filterItem.id);
+    editIdAction(filterItem.id);
+    editingOldElementAction();
   }
 
   tableHead() {
@@ -44,7 +46,7 @@ class ExpensesTable extends Component {
               <td>{ tag }</td>
               <td>{ method }</td>
               <td>{ value }</td>
-              <td>{ exchangeRates[currency].name }</td>
+              <td>{ (exchangeRates[currency].name).split('/')[0] }</td>
               <td>{ parseFloat(exchangeRates[currency].ask).toFixed(2) }</td>
               <td>{(value * exchangeRates[currency].ask).toFixed(2)}</td>
               <td>Real</td>
@@ -84,11 +86,14 @@ class ExpensesTable extends Component {
 const mapStateToProps = (state) => ({
   user: state.user.email,
   expenses: state.wallet.expenses,
+  id: state.wallet.id,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAction: (expenses) => dispatch(setExpenseAction(expenses)),
-  editAction: (expense) => dispatch(editExpenseAction(expense)),
+  editIdAction: (id) => dispatch(editId(id)),
+  setIdEdit: () => dispatch(setId()),
+  editingOldElementAction: () => dispatch(editingOldElement()),
 });
 
 ExpensesTable.propTypes = {
