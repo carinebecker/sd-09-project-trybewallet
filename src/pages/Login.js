@@ -33,20 +33,8 @@ class Login extends React.Component {
       [name]: value,
     });
 
-    if (name === 'email' && this.validateEmail(value)) {
-      this.setState((prevState) => ({
-        validateUser: {
-          ...prevState.validateUser, emailIsValid: true,
-        },
-      }));
-    }
-    if (name === 'password' && this.validatePassword(value)) {
-      this.setState((prevState) => ({
-        validateUser: {
-          ...prevState.validateUser, passwordIsValid: true,
-        },
-      }));
-    }
+    this.validateEmail(name, value);
+    this.validatePassword(name, value);
   }
 
   handleClick() {
@@ -56,19 +44,34 @@ class Login extends React.Component {
     isLogged();
   }
 
-  validateEmail(email) {
+  validateEmail(name, email) {
     // validação usando regex:
     /**
      * https://pt.stackoverflow.com/questions/1386/express%C3%A3o-regular-para-valida%C3%A7%C3%A3o-de-e-mail
      */
-    const regexEmail = /\S+@\S+\.\S+/;
-    return regexEmail.test(email);
+    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/i;
+
+    if (name === 'email' && regexEmail.test(email)) {
+      this.setState((prevState) => (
+        { validateUser: { ...prevState.validateUser, emailIsValid: true } }
+      ));
+    } else if (name === 'email' && !regexEmail.test(email)) {
+      this.setState((prevState) => (
+        { validateUser: { ...prevState.validateUser, emailIsValid: false } }
+      ));
+    }
   }
 
-  validatePassword(password) {
+  validatePassword(name, password) {
     const minPassword = 6;
-    if (password.length >= minPassword) {
-      return true;
+    if (name === 'password' && password.length >= minPassword) {
+      this.setState((prevState) => (
+        { validateUser: { ...prevState.validateUser, passwordIsValid: true } }
+      ));
+    } else if (name === 'password' && !password.length < minPassword) {
+      this.setState((prevState) => (
+        { validateUser: { ...prevState.validateUser, passwordIsValid: false } }
+      ));
     }
   }
 
@@ -78,8 +81,8 @@ class Login extends React.Component {
       password,
       validateUser: { emailIsValid, passwordIsValid },
     } = this.state;
-    const { loggedStatus } = this.props;
-    if (loggedStatus) {
+    const { logStatus } = this.props;
+    if (logStatus) {
       return (<Redirect to="/carteira" />);
     }
     return (
@@ -125,7 +128,7 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedStatus: state.loggedStatus.isLogged,
+  logStatus: state.logStatus.isLogged,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -136,7 +139,7 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   isLogged: PropTypes.func.isRequired,
-  loggedStatus: PropTypes.bool.isRequired,
+  logStatus: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
