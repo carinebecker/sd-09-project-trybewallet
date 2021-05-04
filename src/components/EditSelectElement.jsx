@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Moedas from '../services/requireApi';
 import { editExpenseAction, editingOldElement } from '../actions';
 
 class EditSelectElement extends React.Component {
