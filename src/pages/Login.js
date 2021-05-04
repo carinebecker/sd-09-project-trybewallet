@@ -2,11 +2,11 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addUser as addUsers } from '../actions';
 import './Login.css';
 import Illustration from '../images/wallet.svg';
 
-const passwordLength = 5;
+import loginUserAction from '../actions/loginUser';
+import isLoggedAction from '../actions/isLogged';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,21 +15,45 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      validateUser: false,
-      redirect: false,
+      validateUser: {
+        emailIsValid: false,
+        passwordIsValid: false,
+      },
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
-    this.validateLogin = this.validateLogin.bind(this);
-    this.redirectToWallet = this.redirectToWallet.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
   }
 
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({
       [name]: value,
-    }, this.btnSend());
+    });
+
+    if (name === 'email' && this.validateEmail(value)) {
+      this.setState((prevState) => ({
+        validateUser: {
+          ...prevState.validateUser, emailIsValid: true,
+        },
+      }));
+    }
+    if (name === 'password' && this.validatePassword(value)) {
+      this.setState((prevState) => ({
+        validateUser: {
+          ...prevState.validateUser, passwordIsValid: true,
+        },
+      }));
+    }
+  }
+
+  handleClick() {
+    const { login, isLogged } = this.props;
+    const { email } = this.state;
+    login(email);
+    isLogged();
   }
 
   validateEmail(email) {
@@ -41,38 +65,23 @@ class Login extends React.Component {
     return regexEmail.test(email);
   }
 
-  btnSend() {
-    const { email, password, validateUser } = this.state;
-    const emailIsValid = this.validateEmail(email);
-    if (!validateUser && emailIsValid && password.length >= passwordLength) {
-      console.log('is valid');
-      this.validateLogin(true);
-    } else if (validateUser && (!emailIsValid || password.length < passwordLength)) {
-      this.validateLogin(false);
-      console.log('is invalid');
+  validatePassword(password) {
+    const minPassword = 6;
+    if (password.length >= minPassword) {
+      return true;
     }
-  }
-
-  validateLogin(login) {
-    this.setState({
-      validateUser: login,
-    });
-  }
-
-  redirectToWallet() {
-    this.setState({
-      redirect: true,
-    });
   }
 
   render() {
-    const { email, password, validateUser, redirect } = this.state;
-    const { addUser } = this.props;
-
-    if (redirect) {
-      return <Redirect push to="/carteira" />;
+    const {
+      email,
+      password,
+      validateUser: { emailIsValid, passwordIsValid },
+    } = this.state;
+    const { loggedStatus } = this.props;
+    if (loggedStatus) {
+      return (<Redirect to="/carteira" />);
     }
-
     return (
       <main className="container-login">
         <section className="container-illustration">
@@ -103,8 +112,8 @@ class Login extends React.Component {
             <button
               className="btn-login"
               type="button"
-              onClick={ () => this.redirectToWallet() || addUser(email, password) }
-              disabled={ !validateUser }
+              onClick={ this.handleClick }
+              disabled={ !(emailIsValid && passwordIsValid) }
             >
               Entrar
             </button>
@@ -115,12 +124,19 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  loggedStatus: state.loggedStatus.isLogged,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  addUser: (email, password) => dispatch(addUsers(email, password)),
+  login: (email) => dispatch(loginUserAction(email)),
+  isLogged: () => dispatch(isLoggedAction()),
 });
 
 Login.propTypes = {
-  addUser: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isLogged: PropTypes.func.isRequired,
+  loggedStatus: PropTypes.bool.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
