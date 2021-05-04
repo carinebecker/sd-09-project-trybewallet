@@ -76,42 +76,45 @@ class FormExpense extends React.Component {
   render() {
     const { currencies } = this.props;
     return (
-      <form id="add-expense-form">
-        <input
-          data-testid="value-input"
-          name="value"
-          onChange={ this.handleChange }
-        />
-        <input
-          data-testid="description-input"
-          name="description"
-          onChange={ this.handleChange }
-        />
-        <Select
-          textLabel="Moedas:"
-          name="currency"
-          onChange={ this.handleChange }
-          options={ Object.keys(currencies) }
-        />
-        <Select
-          textLabel="Método de Pagamento:"
-          name="method"
-          onChange={ this.handleChange }
-          options={ paymentOptions }
-        />
-        <Select
-          textLabel="Categoria da Despesa:"
-          name="tag"
-          onChange={ this.handleChange }
-          options={ tagOptions }
-        />
-        <button
-          type="submit"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa :
-        </button>
-      </form>
+      <div>
+        <form id="add-expense-form">
+          <input
+            data-testid="value-input"
+            name="value"
+            onChange={ this.handleChange }
+          />
+          <input
+            data-testid="description-input"
+            name="description"
+            onChange={ this.handleChange }
+          />
+          <Select
+            textLabel="Moedas:"
+            name="currency"
+            onChange={ this.handleChange }
+            options={ Object.keys(currencies) }
+          />
+          <Select
+            textLabel="Método de Pagamento:"
+            name="method"
+            onChange={ this.handleChange }
+            options={ paymentOptions }
+          />
+          <Select
+            textLabel="Categoria da Despesa:"
+            name="tag"
+            onChange={ this.handleChange }
+            options={ tagOptions }
+          />
+          <button
+            type="submit"
+            onClick={ this.handleClick }
+          >
+            Adicionar despesa :
+          </button>
+        </form>
+      </div>
+
     );
   }
 }
