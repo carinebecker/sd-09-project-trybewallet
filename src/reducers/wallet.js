@@ -10,11 +10,9 @@ import {
 } from '../actions/actionTypes';
 
 const INITIAL_CURRENCY_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-    isFetching: false,
-  },
+  currencies: [],
+  expenses: [],
+  isFetching: false,
 };
 
 const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
@@ -39,7 +37,8 @@ const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
   case SAVE_EXPENSE_DATA:
     return {
       ...state,
-      expenses: action.expenses,
+      expenses: [...state.expenses, action.expenses],
+      // expenses: action.expenses,
     };
   /* case GET_EXPENSE_DATA:
     return {

@@ -12,12 +12,12 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
-      currency: '',
-      method: '',
-      tag: '',
-      description: '',
-      currencyTypes: [],
+      description: '', // Dez dólares
+      tag: '', // Lazer
+      method: '', // Cartão de crédito
+      value: 0, // 10
+      currency: '', // Dólar Comercial
+      currencyTypes: [], //
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -37,6 +37,7 @@ class Form extends React.Component {
     const { currencies } = this.props;
     this.setState(() => ({
       currency: currencies[0].code,
+      value: 0,
       method: 'Dinheiro',
       tag: 'Alimentação',
       currencyTypes: currencies,

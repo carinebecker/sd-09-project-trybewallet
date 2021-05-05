@@ -1,10 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './ExpenseTable.css';
 import TableContent from './TableContent';
 
 class ExpenseTable extends React.Component {
   render() {
+    const { expenses } = this.props;
+    console.log('render');
+    console.log(expenses);
     return (
       <table>
         <thead>
@@ -28,4 +32,9 @@ class ExpenseTable extends React.Component {
   }
 }
 
-export default ExpenseTable;
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+  // isFetching: state.wallet.isFetching,
+});
+
+export default connect(mapStateToProps)(ExpenseTable);
