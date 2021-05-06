@@ -42,7 +42,6 @@ class Login extends React.Component {
   disabledBtn() {
     const { dispatchEmail } = this.props;
     const { keyEmail, keyPassowrd, email } = this.state;
-    dispatchEmail(email);
     if (keyEmail && keyPassowrd) {
       this.setState({
         disabled: false,
@@ -52,6 +51,7 @@ class Login extends React.Component {
         disabled: true,
       });
     }
+    dispatchEmail(email);
   }
 
   render() {
