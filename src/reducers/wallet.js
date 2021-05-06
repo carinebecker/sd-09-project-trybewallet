@@ -18,13 +18,13 @@ const wallet = (state = INITIAL_STATE, action) => {
     return { ...state, expenses: [...state.expenses, ...action.payload] };
   case SUM_EXPENSES:
     return { ...state, total: parseFloat((state.total + action.payload).toFixed(2)) };
-  case SUBTRACT_EXPENSES:
-    return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) };
   case DELETE_EXPENSE:
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.payload),
     };
+  case SUBTRACT_EXPENSES:
+    return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) };
   default:
     return state;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { arrayOf, object } from 'prop-types';
 import { connect } from 'react-redux';
 import TableRow from './TableRow';
 
@@ -21,18 +21,20 @@ class Table extends React.Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
-        {expenses.map((expense) => (<TableRow
-          key={ expense.id }
-          expense={ expense }
-        />))}
+        <tbody>
+          {expenses.map((expense) => (<TableRow
+            key={ expense.id }
+            expense={ expense }
+          />))}
+        </tbody>
       </table>
     );
   }
 }
 
 Table.propTypes = {
-  expenses: PropTypes.arrayOf({}).isRequired,
-};
+  expenses: arrayOf(object),
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,

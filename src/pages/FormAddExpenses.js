@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   tag: tagOptions[0],
 };
 
-class FormExpense extends React.Component {
+class FormAddExpense extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
@@ -29,7 +29,7 @@ class FormExpense extends React.Component {
   async componentDidMount() {
     const { agroupCurrenciesToRedux } = this.props;
     const currencies = await getCurrencies();
-    agroupCurrenciesToRedux(currencies);
+    agroupCurrenciesToRedux(Object.keys(currencies));
   }
 
   // Atualiza estado dos inputs
@@ -93,7 +93,7 @@ class FormExpense extends React.Component {
             textLabel="Moedas:"
             name="currency"
             onChange={ this.handleChange }
-            options={ Object.keys(currencies) }
+            options={ currencies }
           />
           <Select
             textLabel="Método de Pagamento:"
@@ -120,12 +120,12 @@ class FormExpense extends React.Component {
   }
 }
 
-FormExpense.propTypes = {
-  agroupCurrenciesToRedux: PropTypes.func.isRequired,
-  addExpenseToRedux: PropTypes.func.isRequired,
-  sumExpensesToRedux: PropTypes.func.isRequired,
-  currencies: PropTypes.objectOf({}).isRequired,
-};
+FormAddExpense.propTypes = {
+  agroupCurrenciesToRedux: PropTypes.func,
+  addExpenseToRedux: PropTypes.func,
+  sumExpensesToRedux: PropTypes.func,
+  currencies: PropTypes.arrayOf(),
+}.isRequired;
 // MapState - leitura do estado via props
 
 const mapStateToProps = (state) => ({
@@ -140,6 +140,6 @@ const mapDispatchToProps = (dispatch) => ({
   sumExpensesToRedux: (value) => dispatch(sumExpenses(value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormExpense);
+export default connect(mapStateToProps, mapDispatchToProps)(FormAddExpense);
 
-// Requisito 5
+// Consultei repositório do colega Layo Kaminski

@@ -47,10 +47,10 @@ class TableRow extends React.Component {
 }
 
 TableRow.propTypes = {
-  expense: PropTypes.objectOf({}).isRequired,
-  deleteExp: PropTypes.func.isRequired,
-  subExpensesToRedux: PropTypes.func.isRequired,
-};
+  expense: PropTypes.objectOf(),
+  deleteExp: PropTypes.func,
+  subExpensesToRedux: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   deleteExp: (id) => dispatch(deleteExpense(id)),
