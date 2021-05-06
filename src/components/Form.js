@@ -66,21 +66,12 @@ class Form extends React.Component {
       exchangeRates: currencyTypes,
     };
     setExpenses(expenseEntry);
-    console.log(expenseEntry);
+    // console.log(expenseEntry);
   }
 
   render() {
     const { value, description, currency, method, tag, currencyTypes } = this.state;
-    // const { setExpenses } = this.props;
-    /* const expenseEntry = {
-      id: '0',
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: currencyTypes,
-    }; */
+
     return (
       <form className="container-form" action="">
         <label htmlFor="value">
