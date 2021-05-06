@@ -9,6 +9,9 @@ class ExpenseTable extends React.Component {
     const { expenses } = this.props;
     console.log('render');
     console.log(expenses);
+    const tableLine = expenses.map((expense) => (
+      <TableContent expense={ expense } />
+    ));
     return (
       <table>
         <thead>
@@ -25,7 +28,8 @@ class ExpenseTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <TableContent />
+          {tableLine}
+          {/* <TableContent /> */}
         </tbody>
       </table>
     );
