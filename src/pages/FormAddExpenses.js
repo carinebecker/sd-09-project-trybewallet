@@ -40,7 +40,7 @@ class FormExpense extends React.Component {
     });
   }
 
-  // Atualiza os estados de acordo com o click no botão,
+  // Atualiza os estados de acordo com o click no botão,.
   // faz a conversão dos valores e envia pro header. Também soma.
   async handleClick(event) {
     event.preventDefault();
