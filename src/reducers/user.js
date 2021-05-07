@@ -2,10 +2,8 @@
 import { SAVE_USER_DATA } from '../actions/actionTypes';
 
 const INITIAL_USER_STATE = {
-  user: {
-    email: '',
-    password: '',
-  },
+  email: '',
+  password: '',
 };
 
 const user = (state = INITIAL_USER_STATE, action) => {

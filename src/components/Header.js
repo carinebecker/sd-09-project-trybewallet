@@ -11,27 +11,23 @@ class Header extends React.Component {
     this.state = {
       email: '',
       total: 0,
-    }
+    };
   }
 
   componentDidMount() {
-    const { email, expenses } = this.props;
-    this.setState(() => ({
-      email,
-      total: this.calculateTotal(expenses),
-    }));
+    this.updateState();
+  }
+
+  getConvertCurrency(currentValue) {
+    const { currency, value, exchangeRates } = currentValue;
+    const currentCurrency = exchangeRates.find(({ code }) => code === currency);
+    const result = this.convertCurrency(value, currentCurrency.ask);
+    return parseFloat(result);
   }
 
   convertCurrency(currentCurrency, conversionCurrency) {
     const convertedValue = parseFloat(currentCurrency) * parseFloat(conversionCurrency);
     return convertedValue.toFixed(2);
-  }
-
-  getConvertCurrency(currentValue) {
-    const { currency, value, exchangeRates} = currentValue;
-    const currentCurrency = exchangeRates.find(({ code }) => code === currency);
-    const result = this.convertCurrency(value, currentCurrency.ask);
-    return parseFloat(result);
   }
 
   calculateTotal(expenses) {
@@ -43,7 +39,15 @@ class Header extends React.Component {
 
     const total = convertedValues
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    return total;
+    return total.toFixed(2);
+  }
+
+  updateState() {
+    const { email, expenses } = this.props;
+    this.setState(() => ({
+      email,
+      total: this.calculateTotal(expenses),
+    }));
   }
 
   render() {
@@ -53,17 +57,13 @@ class Header extends React.Component {
     return (
       <header className="header">
         <MdMonetizationOn size={ 50 } />
-        <div className="user" >
+        <div className="user">
           <div data-testid="email-field">
-            { `Email: ${email}` }
-            {/* <span data-testid="email-field">{ ` ${email}` }</span> */}
+            {`Email: ${email}`}
           </div>
           <div>
-            {`Dispesa Total: ${total.toFixed(2)}`}
-            {/* <span data-testid="total-field">
-              {(expenses === undefined) ? ' R$ 0,00' : 'xablau'}
-            </span> */}
-            <span data-testid="header-currency-field">{` BRL`}</span>
+            {`Dispesa Total: ${total}`}
+            <span data-testid="header-currency-field">BRL</span>
           </div>
         </div>
       </header>
@@ -77,10 +77,7 @@ const mapStateToProps = (state) => ({
 });
 
 Header.propTypes = {
-  expenses: PropTypes.shape({
-    optionalProperty: PropTypes.arrayOf(),
-    requiredProperty: PropTypes.number,
-  }).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   email: PropTypes.string.isRequired,
 };
 

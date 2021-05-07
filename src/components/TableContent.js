@@ -1,9 +1,9 @@
 import React from 'react';
 import { RiEdit2Fill, RiDeleteBin2Fill } from 'react-icons/ri';
+import PropTypes from 'prop-types';
 
 class TableContent extends React.Component {
-
-  filterCurrencyName = (currency, isCurrentCurrency) => {
+  filterCurrencyName(currency, isCurrentCurrency) {
     const index = currency.indexOf('/');
     if (isCurrentCurrency) {
       return currency.slice(0, index);
@@ -44,5 +44,16 @@ class TableContent extends React.Component {
     );
   }
 }
+
+TableContent.propTypes = {
+  expense: PropTypes.shape({
+    description: PropTypes.string,
+    tag: PropTypes.string,
+    method: PropTypes.string,
+    value: PropTypes.string,
+    currency: PropTypes.string,
+    exchangeRates: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+};
 
 export default TableContent;

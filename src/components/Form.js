@@ -12,12 +12,12 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: '', // Dez dólares
-      tag: '', // Lazer
-      method: '', // Cartão de crédito
-      value: 0, // 10
-      currency: '', // Dólar Comercial
-      currencyTypes: [], //
+      description: '',
+      tag: '',
+      method: '',
+      value: 0,
+      currency: '',
+      currencyTypes: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -43,7 +43,7 @@ class Form extends React.Component {
       currencyTypes: currencies,
     }));
   }
-  
+
   updatesCurrencies() {
     const { currencies } = this.props;
     this.setState(() => ({
@@ -51,7 +51,7 @@ class Form extends React.Component {
     }));
   }
 
-  handleClickButtonAddExpenses () {
+  handleClickButtonAddExpenses() {
     const { setExpenses, getCurrencyTypes } = this.props;
     getCurrencyTypes();
     this.updatesCurrencies();
@@ -66,7 +66,6 @@ class Form extends React.Component {
       exchangeRates: currencyTypes,
     };
     setExpenses(expenseEntry);
-    // console.log(expenseEntry);
   }
 
   render() {
@@ -117,23 +116,17 @@ class Form extends React.Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
-  // getExpenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencyTypes: () => dispatch(fetchCurrencyTypes()),
   setExpenses: (expenseEntry) => dispatch(saveExpenseData(expenseEntry)),
 });
-/* const mapDispatchToProps = (dispatch) => ({
-  setExpenses: ({ value, currency, method, tag, description }) => dispatch(saveExpenseData({ value, currency, method, tag, description })),
-}); */
 
 Form.propTypes = {
-  currencies: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.string,
-    }),
-  ).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getCurrencyTypes: PropTypes.func.isRequired,
+  setExpenses: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

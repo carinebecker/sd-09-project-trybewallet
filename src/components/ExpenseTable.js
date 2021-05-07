@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import './ExpenseTable.css';
 import TableContent from './TableContent';
@@ -10,7 +11,7 @@ class ExpenseTable extends React.Component {
     /* console.log('render');
     console.log(expenses); */
     const tableLine = expenses.map((expense) => (
-      <TableContent expense={ expense } />
+      <TableContent key={ expense.currency } expense={ expense } />
     ));
     return (
       <table>
@@ -37,7 +38,10 @@ class ExpenseTable extends React.Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
-  // isFetching: state.wallet.isFetching,
 });
+
+ExpenseTable.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps)(ExpenseTable);
