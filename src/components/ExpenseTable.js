@@ -8,8 +8,8 @@ import TableContent from './TableContent';
 class ExpenseTable extends React.Component {
   render() {
     const { expenses } = this.props;
-    /* console.log('render');
-    console.log(expenses); */
+    console.log('render');
+    console.log(expenses);
     const tableLine = expenses.map((expense) => (
       <TableContent key={ expense.currency } expense={ expense } />
     ));

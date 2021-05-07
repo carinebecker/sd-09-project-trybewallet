@@ -19,7 +19,7 @@ class TableContent extends React.Component {
   render() {
     const { expense } = this.props;
     const { description, tag, method, value, currency, exchangeRates } = expense;
-    const currentCurrency = exchangeRates.find(({ code }) => code === currency);
+    const currentCurrency = exchangeRates[currency];
     console.log('table content');
     return (
       <tr>
@@ -27,10 +27,10 @@ class TableContent extends React.Component {
         <td>{ tag }</td>
         <td>{ method }</td>
         <td>{ value }</td>
-        <td>{ currency }</td>
         <td>{ this.filterCurrencyName(currentCurrency.name, true) }</td>
+        <td>{ parseFloat(currentCurrency.ask).toFixed(2) }</td>
         <td>{ this.convertCurrency(value, currentCurrency.ask) }</td>
-        <td>{ this.filterCurrencyName(currentCurrency.name, false) }</td>
+        <td>BRL</td>
         <td>
           <button type="button" className="edit-btn btn" data-testid="edit-btn">
             <RiEdit2Fill color="rgb(255, 255, 255)" />

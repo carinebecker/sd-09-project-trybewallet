@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class CurrencySelect extends React.Component {
   render() {
     const { currencyTypes, onChange, currency } = this.props;
-    const typeOptions = currencyTypes.map((currency) => (
-      <option key={ currency } data-testid={ currency }>{ currency }</option>
+    const typeOptions = currencyTypes.map((value) => (
+      <option key={ value } data-testid={ value }>{ value }</option>
     ));
     return (
       <div>

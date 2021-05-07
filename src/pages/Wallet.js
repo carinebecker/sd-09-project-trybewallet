@@ -15,17 +15,18 @@ class Wallet extends React.Component {
 
   render() {
     const { isFetching } = this.props;
-    console.log('render wallet');
-    console.log(isFetching);
-    const walletContent = (
+    const main = (
       <div>
-        <Header />
         <Form />
         <ExpenseTable />
       </div>
     );
-
-    return isFetching ? 'Loading...' : walletContent;
+    return (
+      <>
+        <Header />
+        {isFetching ? 'Loading...' : main}
+      </>
+    );
   }
 }
 

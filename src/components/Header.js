@@ -14,25 +14,21 @@ class Header extends React.Component {
     };
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     const { email, expenses } = this.props;
     this.updateState(email, expenses);
-  } */
+  }
 
   componentDidUpdate(prevProps) {
-    /* console.log('update');
-    console.log('props atual');
-    console.log(this.props.expenses);
-    console.log('prevprops');
-    console.log(prevProps.expenses); */
-    if (this.props.expenses !== prevProps.expenses) {
+    const { expenses } = this.props;
+    if (expenses !== prevProps.expenses) {
       this.updateState();
     }
   }
 
   getConvertCurrency(currentValue) {
     const { currency, value, exchangeRates } = currentValue;
-    const currentCurrency = exchangeRates.find(({ code }) => code === currency);
+    const currentCurrency = exchangeRates[currency];
     const result = this.convertCurrency(value, currentCurrency.ask);
     return parseFloat(result);
   }
@@ -47,7 +43,6 @@ class Header extends React.Component {
       return 0;
     }
     const convertedValues = expenses.map((expense) => this.getConvertCurrency(expense));
-
     const total = convertedValues
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     return total.toFixed(2);
@@ -55,7 +50,6 @@ class Header extends React.Component {
 
   updateState() {
     const { email, expenses } = this.props;
-    // console.log(expenses);
     this.setState(() => ({
       email,
       total: this.calculateTotal(expenses),
@@ -64,10 +58,6 @@ class Header extends React.Component {
 
   render() {
     const { email, total } = this.state;
-    /* const { expenses } = this.props;
-    console.log(expenses); */
-    console.log('header');
-    
     return (
       <header className="header">
         <MdMonetizationOn size={ 50 } />
@@ -76,7 +66,8 @@ class Header extends React.Component {
             {`Email: ${email}`}
           </div>
           <div>
-            {`Dispesa Total: ${total}`}
+            Dispesa Total:
+            <span data-testid="total-field">{total}</span>
             <span data-testid="header-currency-field">BRL</span>
           </div>
         </div>
@@ -95,5 +86,4 @@ Header.propTypes = {
   email: PropTypes.string.isRequired,
 };
 
-// export default Header;
 export default connect(mapStateToProps)(Header);

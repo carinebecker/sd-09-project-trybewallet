@@ -19,4 +19,15 @@ const getCurrencyTypes = async () => {
   }
 };
 
-export default getCurrencyTypes;
+const getCurrencies = async () => {
+  const awesomeApiEndPoint = 'https://economia.awesomeapi.com.br/json/all';
+  try {
+    const response = await fetch(awesomeApiEndPoint);
+    const searchResult = await response.json();
+    return searchResult;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default { getCurrencyTypes, getCurrencies };
