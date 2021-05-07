@@ -3,13 +3,10 @@ import { RiEdit2Fill, RiDeleteBin2Fill } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 
 class TableContent extends React.Component {
-  filterCurrencyName(currency, isCurrentCurrency) {
+  /* filterCurrencyName(currency) {
     const index = currency.indexOf('/');
-    if (isCurrentCurrency) {
-      return currency.slice(0, index);
-    }
-    return currency.slice(index + 1, currency.length);
-  }
+    return currency.slice(0, index);
+  } */
 
   convertCurrency(currentCurrency, conversionCurrency) {
     const convertedValue = parseFloat(currentCurrency) * parseFloat(conversionCurrency);
@@ -27,10 +24,11 @@ class TableContent extends React.Component {
         <td>{ tag }</td>
         <td>{ method }</td>
         <td>{ value }</td>
-        <td>{ this.filterCurrencyName(currentCurrency.name, true) }</td>
+        <td>{ currentCurrency.name }</td>
+        {/* <td>{ this.filterCurrencyName(currentCurrency.name) }</td> */}
         <td>{ parseFloat(currentCurrency.ask).toFixed(2) }</td>
         <td>{ this.convertCurrency(value, currentCurrency.ask) }</td>
-        <td>BRL</td>
+        <td>Real</td>
         <td>
           <button type="button" className="edit-btn btn" data-testid="edit-btn">
             <RiEdit2Fill color="rgb(255, 255, 255)" />

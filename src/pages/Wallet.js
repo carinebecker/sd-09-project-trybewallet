@@ -18,13 +18,14 @@ class Wallet extends React.Component {
     const main = (
       <div>
         <Form />
-        <ExpenseTable />
+        {/* <ExpenseTable /> */}
       </div>
     );
     return (
       <>
         <Header />
         {isFetching ? 'Loading...' : main}
+        <ExpenseTable />
       </>
     );
   }
