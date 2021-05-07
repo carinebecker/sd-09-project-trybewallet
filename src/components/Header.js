@@ -14,8 +14,20 @@ class Header extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.updateState();
+  /* componentDidMount() {
+    const { email, expenses } = this.props;
+    this.updateState(email, expenses);
+  } */
+
+  componentDidUpdate(prevProps) {
+    /* console.log('update');
+    console.log('props atual');
+    console.log(this.props.expenses);
+    console.log('prevprops');
+    console.log(prevProps.expenses); */
+    if (this.props.expenses !== prevProps.expenses) {
+      this.updateState();
+    }
   }
 
   getConvertCurrency(currentValue) {
@@ -31,7 +43,6 @@ class Header extends React.Component {
   }
 
   calculateTotal(expenses) {
-    // const { value, } = expenses;
     if (!expenses) {
       return 0;
     }
@@ -44,6 +55,7 @@ class Header extends React.Component {
 
   updateState() {
     const { email, expenses } = this.props;
+    // console.log(expenses);
     this.setState(() => ({
       email,
       total: this.calculateTotal(expenses),
@@ -52,8 +64,10 @@ class Header extends React.Component {
 
   render() {
     const { email, total } = this.state;
-    // const { email, expenses } = this.props;
-    // console.log(expenses);
+    /* const { expenses } = this.props;
+    console.log(expenses); */
+    console.log('header');
+    
     return (
       <header className="header">
         <MdMonetizationOn size={ 50 } />

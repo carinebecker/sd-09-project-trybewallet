@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class CurrencySelect extends React.Component {
   render() {
     const { currencyTypes, onChange, currency } = this.props;
-    const typeOptions = currencyTypes.map(({ code }) => (
-      <option key={ code } value={ code } data-testid={ code }>{ code }</option>
+    const typeOptions = currencyTypes.map((currency) => (
+      <option key={ currency } data-testid={ currency }>{ currency }</option>
     ));
     return (
       <div>
@@ -29,11 +29,7 @@ class CurrencySelect extends React.Component {
 CurrencySelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
-  currencyTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.string,
-    }),
-  ).isRequired,
+  currencyTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default CurrencySelect;

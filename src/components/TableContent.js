@@ -19,9 +19,8 @@ class TableContent extends React.Component {
   render() {
     const { expense } = this.props;
     const { description, tag, method, value, currency, exchangeRates } = expense;
-    // console.log('render tablecontent');
     const currentCurrency = exchangeRates.find(({ code }) => code === currency);
-
+    console.log('table content');
     return (
       <tr>
         <td>{ description }</td>
