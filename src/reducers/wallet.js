@@ -6,6 +6,7 @@ import {
   RECEIVE_CURRENCY_TYPES_SUCCESS,
   RECEIVE_CURRENCY_TYPES_FAILURE,
   SAVE_EXPENSE_DATA,
+  REMOVE_EXPENSE_DATA,
 } from '../actions/actionTypes';
 
 const INITIAL_CURRENCY_STATE = {
@@ -37,7 +38,11 @@ const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.expenses],
-      // expenses: action.expenses,
+    };
+  case REMOVE_EXPENSE_DATA:
+    return {
+      ...state,
+      expenses: action.expenses,
     };
   default:
     return state;

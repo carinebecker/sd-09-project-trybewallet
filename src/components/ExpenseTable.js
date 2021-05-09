@@ -4,14 +4,28 @@ import PropTypes from 'prop-types';
 
 import './ExpenseTable.css';
 import TableContent from './TableContent';
+import { removeExpenseData } from '../actions';
 
 class ExpenseTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClickDeleteBtn = this.handleClickDeleteBtn.bind(this);
+  }
+
+  handleClickDeleteBtn(id) {
+    const { expenses, removeExpense } = this.props;
+    const updatedCurrencies = expenses.filter((expense) => expense.id !== id);
+    removeExpense(updatedCurrencies);
+  }
+
   render() {
     const { expenses } = this.props;
-    console.log('render');
-    console.log(expenses);
     const tableLine = expenses.map((expense) => (
-      <TableContent key={ expense.currency } expense={ expense } />
+      <TableContent
+        key={ expense.currency }
+        expense={ expense }
+        onclick={ this.handleClickDeleteBtn }
+      />
     ));
     return (
       <table>
@@ -40,8 +54,13 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (updatedCurrencies) => dispatch(removeExpenseData(updatedCurrencies)),
+});
+
 ExpenseTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ExpenseTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

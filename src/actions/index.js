@@ -1,6 +1,7 @@
 import {
   SAVE_USER_DATA,
   SAVE_EXPENSE_DATA,
+  REMOVE_EXPENSE_DATA,
   REQUEST_CURRENCY_TYPES,
   RECEIVE_CURRENCY_TYPES_FAILURE,
   RECEIVE_CURRENCY_TYPES_SUCCESS,
@@ -17,6 +18,11 @@ export const saveUserData = (user) => ({
 export const saveExpenseData = (expense) => ({
   type: SAVE_EXPENSE_DATA,
   expenses: expense,
+});
+
+export const removeExpenseData = (expenses) => ({
+  type: REMOVE_EXPENSE_DATA,
+  expenses,
 });
 
 const requestCurrencyTypes = () => ({
