@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import getCurrencies from '../api/getCurrencies';
-import { prependExpenses } from '../actions';
+import requestAPI from '../api/requestAPI';
+import { prependExpenses, fetchExchanges } from '../actions';
 
 class ExpensesForm extends Component {
   constructor() {
@@ -11,7 +11,7 @@ class ExpensesForm extends Component {
     this.state = {
       currencies: [],
       id: 0,
-      value: '',
+      value: 0,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -28,14 +28,31 @@ class ExpensesForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.initialState = this.initialState.bind(this);
+    this.populateExchangeRates = this.populateExchangeRates.bind(this);
   }
 
   componentDidMount() {
     this.populateCurrencies();
   }
 
+  // getExchangeRates() {
+  //   const { getExchanges } = this.props;
+  //   const exchangesReceived = getExchanges();
+  //   console.log(exchangesReceived);
+  //   this.setState({ exchangeRates: exchangesReceived });
+  // }
+
+  populateExchangeRates() {
+    const { getExchanges } = this.props;
+    getExchanges()
+      .then((res) => {
+        console.log(res.exchangeRates);
+        this.setState({ exchangeRates: res.exchangeRates });
+      });
+  }
+
   populateCurrencies() {
-    getCurrencies().then((result) => {
+    requestAPI().then((result) => {
       const entries = Object.entries(result);
       this.setState({ currencies: entries });
     });
@@ -57,6 +74,7 @@ class ExpensesForm extends Component {
   }
 
   expenseValueInput() {
+    const { value } = this.state;
     return (
       <label htmlFor="value-input">
         Valor da despesa
@@ -65,6 +83,7 @@ class ExpensesForm extends Component {
           data-testid="value-input"
           id="value-input"
           name="value"
+          value={ value }
           onChange={ this.handleChange }
         />
       </label>
@@ -159,9 +178,11 @@ class ExpensesForm extends Component {
     event.preventDefault();
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
+    console.log(`exp state: ${exchangeRates}`);
     const { expenseDispatcher, valueReducer } = this.props;
     this.setState({ id: id + 1 });
-    valueReducer(parseFloat(value)); // fazer o cambio para real na hora de mandar o value
+    this.populateExchangeRates();
+    valueReducer(value);
     this.initialState();
     expenseDispatcher(data);
   }
@@ -192,6 +213,7 @@ ExpensesForm.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
+  getExchanges: (exchange) => dispatch(fetchExchanges(exchange)),
   expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
 });
 
