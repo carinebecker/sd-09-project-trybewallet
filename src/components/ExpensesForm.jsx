@@ -11,7 +11,7 @@ class ExpensesForm extends Component {
     this.state = {
       currencies: [],
       id: 0,
-      value: 0,
+      value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -35,20 +35,11 @@ class ExpensesForm extends Component {
     this.populateCurrencies();
   }
 
-  // getExchangeRates() {
-  //   const { getExchanges } = this.props;
-  //   const exchangesReceived = getExchanges();
-  //   console.log(exchangesReceived);
-  //   this.setState({ exchangeRates: exchangesReceived });
-  // }
-
-  populateExchangeRates() {
+  async populateExchangeRates() {
     const { getExchanges } = this.props;
-    getExchanges()
-      .then((res) => {
-        console.log(res.exchangeRates);
-        this.setState({ exchangeRates: res.exchangeRates });
-      });
+    const rates = await getExchanges()
+      .then((res) => res.exchangeRates);
+    this.setState({ exchangeRates: rates });
   }
 
   populateCurrencies() {
@@ -174,17 +165,16 @@ class ExpensesForm extends Component {
     );
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     event.preventDefault();
+    await this.populateExchangeRates();
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
-    console.log(`exp state: ${exchangeRates}`);
     const { expenseDispatcher, valueReducer } = this.props;
     this.setState({ id: id + 1 });
-    this.populateExchangeRates();
+    expenseDispatcher(data);
     valueReducer(value);
     this.initialState();
-    expenseDispatcher(data);
   }
 
   render() {
