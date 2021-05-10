@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ExpensesForm from '../components/ExpensesForm';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
     const expensesResult = expenses
       .map(({ exchangeRates, currency, value }) => exchangeRates[currency].ask * value);
     const totalValue = expensesResult.reduce((acc, actual) => {
@@ -26,6 +26,7 @@ class Wallet extends React.Component {
           <span data-testid="header-currency-field">BRL</span>
         </header>
         <ExpensesForm />
+        <ExpensesTable />
       </div>
     );
   }

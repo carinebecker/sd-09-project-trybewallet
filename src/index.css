@@ -57,25 +57,21 @@ header {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 80%;
 }
 
-.expenses-title {
-  display: flex;
-  justify-content: center;
-  margin: 16px 32px;
-}
 .expenses-form {
   display: flex;
+  background-color: rgba(250, 211, 144,1.0);
   justify-content: center;
+  width: 100%;
 }
+
 .expenses-fields {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin: 0 16px;
+  gap: 16px;
   flex-direction: row;
-  background-color: rgba(250, 211, 144,1.0);
   margin-right: 0; 
 }
 
@@ -97,7 +93,7 @@ header {
   border: none;
   cursor: pointer;
   font-weight: 600;
-  margin: 0;
+  margin-left: 16px;
   padding: 8px 16px;
   text-transform: uppercase;
 }
@@ -111,4 +107,31 @@ header {
   justify-content: space-evenly;
   padding: 16px 0;
   width: 100%;
+}
+
+table {
+  border-spacing: 1px;
+  width: 100%;
+  text-align: center;
+}
+
+.table-header {
+  background-color: rgb(20, 45, 63);
+  color: whitesmoke;
+  margin: 0;
+}
+
+table th, table td {
+  padding: 8px 16px;
+}
+
+.body-row {
+  background-color: whitesmoke;
+  color: rgb(20, 45, 63);
+  margin: 0;
+  padding: 8px 8px;
+}
+
+button {
+  cursor: pointer;
 }

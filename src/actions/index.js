@@ -29,10 +29,7 @@ export const recieveExchanges = (exchanges) => ({
 });
 
 export function fetchExchanges() {
-  return (dispatch) => {
-    console.log('THUNK');
-    return requestAPI()
-      .then((exchanges) => dispatch(recieveExchanges(exchanges)))
-      .catch((error) => console.log(error));
-  };
+  return (dispatch) => requestAPI()
+    .then((exchanges) => dispatch(recieveExchanges(exchanges)))
+    .catch((error) => console.log(error));
 }

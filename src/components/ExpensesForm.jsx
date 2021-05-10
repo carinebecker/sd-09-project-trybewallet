@@ -180,7 +180,6 @@ class ExpensesForm extends Component {
   render() {
     return (
       <header>
-        <h2 className="expenses-title">Despesas</h2>
         <form className="expenses-form">
           <div className="expenses-fields">
             { this.expenseValueInput() }
