@@ -18,7 +18,7 @@ class ExpenseTable extends React.Component {
     const updatedCurrencies = expenses.filter((expense) => expense.id !== id);
     removeExpense(updatedCurrencies);
   }
-  
+
   handleClickEditBtn(id) {
     const { editExpense } = this.props;
     console.log(id);

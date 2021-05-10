@@ -47,7 +47,7 @@ const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
   case UPDATE_EXPENSES:
     return {
       ...state,
-      // expenses: action.expenses,
+      expenses: action.expenses,
       editor: false,
     };
   case SAVE_EXPENSE_DATA:

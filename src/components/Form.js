@@ -19,7 +19,6 @@ class Form extends React.Component {
       value: 0,
       currency: '',
       currencyTypes: [],
-      isEdit: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -70,30 +69,20 @@ class Form extends React.Component {
   }
 
   handleEditExpenses() {
-    // const { editor, expenses, idToEdit, editExpenses } = this.props;
-    const { editExpenses } = this.props;
-    // const { value, currency, method, tag, description } = this.state;
+    const { editExpenses, expenses, idToEdit } = this.props;
+    const { value, currency, method, tag, description } = this.state;
 
-    console.log('EDIT');
-    // console.log(this.state);
-
-    // // const expensesCopy = Array.from(expenses);
-
-    // const editedExpense = expenses.map((expense) => {
-    //   if (expense.id === idToEdit) {
-    //     expense.value = value;
-    //     expense.description = description;
-    //     expense.currency = currency;
-    //     expense.method = method;
-    //     expense.tag = tag;
-    //   }
-    //   return expense;
-    // });
-    // console.log(editedExpense);
-    // editExpenses(editedExpense);
-    editExpenses([]);
-    // console.log(editedExpense);
-    // this.updatesCurrencyTypesState(!editor);
+    const editedExpense = expenses.map((expense) => {
+      if (expense.id === idToEdit) {
+        expense.value = value;
+        expense.description = description;
+        expense.currency = currency;
+        expense.method = method;
+        expense.tag = tag;
+      }
+      return expense;
+    });
+    editExpenses(editedExpense);
   }
 
   handleInputChange({ target }) {
@@ -116,7 +105,6 @@ class Form extends React.Component {
         <label htmlFor="value">
           Valor:
           <input
-            className="input-value"
             id="value"
             type="number"
             name="value"
@@ -170,6 +158,7 @@ Form.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   setExpenses: PropTypes.func.isRequired,
+  editExpenses: PropTypes.func.isRequired,
   editor: PropTypes.bool.isRequired,
   idToEdit: PropTypes.number.isRequired,
 };
