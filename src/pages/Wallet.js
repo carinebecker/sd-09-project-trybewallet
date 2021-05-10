@@ -4,26 +4,17 @@ import { connect } from 'react-redux';
 import ExpensesForm from '../components/ExpensesForm';
 
 class Wallet extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      totalValue: 0,
-    };
-
-    this.valueReducer = this.valueReducer.bind(this);
-  }
-
-  async valueReducer(value) {
-    const { totalValue } = this.state;
-    const soma = totalValue + Number(value);
-    this.setState({ totalValue: soma });
-  }
-
   render() {
-    const { userEmail } = this.props;
-    const { totalValue } = this.state;
+    const { expenses } = this.props;
+    console.log(expenses);
+    const expensesResult = expenses
+      .map(({ exchangeRates, currency, value }) => exchangeRates[currency].ask * value);
+    const totalValue = expensesResult.reduce((acc, actual) => {
+      acc += actual;
+      return acc;
+    }, 0);
 
+    const { userEmail } = this.props;
     return (
       <div>
         <header className="wallet-header">
@@ -34,7 +25,7 @@ class Wallet extends React.Component {
           </span>
           <span data-testid="header-currency-field">BRL</span>
         </header>
-        <ExpensesForm valueReducer={ (value) => this.valueReducer(value) } />
+        <ExpensesForm />
       </div>
     );
   }

@@ -170,10 +170,10 @@ class ExpensesForm extends Component {
     await this.populateExchangeRates();
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
-    const { expenseDispatcher, valueReducer } = this.props;
+    const { expenseDispatcher } = this.props;
     this.setState({ id: id + 1 });
     expenseDispatcher(data);
-    valueReducer(value);
+    // valueReducer(value);
     this.initialState();
   }
 
