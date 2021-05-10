@@ -79,9 +79,6 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }),
   userEmailDispatcher: PropTypes.string,
 }.isRequired;
 

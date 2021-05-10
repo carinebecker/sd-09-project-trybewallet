@@ -5,11 +5,10 @@ import LoginHeader from '../components/LoginHeader';
 
 export default class Login extends React.Component {
   render() {
-    const { history } = this.props;
     return (
       <main>
         <LoginHeader />
-        <LoginForm history={ history } />
+        <LoginForm />
       </main>
     );
   }
