@@ -7,12 +7,15 @@ import {
   RECEIVE_CURRENCY_TYPES_FAILURE,
   SAVE_EXPENSE_DATA,
   REMOVE_EXPENSE_DATA,
+  ENABLE_EDITING,
 } from '../actions/actionTypes';
 
 const INITIAL_CURRENCY_STATE = {
   currencies: [],
   expenses: [],
   isFetching: false,
+  idToEdit: null,
+  editor: false,
 };
 
 const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
@@ -33,6 +36,12 @@ const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
       ...state,
       error: action.error,
       isFetching: false,
+    };
+  case ENABLE_EDITING:
+    return {
+      ...state,
+      id: action.idToEdit,
+      editor: true,
     };
   case SAVE_EXPENSE_DATA:
     return {

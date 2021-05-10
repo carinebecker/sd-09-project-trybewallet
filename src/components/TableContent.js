@@ -8,7 +8,7 @@ class TableContent extends React.Component {
   }
 
   render() {
-    const { expense, onclick } = this.props;
+    const { expense, onclick, onclickEdit } = this.props;
     const { id, description, tag, method, value, currency, exchangeRates } = expense;
     const currentCurrency = exchangeRates[currency];
     console.log('table content');
@@ -27,7 +27,7 @@ class TableContent extends React.Component {
             type="button"
             className="edit-btn btn"
             data-testid="edit-btn"
-            // onClick={ this.handleClickDeleteBtn }
+            onClick={ () => onclickEdit(id) }
           >
             🖋
           </button>
@@ -56,6 +56,7 @@ TableContent.propTypes = {
     exchangeRates: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   onclick: PropTypes.func.isRequired,
+  onclickEdit: PropTypes.func.isRequired,
 };
 
 export default TableContent;

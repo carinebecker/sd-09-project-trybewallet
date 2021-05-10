@@ -19,6 +19,7 @@ class Form extends React.Component {
       value: 0,
       currency: '',
       currencyTypes: [],
+      isEdit: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -73,7 +74,15 @@ class Form extends React.Component {
   }
 
   render() {
-    const { value, description, currency, method, tag, currencyTypes } = this.state;
+    const {
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      currencyTypes,
+    } = this.state;
+    const { editor } = this.props;
     return (
       <form className="container-form" action="">
         <label htmlFor="value">
@@ -110,7 +119,7 @@ class Form extends React.Component {
           type="button"
           onClick={ this.handleClickButtonAddExpenses }
         >
-          Adicionar despesa
+          {editor ? 'Editar despesa' : 'Adicionar despesa'}
         </button>
       </form>
     );
@@ -120,6 +129,8 @@ class Form extends React.Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  idToEdit: state.wallet.idToEdit,
+  editor: state.wallet.editor,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -130,6 +141,8 @@ Form.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   setExpenses: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

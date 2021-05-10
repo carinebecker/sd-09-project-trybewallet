@@ -5,6 +5,7 @@ import {
   REQUEST_CURRENCY_TYPES,
   RECEIVE_CURRENCY_TYPES_FAILURE,
   RECEIVE_CURRENCY_TYPES_SUCCESS,
+  ENABLE_EDITING,
 } from './actionTypes';
 
 import awesomeApiEndPoint from '../services/awesomeApi';
@@ -14,6 +15,11 @@ export const saveUserData = (user) => ({
   email: user.email,
   password: user.password,
 });
+
+export const enableEditing = (idToEdit) => ({
+  type: ENABLE_EDITING,
+  idToEdit,
+})
 
 export const saveExpenseData = (expense) => ({
   type: SAVE_EXPENSE_DATA,
