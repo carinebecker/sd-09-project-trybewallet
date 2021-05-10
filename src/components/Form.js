@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveExpenseData } from '../actions';
+import { saveExpenseData, updateExpenses } from '../actions';
 
 import CurrencySelect from './CurrencySelect';
 import MethodSelect from './MethodSelect';
@@ -23,7 +23,8 @@ class Form extends React.Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleClickButtonAddExpenses = this.handleClickButtonAddExpenses.bind(this);
+    this.handleAddExpenses = this.handleAddExpenses.bind(this);
+    this.handleEditExpenses = this.handleEditExpenses.bind(this);
   }
 
   componentDidMount() {
@@ -64,8 +65,35 @@ class Form extends React.Component {
     }));
   }
 
-  handleClickButtonAddExpenses() {
+  handleAddExpenses() {
     this.getCurrencies();
+  }
+
+  handleEditExpenses() {
+    // const { editor, expenses, idToEdit, editExpenses } = this.props;
+    const { editExpenses } = this.props;
+    // const { value, currency, method, tag, description } = this.state;
+
+    console.log('EDIT');
+    // console.log(this.state);
+
+    // // const expensesCopy = Array.from(expenses);
+
+    // const editedExpense = expenses.map((expense) => {
+    //   if (expense.id === idToEdit) {
+    //     expense.value = value;
+    //     expense.description = description;
+    //     expense.currency = currency;
+    //     expense.method = method;
+    //     expense.tag = tag;
+    //   }
+    //   return expense;
+    // });
+    // console.log(editedExpense);
+    // editExpenses(editedExpense);
+    editExpenses([]);
+    // console.log(editedExpense);
+    // this.updatesCurrencyTypesState(!editor);
   }
 
   handleInputChange({ target }) {
@@ -117,7 +145,7 @@ class Form extends React.Component {
         </label>
         <button
           type="button"
-          onClick={ this.handleClickButtonAddExpenses }
+          onClick={ editor ? this.handleEditExpenses : this.handleAddExpenses }
         >
           {editor ? 'Editar despesa' : 'Adicionar despesa'}
         </button>
@@ -135,6 +163,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setExpenses: (expenseEntry) => dispatch(saveExpenseData(expenseEntry)),
+  editExpenses: (editedExpense) => dispatch(updateExpenses(editedExpense)),
 });
 
 Form.propTypes = {

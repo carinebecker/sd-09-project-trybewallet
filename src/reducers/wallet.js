@@ -8,13 +8,14 @@ import {
   SAVE_EXPENSE_DATA,
   REMOVE_EXPENSE_DATA,
   ENABLE_EDITING,
+  UPDATE_EXPENSES,
 } from '../actions/actionTypes';
 
 const INITIAL_CURRENCY_STATE = {
   currencies: [],
   expenses: [],
   isFetching: false,
-  idToEdit: null,
+  idToEdit: 0,
   editor: false,
 };
 
@@ -40,8 +41,14 @@ const wallet = (state = INITIAL_CURRENCY_STATE, action) => {
   case ENABLE_EDITING:
     return {
       ...state,
-      id: action.idToEdit,
+      idToEdit: action.idToEdit,
       editor: true,
+    };
+  case UPDATE_EXPENSES:
+    return {
+      ...state,
+      // expenses: action.expenses,
+      editor: false,
     };
   case SAVE_EXPENSE_DATA:
     return {
