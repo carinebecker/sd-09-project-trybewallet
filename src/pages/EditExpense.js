@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getCurrencies from '../Api';
 import Select from './Select';
-import { agroupCurrencies, addExpense, sumExpenses } from '../actions';
+import { finishEdit } from '../actions';
 
 const paymentOptions = ['Dinheiro', 'Cartão de débito', 'Cartão de crédito'];
 const tagOptions = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -17,9 +17,13 @@ const INITIAL_STATE = {
   tag: tagOptions[0],
 };
 
-class FormAddExpense extends React.Component {
+class EditExpense extends React.Component {
   constructor(props) {
     super(props);
+    const { expenseEdit } = this.props;
+    this.state = {
+      ...expenseEdit,
+    };
     this.state = INITIAL_STATE;
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -42,12 +46,10 @@ class FormAddExpense extends React.Component {
 
   // Atualiza os estados de acordo com o click no botão,.
   // faz a conversão dos valores e envia pro header.
-  async handleClick(event) {
-    event.preventDefault();
-    const { id, value, description, currency, method, tag } = this.state;
-    const { addExpenseToRedux } = this.props;
-    const exchangeRates = await getCurrencies();
-    const expensesAdd = {
+  handleClick() {
+    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const { sendEditExpense } = this.props;
+    const expense = {
       id,
       value,
       description,
@@ -56,17 +58,7 @@ class FormAddExpense extends React.Component {
       tag,
       exchangeRates,
     };
-    addExpenseToRedux(expensesAdd);
-    this.setState({
-      id: id + 1,
-      value: 0.00,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: tagOptions[0],
-    });
-    const form = document.getElementById('add-expense-form');
-    form.reset();
+    sendEditExpense(expense);
   }
 
   render() {
@@ -103,12 +95,6 @@ class FormAddExpense extends React.Component {
             onChange={ this.handleChange }
             options={ tagOptions }
           />
-          <button
-            type="submit"
-            onClick={ this.handleClick }
-          >
-            Adicionar despesa :
-          </button>
         </form>
       </div>
 
@@ -116,26 +102,21 @@ class FormAddExpense extends React.Component {
   }
 }
 
-FormAddExpense.propTypes = {
+EditExpense.propTypes = {
   agroupCurrenciesToRedux: PropTypes.func,
-  addExpenseToRedux: PropTypes.func,
-  sumExpensesToRedux: PropTypes.func,
+  sendEditExpense: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(),
 }.isRequired;
 // MapState - leitura do estado via props
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
-  expenses: state.wallet.expenses,
+  expenseToEdit: state.wallet.expenseToEdit,
 });
 
 // Manda tudo pra store
 const mapDispatchToProps = (dispatch) => ({
-  addExpenseToRedux: (expenses) => dispatch(addExpense(expenses)),
-  agroupCurrenciesToRedux: (currencies) => dispatch(agroupCurrencies(currencies)),
-  sumExpensesToRedux: (value) => dispatch(sumExpenses(value)),
+  sendEditExpense: (expense) => dispatch(finishEdit(expense)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormAddExpense);
-
-// Consultei repositório do colega Layo Kaminski
+export default connect(mapStateToProps, mapDispatchToProps)(EditExpense);

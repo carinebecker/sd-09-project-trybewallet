@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FormAddExpenses from './FormAddExpenses';
+import EditExpense from './EditExpense';
 import Table from './Table';
 
 class Wallet extends React.Component {
@@ -22,6 +23,7 @@ class Wallet extends React.Component {
 
   render() {
     const { email } = this.props;
+    const { isEditing } = this.props;
     return (
       <div>
         <header>
@@ -32,7 +34,8 @@ class Wallet extends React.Component {
           </p>
           <p data-testid="header-currency-field">Cambio: BRL</p>
         </header>
-        <FormAddExpenses />
+        {!isEditing && <FormAddExpenses />}
+        {isEditing && <EditExpense />}
         <Table />
       </div>);
   }

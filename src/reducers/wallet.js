@@ -2,12 +2,15 @@
 import { AGROUP_CURRENCIES,
   ADD_EXPENSE, SUM_EXPENSES,
   SUBTRACT_EXPENSES,
-  DELETE_EXPENSE } from '../actions';
+  DELETE_EXPENSE,
+  SEND_EDIT,
+  FINISH_EDIT } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   total: 0.00,
+  isEditing: false,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -25,9 +28,25 @@ const wallet = (state = INITIAL_STATE, action) => {
     };
   case SUBTRACT_EXPENSES:
     return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) };
+  case SEND_EDIT:
+    return ({
+      ...state,
+      expenseToEdit: action.expense,
+      isEditing: true,
+    });
+  case FINISH_EDIT:
+    return ({
+      ...state,
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === action.expense.id) {
+          return ({ ...expense, ...action.expense });
+        }
+        return expense;
+      }),
+      isEditing: false,
+    });
   default:
     return state;
   }
 };
-
 export default wallet;
