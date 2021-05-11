@@ -1,0 +1,8 @@
+.user-info {
+  align-content: space-between;
+  background-color: aqua;
+  display: flex;
+  flex-direction: row;
+  height: 90px;
+  width: 900px;
+}

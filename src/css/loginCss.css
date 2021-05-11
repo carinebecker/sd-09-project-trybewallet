@@ -1,0 +1,18 @@
+.container-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  margin-top: 5rem;
+  width: 100%;
+}
+
+.wallet-image {
+  height: 25rem;
+  margin-bottom: 30px;
+}
+
+.login-inputs {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,47 @@
+.header {
+  background-color: bisque;
+  height: 50px;
+  width: 100%;
+}
+
+.container {
+  background-color: blue;
+  display: flex;
+  width: 100%;
+}
+
+.left-side {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  width: 50%;
+}
+
+.span-left {
+  color: white;
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.right-side {
+  display: block;
+  height: 50px;
+  width: 48%;
+}
+
+.icon {
+  height: 40px;
+}
+
+.user-email-spences {
+  justify-content: center;
+}
+
+.header-email {
+  color: white;
+}
+
+.header-total {
+  color: white;
+}
