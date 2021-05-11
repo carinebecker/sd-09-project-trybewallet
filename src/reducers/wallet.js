@@ -1,4 +1,4 @@
-import { SAVE_ATT_EXPENSES } from '../actions/index';
+import { SAVE_ATT_EXPENSES, DELETE_ITEMS } from '../actions/index';
 
 const INITIAL_STATE = {
   expenses: [],
@@ -10,6 +10,9 @@ const saveExpenses = (state = INITIAL_STATE, action) => {
   case SAVE_ATT_EXPENSES:
     return { ...state,
       expenses: [...expenses, { exchangeRates: action.exchangeRates, ...action.data }] };
+  case DELETE_ITEMS:
+    return { ...state,
+      expenses: action.expenses.map((newExpenses) => newExpenses) };
   default:
     return state;
   }

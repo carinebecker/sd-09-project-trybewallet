@@ -2,6 +2,7 @@ export const CREATE_EMAIL = 'CORRECT_EMAIL';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
 export const SAVE_ATT_EXPENSES = 'SAVE_ATT_EXPENSES';
 export const DRINKDETAILS_ACTION = 'DRINKDETAILS_ACTION';
+export const DELETE_ITEMS = 'DELETE_ITEMS';
 
 export const userEmail = (email) => ({
   type: CREATE_EMAIL,
@@ -17,6 +18,11 @@ export const saveAttExpenses = (data, exchangeRates) => ({
   type: SAVE_ATT_EXPENSES,
   data,
   exchangeRates,
+});
+
+export const deleteExpense = (expenses) => ({
+  type: DELETE_ITEMS,
+  expenses,
 });
 
 export const saveExpensesThunk = (data) => async (dispatch) => {

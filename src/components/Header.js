@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 class Header extends Component {
   returnTotal() {
     const { total: { expenses } } = this.props;
-    if (expenses) {
+    if (expenses !== undefined) {
       const data = expenses.map(({ value, currency, exchangeRates }) => (
         value * exchangeRates[currency].ask));
       const sum = data.reduce((amount, iterable) => amount + iterable, 0);
