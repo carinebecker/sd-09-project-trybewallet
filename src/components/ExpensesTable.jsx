@@ -11,6 +11,10 @@ class ExpensesTable extends Component {
     this.renderDeleteButton = this.renderDeleteButton.bind(this);
   }
 
+  deleteExpense() {
+    // precisa de um reducer pra deletar a chave no estado
+  }
+
   renderEditButton() {
     return (
       <button type="button">Editar</button>
@@ -19,7 +23,7 @@ class ExpensesTable extends Component {
 
   renderDeleteButton() {
     return (
-      <button type="button">Excluir</button>
+      <button type="button" data-testid="delete-btn">Excluir</button>
     );
   }
 
