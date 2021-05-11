@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addUser } from '../../actions';
-import trybeWallet from '../../images/trybe_small.png';
-import './style.css';
+import { addUser } from '../actions';
+import trybeWallet from '../images/trybe_small.png';
+import '../App.css';
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       email: '',
@@ -15,11 +15,11 @@ class Login extends React.Component {
       validPassword: false,
     };
 
+    this.emailAllowed = this.emailAllowed.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.passwordAllowed = this.passwordAllowed.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
-    this.emailAllowed = this.emailAllowed.bind(this);
-    this.passwordAllowed = this.passwordAllowed.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   validateEmail(email) {
@@ -27,24 +27,19 @@ class Login extends React.Component {
     return emailRegex.test(email);
   }
 
+  emailAllowed({ target: { value } }) {
+    const validEmail = this.validateEmail(value);
+    this.setState({ validEmail, email: value });
+  }
+
   validatePassword(password) {
     const passwordRegex = /^\w{6,}$/;
     return passwordRegex.test(password);
   }
 
-  emailAllowed({ target: { value } }) {
-    const validEmail = this.validateEmail(value);
-    this.setState({
-      email: value,
-      validEmail,
-    });
-  }
-
   passwordAllowed({ target: { value } }) {
     const validPassword = this.validatePassword(value);
-    this.setState({
-      validPassword,
-    });
+    this.setState({ validPassword });
   }
 
   handleClick() {
@@ -73,7 +68,7 @@ class Login extends React.Component {
             />
           </label>
           <label htmlFor="password">
-            Senha:
+            Password:
             <input
               type="password"
               name="password"
@@ -94,15 +89,11 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  login: (email) => dispatch(addUser(email)),
-});
+const mapDispatchToProps = (dispatch) => ({ login: (email) => dispatch(addUser(email)) });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

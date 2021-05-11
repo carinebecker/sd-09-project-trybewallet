@@ -16,3 +16,214 @@ button , input:focus , select:focus {
   outline: 0 auto -webkit-focus-ring-color;
   outline-offset: 0;
 }
+
+.main-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main-content img {
+  margin-bottom: 100px;
+  width: 30vw;
+}
+
+.edit-remove button {
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  height: 25px;
+  margin: 7px 0;
+  width: 120px;
+}
+
+.form-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-content label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-content label input {
+  background: #252525;
+  border: 2px solid #2fc18c;
+  border-radius: 5px;
+  color: white;
+  height: 30px;
+  margin-top: 5px;
+  padding: 0 10px;
+  width: 30vw;
+}
+
+.form-content button {
+  background-color: #2fc18c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  height: 40px;
+  width: 200px;
+}
+
+.form-content button:disabled {
+  background-color: #08422c;
+  cursor: default;
+}
+
+.header-content {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.header-content img {
+  max-height: 100px;
+  padding-bottom: 10px;
+}
+
+.header-content span {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.expense-form {
+  align-items: center;
+  background-color: #2fc18c;
+  color: #454545;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 20px 10px;
+  width: 98.9vw;
+}
+
+.expense-form div {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 85vw;
+}
+
+.expense-form div > div {
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+  width: auto;
+}
+
+.expense-form div > label {
+  font-weight: 700;
+}
+
+.expense-form-button {
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  height: 40px;
+  width: 200px;
+}
+
+.expense-form-input {
+  border: none;
+  border-radius: 5px;
+  height: 25px;
+  margin-left: 10px;
+  padding: 0 10px;
+  width: 200px;
+}
+
+table {
+  width: 100vw;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row th {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+}
+
+.description {
+  text-align: center;
+  width: 20%;
+}
+
+.tag {
+  text-align: center;
+  width: 10%;
+}
+
+.method {
+  text-align: center;
+  width: 10%;
+}
+
+.value {
+  text-align: center;
+  width: 5%;
+}
+
+.currency {
+  text-align: center;
+  width: 10%;
+}
+
+.current-currency {
+  text-align: center;
+  width: 7%;
+}
+
+.converted-value {
+  text-align: center;
+  width: 10%;
+}
+
+.converted-currency {
+  text-align: center;
+  width: 10%;
+}
+
+.edit-remove {
+  display: flex;
+  justify-content: space-around;
+  width: 18%;
+}
+
+.edit {
+  background-color: #1263c0;
+}
+
+.remove {
+  background-color: rgb(228, 58, 58);
+}
+
+.even {
+  background-color: #454545;
+}
+
+.odd {
+  background-color: #252525;
+}
