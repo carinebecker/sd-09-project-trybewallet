@@ -41,32 +41,23 @@ class ExpensesTable extends Component {
 
   renderTableBody() {
     const { expenses } = this.props;
-    return (
-      expenses.map((expense, index) => {
-        console.log(expense);
-        // const currency = expense.exchangeRates.find((cur) => {
-        //   console.log(cur);
-        //   return Object.key(cur) === expense.currency;
-        // });
-        return (
-          <tr key={ index } className="body-row">
-            <td>{ expense.description }</td>
-            <td>{ expense.tag }</td>
-            <td>{ expense.method }</td>
-            <td>{ Number(expense.value).toFixed(2) }</td>
-            <td>{ expense.name }</td>
-            <td>{ expense.ask }</td>
-            <td>{ expense.value * expense.ask }</td>
-            <td>Real</td>
-            <td>a</td>
-            <td>
-              { this.renderEditButton() }
-              { this.renderDeleteButton() }
-            </td>
-          </tr>
-        );
-      })
-    );
+    return expenses
+      .map(({ id, currency, description, tag, method, value, exchangeRates }) => (
+        <tr key={ id } className="body-row">
+          <td>{ description }</td>
+          <td>{ tag }</td>
+          <td>{ method }</td>
+          <td>{ Number(value).toFixed(2) }</td>
+          <td>{ exchangeRates[currency].name.replace(/(.*)\/(.*)/g, '$1')}</td>
+          <td>{ Number(exchangeRates[currency].ask).toFixed(2) }</td>
+          <td>{ Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
+          <td>Real</td>
+          <td>
+            { this.renderEditButton() }
+            { this.renderDeleteButton() }
+          </td>
+        </tr>
+      ));
   }
 
   render() {
