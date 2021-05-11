@@ -68,7 +68,7 @@ class ExpensesForm extends Component {
     const { value } = this.state;
     return (
       <label htmlFor="value-input">
-        Valor da despesa
+        Valor:
         <input
           type="number"
           data-testid="value-input"
@@ -84,7 +84,7 @@ class ExpensesForm extends Component {
   descriptionInput() {
     return (
       <label htmlFor="description-input">
-        Descrição da despesa
+        Descrição da despesa:
         <input
           type="text"
           data-testid="description-input"
@@ -100,7 +100,7 @@ class ExpensesForm extends Component {
     const { currencies } = this.state;
     return (
       <label htmlFor="currency-input">
-        Moeda
+        Moeda:
         <select
           data-testid="currency-input"
           id="currency-input"
@@ -130,7 +130,7 @@ class ExpensesForm extends Component {
   methodInput() {
     return (
       <label htmlFor="method-input">
-        Método de pagamento
+        Método de pagamento:
         <select
           data-testid="method-input"
           id="method-input"
@@ -148,7 +148,7 @@ class ExpensesForm extends Component {
   tagInput() {
     return (
       <label htmlFor="tag-input">
-        Tipo da despesa
+        Tipo da despesa:
         <select
           data-testid="tag-input"
           id="tag-input"
@@ -183,10 +183,10 @@ class ExpensesForm extends Component {
         <form className="expenses-form">
           <div className="expenses-fields">
             { this.expenseValueInput() }
-            { this.descriptionInput() }
             { this.currencyinput() }
             { this.methodInput() }
             { this.tagInput() }
+            { this.descriptionInput() }
           </div>
           <button type="submit" onClick={ (event) => this.handleClick(event) }>
             Adicionar despesa
