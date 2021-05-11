@@ -107,3 +107,5 @@ Table.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
+
+// teste
