@@ -38,7 +38,7 @@ const wallet = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       expenses: state.expenses.map((expense) => {
-        if (expense.id === action.expense.id) {
+        if (expense.payload === action.payload.id) {
           return ({ ...expense, ...action.expense });
         }
         return expense;

@@ -105,6 +105,7 @@ class FormAddExpense extends React.Component {
           />
           <button
             type="submit"
+            name="adc"
             onClick={ this.handleClick }
           >
             Adicionar despesa :

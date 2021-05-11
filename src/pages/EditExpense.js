@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getCurrencies from '../Api';
 import Select from './Select';
 import { finishEdit } from '../actions';
 
@@ -27,13 +26,6 @@ class EditExpense extends React.Component {
     this.state = INITIAL_STATE;
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  // Depois do compomente ir pro dom, pega o grupo de moedas do redux como props, usando a api
-  async componentDidMount() {
-    const { agroupCurrenciesToRedux } = this.props;
-    const currencies = await getCurrencies();
-    agroupCurrenciesToRedux(Object.keys(currencies));
   }
 
   // Atualiza estado dos inputs
@@ -95,6 +87,13 @@ class EditExpense extends React.Component {
             onChange={ this.handleChange }
             options={ tagOptions }
           />
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Editar despesa
+          </button>
+
         </form>
       </div>
 
@@ -103,7 +102,6 @@ class EditExpense extends React.Component {
 }
 
 EditExpense.propTypes = {
-  agroupCurrenciesToRedux: PropTypes.func,
   sendEditExpense: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(),
 }.isRequired;
