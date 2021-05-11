@@ -8,11 +8,11 @@ const saveExpenses = (state = INITIAL_STATE, action) => {
   const { expenses } = state;
   switch (action.type) {
   case SAVE_ATT_EXPENSES:
-    return { ...state,
+    return {
       expenses: [...expenses, { exchangeRates: action.exchangeRates, ...action.data }] };
   case DELETE_ITEMS:
-    return { ...state,
-      expenses: action.expenses.map((newExpenses) => newExpenses) };
+    return {
+      expenses: expenses.filter((newExpenses) => newExpenses.id !== action.id) };
   default:
     return state;
   }

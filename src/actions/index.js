@@ -20,9 +20,9 @@ export const saveAttExpenses = (data, exchangeRates) => ({
   exchangeRates,
 });
 
-export const deleteExpense = (expenses) => ({
+export const deleteExpense = (id) => ({
   type: DELETE_ITEMS,
-  expenses,
+  id,
 });
 
 export const saveExpensesThunk = (data) => async (dispatch) => {

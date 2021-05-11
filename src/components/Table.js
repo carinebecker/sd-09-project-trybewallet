@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteExpense } from '../actions';
-import store from '../store/index';
 
 class Table extends Component {
   constructor() {
@@ -11,29 +10,10 @@ class Table extends Component {
 
     };
     this.renderExpenses = this.renderExpenses.bind(this);
-    this.alternName = this.alternName.bind(this);
-    this.saveNewExpenses = this.saveNewExpenses.bind(this);
-  }
-
-  alternName(name) {
-    if (name === 'Dólar Americano') {
-      return <td>Dólar Comercial</td>;
-    }
-    return <td>{name}</td>;
-  }
-
-  saveNewExpenses(id) {
-    const { deleteItems } = this.props;
-    const actualExpenses = store.getState().wallet.expenses;
-    let newExpenses = [];
-    if (actualExpenses !== undefined) {
-      newExpenses = actualExpenses.filter((item) => item.id !== id);
-    }
-    deleteItems(newExpenses);
   }
 
   renderExpenses() {
-    const { expenses } = this.props;
+    const { expenses, deleteItems } = this.props;
     if (expenses !== undefined) {
       return expenses.map((objects) => (
         <tr key={ objects.id }>
@@ -42,11 +22,7 @@ class Table extends Component {
           <td>{objects.method}</td>
           <td>{objects.value}</td>
           <td>
-            {
-              this.alternName(
-                (objects.exchangeRates[objects.currency].name).split('/', 2)[0],
-              )
-            }
+            {(objects.exchangeRates[objects.currency].name).split('/', 2)[0]}
           </td>
           <td>{ Number(objects.exchangeRates[objects.currency].ask).toFixed(2) }</td>
           <td>
@@ -63,7 +39,7 @@ class Table extends Component {
           <button
             type="button"
             data-testid="delete-btn"
-            onClick={ () => { this.saveNewExpenses(objects.id); } }
+            onClick={ () => deleteItems(objects.id) }
           >
             Deletar
           </button>
@@ -102,7 +78,7 @@ const mapStateToProps = (state) => ({
 });
 
 Table.propTypes = {
-  expenses: PropTypes.objectOf(Array).isRequired,
+  expenses: PropTypes.objectOf(Object).isRequired,
   deleteItems: PropTypes.func.isRequired,
 };
 
