@@ -3,7 +3,7 @@ import { AGROUP_CURRENCIES,
   ADD_EXPENSE, SUM_EXPENSES,
   SUBTRACT_EXPENSES,
   DELETE_EXPENSE,
-  SEND_EDIT,
+  SEND_TO_EDIT,
   FINISH_EDIT } from '../actions';
 
 const INITIAL_STATE = {
@@ -28,7 +28,7 @@ const wallet = (state = INITIAL_STATE, action) => {
     };
   case SUBTRACT_EXPENSES:
     return { ...state, total: parseFloat((state.total - action.payload).toFixed(2)) };
-  case SEND_EDIT:
+  case SEND_TO_EDIT:
     return ({
       ...state,
       expenseToEdit: action.expense,
@@ -38,7 +38,7 @@ const wallet = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       expenses: state.expenses.map((expense) => {
-        if (expense.payload === action.payload.id) {
+        if (expense.id === action.expense.id) {
           return ({ ...expense, ...action.expense });
         }
         return expense;
@@ -50,3 +50,6 @@ const wallet = (state = INITIAL_STATE, action) => {
   }
 };
 export default wallet;
+
+// CONSULTEI REPOSITÓRIO DO COLEGA MARCELO CAMPOS PARA ME AJUDAR A RESOLVER REQUISITO 7.
+// TINHA UM ERRO NA FUNÇÃO DO REDUCER

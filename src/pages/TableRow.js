@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteExpense, subtractExpenses, sendEdit } from '../actions';
+import { deleteExpense, subtractExpenses, sendToEdit } from '../actions';
 
 class TableRow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderEditButton = this.renderEditButton.bind(this);
+  }
+
   currencyInfos(currency, exchangeRates) {
     const currenciesArray = Object.values(exchangeRates)
       .find((foundCurrency) => foundCurrency.code === currency);
@@ -21,10 +26,11 @@ class TableRow extends React.Component {
         data-testid="edit-btn"
         onClick={ () => editExpense(expense) }
       >
-        Editar
+        Edit
       </button>
     );
   }
+
   // Função que vai habilitar novamente o formAddExpense ao clicar no botão editar
 
   render() {
@@ -71,7 +77,7 @@ TableRow.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   deleteExp: (id) => dispatch(deleteExpense(id)),
   subExpensesToRedux: (value) => dispatch(subtractExpenses(value)),
-  editExpense: (expense) => dispatch(sendEdit(expense)),
+  editExpense: (expense) => dispatch(sendToEdit(expense)),
 });
 
 export default connect(null, mapDispatchToProps)(TableRow);
