@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense } from '../actions/index';
+import { deleteExpense, isEditOn } from '../actions/index';
 
 class ExpensesTable extends Component {
   constructor() {
@@ -27,7 +27,7 @@ class ExpensesTable extends Component {
   }
 
   renderTableBody() {
-    const { deleteDispatcher, expenses } = this.props;
+    const { deleteDispatcher, expenses, isEditOnDispatcher } = this.props;
     return expenses
       .map(({ id, currency, description, tag, method, value, exchangeRates }) => (
         <tr key={ id } className="body-row">
@@ -40,7 +40,13 @@ class ExpensesTable extends Component {
           <td>{ Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
           <td>Real</td>
           <td>
-            <button type="button">Editar</button>
+            <button
+              type="button"
+              data-testid="edit-btn"
+              onClick={ () => isEditOnDispatcher(true) }
+            >
+              Editar
+            </button>
             <button
               type="button"
               data-testid="delete-btn"
@@ -77,6 +83,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteDispatcher: (id) => dispatch(deleteExpense(id)),
+  isEditOnDispatcher: (bool) => dispatch(isEditOn(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

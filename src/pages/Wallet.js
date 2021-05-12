@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ExpensesForm from '../components/ExpensesForm';
 import ExpensesTable from '../components/ExpensesTable';
+import EditExpense from '../components/EditExpense';
 
 class Wallet extends React.Component {
   render() {
@@ -14,7 +15,7 @@ class Wallet extends React.Component {
       return acc;
     }, 0);
 
-    const { userEmail } = this.props;
+    const { userEmail, isEditing } = this.props;
     return (
       <div>
         <header className="wallet-header">
@@ -26,6 +27,11 @@ class Wallet extends React.Component {
           <span data-testid="header-currency-field">BRL</span>
         </header>
         <ExpensesForm />
+        {
+          isEditing
+            ? <EditExpense />
+            : ''
+        }
         <ExpensesTable />
       </div>
     );
@@ -39,6 +45,7 @@ Wallet.propTypes = {
 const mapStateToProps = (state) => ({
   userEmail: state.user.email,
   expenses: state.wallet.expenses,
+  isEditing: state.wallet.isEditing,
 });
 
 export default connect(mapStateToProps)(Wallet);
