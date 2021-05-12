@@ -8,6 +8,12 @@ class ExpensesTable extends Component {
     super();
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.renderTableBody = this.renderTableBody.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  handleEdit() {
+    const { isEditOnDispatcher } = this.props;
+    isEditOnDispatcher(true);
   }
 
   renderTableHeader() {
@@ -27,7 +33,7 @@ class ExpensesTable extends Component {
   }
 
   renderTableBody() {
-    const { deleteDispatcher, expenses, isEditOnDispatcher } = this.props;
+    const { deleteDispatcher, expenses } = this.props;
     return expenses
       .map(({ id, currency, description, tag, method, value, exchangeRates }) => (
         <tr key={ id } className="body-row">
@@ -43,7 +49,7 @@ class ExpensesTable extends Component {
             <button
               type="button"
               data-testid="edit-btn"
-              onClick={ () => isEditOnDispatcher(true) }
+              onClick={ this.handleEdit }
             >
               Editar
             </button>
