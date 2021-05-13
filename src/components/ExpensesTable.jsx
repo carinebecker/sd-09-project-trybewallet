@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeExpense as removeGlobalExpense } from '../actions';
+import { removeExpense as removeGlobalExpense, startEditExpense } from '../actions';
 
 class ExpensesTable extends Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class ExpensesTable extends Component {
     this.generateTableContent = this.generateTableContent.bind(this);
     this.setNewContent = this.setNewContent.bind(this);
     this.removeItem = this.removeItem.bind(this);
+    this.editItem = this.editItem.bind(this);
   }
 
   componentDidMount() {
@@ -26,10 +27,10 @@ class ExpensesTable extends Component {
   componentDidUpdate(prevProps) {
     const { isFetching, expenses } = this.props;
     const { isNewContent } = this.state;
-    if (isFetching && !isNewContent) {
+    if ((isFetching && !isNewContent) || prevProps.expenses !== expenses) {
       this.setNewContent();
     }
-    if ((!isFetching && isNewContent) || prevProps.expenses !== expenses) {
+    if (!isFetching && isNewContent) {
       this.generateTableContent();
     }
   }
@@ -41,6 +42,11 @@ class ExpensesTable extends Component {
   removeItem(index) {
     const { expenses, removeExpense } = this.props;
     removeExpense(expenses[index]);
+  }
+
+  editItem(index) {
+    const { expenses, editExpense } = this.props;
+    editExpense(expenses[index].id);
   }
 
   generateTableContent() {
@@ -55,7 +61,13 @@ class ExpensesTable extends Component {
       const exchangedCurrency = 'Real';
       const buttons = (
         <div>
-          <button type="button"> Editar </button>
+          <button
+            type="button"
+            data-testid="edit-btn"
+            onClick={ () => this.editItem(index) }
+          >
+            Editar
+          </button>
           <button
             data-testid="delete-btn"
             type="button"
@@ -92,7 +104,7 @@ class ExpensesTable extends Component {
             <td>{ method }</td>
             <td>{ formattedValue }</td>
             <td>{ currencyName }</td>
-            <td>{ exchange }</td>
+            <td>{ parseFloat(exchange).toFixed(2) }</td>
             <td>{ exchangedValue }</td>
             <td>{ exchangedCurrency }</td>
             <td>{ buttons }</td>
@@ -127,12 +139,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   removeExpense: (item) => dispatch(removeGlobalExpense(item)),
+  editExpense: (id) => dispatch(startEditExpense(id)),
 });
 
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
   removeExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
