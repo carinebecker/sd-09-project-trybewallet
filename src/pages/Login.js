@@ -10,28 +10,35 @@ class Login extends Component {
       email: '',
       password: '',
     };
-
-    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange({ target }) {
+    const { name, value } = target;
     this.setState({
-      email: target.value,
+      [name]: value,
     });
+  }
+
+  validadeEmail(email) {
+    const regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/i;
+    return regexEmail.test(email);
+  }
+
+  validatePassword(password) {
+    const tam = 6;
+    if (password.length >= tam) {
+      return true;
+    }
   }
 
   validateLogin() {
     const { email, password } = this.state;
-    const tam = 6;
-    const validateEmail = email.length > 1;
-    const validatePassword = password.length > tam;
-    return validateEmail && validatePassword;
+    return this.validatePassword(password) && this.validadeEmail(email);
   }
 
-  handleClick() {
-    // const { email, name } = this.state;
-  }
+  // async handleClick() {
+  // }
 
   render() {
     const { email, password } = this.state;
@@ -60,8 +67,8 @@ class Login extends Component {
           <Link to="/carteira">
             <button
               type="button"
-              // disabled={ !this.validateLogin() }
               onClick={ this.handleClick }
+              disabled={ !this.validateLogin() }
             >
               Entrar
             </button>
@@ -71,9 +78,5 @@ class Login extends Component {
     );
   }
 }
-
-// Login.propTypes = {
-//   saveUser: PropTypes.func.isRequired,
-// };
 
 export default Login;
