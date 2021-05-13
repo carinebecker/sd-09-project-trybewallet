@@ -6,37 +6,9 @@ import { removeExpense as removeGlobalExpense, startEditExpense } from '../actio
 class ExpensesTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableContent: [],
-      isNewContent: false,
-    };
-
     this.generateTableContent = this.generateTableContent.bind(this);
-    this.setNewContent = this.setNewContent.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.editItem = this.editItem.bind(this);
-  }
-
-  componentDidMount() {
-    const { expenses } = this.props;
-    if (expenses.length) {
-      this.generateTableContent();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { isFetching, expenses } = this.props;
-    const { isNewContent } = this.state;
-    if ((isFetching && !isNewContent) || prevProps.expenses !== expenses) {
-      this.setNewContent();
-    }
-    if (!isFetching && isNewContent) {
-      this.generateTableContent();
-    }
-  }
-
-  setNewContent() {
-    this.setState({ isNewContent: true });
   }
 
   removeItem(index) {
@@ -89,27 +61,10 @@ class ExpensesTable extends Component {
         buttons,
       };
     });
-    this.setState({ tableContent, isNewContent: false });
+    return tableContent;
   }
 
   render() {
-    const { tableContent } = this.state;
-    const tableBody = tableContent
-      .map(({ description, tag, method, formattedValue, currencyName, exchange,
-        exchangedValue, exchangedCurrency, buttons }, index) => (
-        (
-          <tr key={ index }>
-            <td>{ description }</td>
-            <td>{ tag }</td>
-            <td>{ method }</td>
-            <td>{ formattedValue }</td>
-            <td>{ currencyName }</td>
-            <td>{ parseFloat(exchange).toFixed(2) }</td>
-            <td>{ exchangedValue }</td>
-            <td>{ exchangedCurrency }</td>
-            <td>{ buttons }</td>
-          </tr>
-        )));
     return (
       <table className="table">
         <thead>
@@ -126,7 +81,22 @@ class ExpensesTable extends Component {
           </tr>
         </thead>
         <tbody>
-          { tableBody }
+          { this.generateTableContent()
+            .map(({ description, tag, method, formattedValue, currencyName, exchange,
+              exchangedValue, exchangedCurrency, buttons }, index) => (
+              (
+                <tr key={ index }>
+                  <td>{ description }</td>
+                  <td>{ tag }</td>
+                  <td>{ method }</td>
+                  <td>{ formattedValue }</td>
+                  <td>{ currencyName }</td>
+                  <td>{ parseFloat(exchange).toFixed(2) }</td>
+                  <td>{ exchangedValue }</td>
+                  <td>{ exchangedCurrency }</td>
+                  <td>{ buttons }</td>
+                </tr>
+              )))}
         </tbody>
       </table>
     );
@@ -144,7 +114,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 ExpensesTable.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
   removeExpense: PropTypes.func.isRequired,
   editExpense: PropTypes.func.isRequired,
 };

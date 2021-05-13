@@ -218,8 +218,11 @@ RegisterExpense.propTypes = {
   updateExpense: PropTypes.func.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   setCurrencies: PropTypes.func.isRequired,
-  edit: PropTypes.objectOf(PropTypes.string).isRequired,
-  currencies: PropTypes.objectOf(PropTypes.string).isRequired,
+  edit: PropTypes.shape({
+    id: PropTypes.number,
+    isEditable: PropTypes.bool,
+  }).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterExpense);
