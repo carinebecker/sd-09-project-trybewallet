@@ -22,18 +22,19 @@ class Table extends React.Component {
     this.renderTable();
   }
 
-  editableExpense(index) {
+  editableExpense(id) {
     const { edit, expenses } = this.props;
-    const { value, description, currency, method, tag } = expenses[index];
+    const { value, description, currency, method, tag, exchangeRates } = expenses[id];
     const expense = {
       value,
       description,
       currency,
       method,
       tag,
-      index,
+      exchangeRates,
+      id,
     };
-    edit(expense, index);
+    edit(expense, id);
   }
 
   removeExpense(index) {
@@ -73,7 +74,7 @@ class Table extends React.Component {
                 type="button"
                 className="edit"
                 data-testid="edit-btn"
-                onClick={ () => this.editableExpense(index) }
+                onClick={ () => this.editableExpense(id) }
               >
                 Editar
               </button>

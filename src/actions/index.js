@@ -26,7 +26,7 @@ export const receiveCurrencies = (currencies) => ({
 
 export function fetchCurrencies() {
   return (dispatch) => {
-    getCurrenciesAPI().then((curr) => dispatch(receiveCurrencies(curr)));
+    getCurrenciesAPI().then((curr) => dispatch(receiveCurrencies(Object.keys(curr))));
   };
 }
 

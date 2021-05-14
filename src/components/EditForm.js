@@ -8,8 +8,9 @@ class EditForm extends React.Component {
   constructor(props) {
     super(props);
     const { editableExpense } = props;
-    const { value, description, currency, method, tag } = editableExpense;
+    const { value, description, currency, method, tag, id } = editableExpense;
     this.state = {
+      id,
       value,
       description,
       currency,
@@ -30,19 +31,21 @@ class EditForm extends React.Component {
   }
 
   updateExpense() {
-    const { currencies, editableExpense, expenses, updatedExpense } = this.props;
-    const { value, description, currency, method, tag } = this.state;
+    const { editableExpense, expenses, updatedExpense } = this.props;
+    const { exchangeRates } = editableExpense;
+    const { value, description, currency, method, tag, id } = this.state;
+    const rates = exchangeRates;
     const newExpense = {
-      id: editableExpense.index,
+      id,
       value,
       description,
       currency,
       method,
       tag,
-      exchangeRates: currencies,
+      exchangeRates: rates,
     };
     const newExpenses = expenses;
-    newExpenses[editableExpense.index] = newExpense;
+    newExpenses[editableExpense.id] = newExpense;
     updatedExpense(newExpenses);
   }
 
@@ -76,7 +79,7 @@ class EditForm extends React.Component {
             value={ value }
             data-testid="currency-input"
           >
-            {Object.keys(options).filter((curr) => curr !== 'USDT')
+            {options.filter((curr) => curr !== 'USDT')
               .map((curr) => (<option key={ curr } data-testid={ curr }>{curr}</option>))}
           </select>
         </div>
@@ -147,7 +150,8 @@ EditForm.propTypes = {
     currency: PropTypes.string.isRequired,
     method: PropTypes.string.isRequired,
     tag: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+    exchangeRates: PropTypes.objectOf(PropTypes.object).isRequired,
   }).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   updatedExpense: PropTypes.arrayOf(PropTypes.object).isRequired,

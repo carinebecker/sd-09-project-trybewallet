@@ -6,6 +6,7 @@ import Table from '../components/Table';
 import EditForm from '../components/EditForm';
 import trybeWallet from '../images/trybe_small.png';
 import '../App.css';
+import fetchCurrenciesAPI from '../services';
 
 const INITIAL_STATE = {
   value: '0',
@@ -78,22 +79,24 @@ class Wallet extends React.Component {
   saveExpense() {
     const { saveExpense, total, updateTotalExpenses } = this.props;
     const { value, description, currency, method, tag } = this.state;
-    this.getCurrencies();
-    const { currencies, expenses } = this.props;
-    const newExpense = {
-      id: expenses.length,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: currencies,
-    };
-    const convertedValue = (parseFloat(currencies[currency].ask)
-      * parseFloat(value)).toFixed(2);
-    this.setState(INITIAL_STATE);
-    updateTotalExpenses(parseFloat(total) + parseFloat(convertedValue));
-    saveExpense(newExpense);
+    fetchCurrenciesAPI().then((result) => {
+      const { expenses } = this.props;
+      const newExpense = {
+        id: expenses.length,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: result,
+      };
+      const rates = newExpense.exchangeRates;
+      const convertedValue = (parseFloat(rates[currency].ask)
+        * parseFloat(value)).toFixed(2);
+      this.setState(INITIAL_STATE);
+      updateTotalExpenses(parseFloat(total) + parseFloat(convertedValue));
+      saveExpense(newExpense);
+    });
   }
 
   totalExpenses() {
@@ -143,8 +146,10 @@ class Wallet extends React.Component {
             value={ value }
             data-testid="currency-input"
           >
-            {Object.keys(options).filter((curr) => curr !== 'USDT')
-              .map((curr) => (<option key={ curr } data-testid={ curr }>{curr}</option>))}
+            {options.filter((curr) => curr !== 'USDT')
+              .map((curr) => (
+                <option key={ curr } data-testid={ curr }>{curr}</option>
+              ))}
           </select>
         </div>
       )
