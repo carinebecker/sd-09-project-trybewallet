@@ -31,5 +31,5 @@ export const deleteExpense = (payload) => ({
   payload,
 });
 
-export const IS_EDIT_ON = 'IS_EDIT_ON';
-export const isEditOn = (bool) => ({ type: IS_EDIT_ON, isEditing: bool });
+export const IS_EDITING = 'IS_EDITING';
+export const isEditing = () => ({ type: IS_EDITING, isEditing });

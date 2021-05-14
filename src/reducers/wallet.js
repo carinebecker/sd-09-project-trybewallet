@@ -1,5 +1,5 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { PREPEND_EXPENSES, DELETE_EXPENSE, IS_EDIT_ON } from '../actions/index';
+import { PREPEND_EXPENSES, DELETE_EXPENSE, IS_EDITING } from '../actions/index';
 
 const INITIAL_EXPENSES_STATE = {
   expenses: [],
@@ -7,7 +7,7 @@ const INITIAL_EXPENSES_STATE = {
 };
 
 // https://medium.com/swlh/few-ways-to-update-a-state-array-in-redux-reducer-f2621ae8061
-const expenses = (state = INITIAL_EXPENSES_STATE, { type, expense, payload, bool }) => {
+const expenses = (state = INITIAL_EXPENSES_STATE, { type, expense, payload }) => {
   switch (type) {
   case PREPEND_EXPENSES:
     return {
@@ -19,10 +19,10 @@ const expenses = (state = INITIAL_EXPENSES_STATE, { type, expense, payload, bool
       ...state,
       expenses: state.expenses.filter((currExpense) => currExpense.id !== payload),
     };
-  case IS_EDIT_ON:
+  case IS_EDITING:
     return {
       ...state,
-      isEditing: bool,
+      isEditing: !state.isEditing,
     };
   default:
     return state;

@@ -173,7 +173,6 @@ class ExpensesForm extends Component {
     const { expenseDispatcher } = this.props;
     this.setState({ id: id + 1 });
     expenseDispatcher(data);
-    // valueReducer(value);
     this.initialState();
   }
 

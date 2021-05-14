@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, isEditOn } from '../actions/index';
+import { deleteExpense, isEditing } from '../actions/index';
 
 class ExpensesTable extends Component {
   constructor() {
     super();
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.renderTableBody = this.renderTableBody.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-  }
-
-  handleEdit() {
-    const { isEditOnDispatcher } = this.props;
-    isEditOnDispatcher(true);
   }
 
   renderTableHeader() {
@@ -33,7 +27,7 @@ class ExpensesTable extends Component {
   }
 
   renderTableBody() {
-    const { deleteDispatcher, expenses } = this.props;
+    const { deleteDispatcher, expenses, isEditOnDispatcher } = this.props;
     return expenses
       .map(({ id, currency, description, tag, method, value, exchangeRates }) => (
         <tr key={ id } className="body-row">
@@ -49,7 +43,7 @@ class ExpensesTable extends Component {
             <button
               type="button"
               data-testid="edit-btn"
-              onClick={ this.handleEdit }
+              onClick={ isEditOnDispatcher }
             >
               Editar
             </button>
@@ -89,7 +83,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteDispatcher: (id) => dispatch(deleteExpense(id)),
-  isEditOnDispatcher: (bool) => dispatch(isEditOn(bool)),
+  isEditOnDispatcher: () => dispatch(isEditing()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
