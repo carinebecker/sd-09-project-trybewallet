@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import { saveEmail } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,6 +24,9 @@ class Login extends React.Component {
   }
 
   handleClick() {
+    const { saveEmailKey } = this.props;
+    const { email } = this.state;
+    saveEmailKey(email);
     this.setState({
       redirectWallet: true,
     });
@@ -70,4 +76,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveEmailKey: (email) => dispatch(saveEmail(email)),
+});
+
+Login.propTypes = {
+  saveEmailKey: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
