@@ -7,7 +7,7 @@ import WalletRegistry from './WalletRegistry';
 import './Wallet.css';
 import moneyData from '../services/api';
 
-const initial_state = {
+const initialState = {
   id: 0,
   value: 0,
   description: '',
@@ -28,7 +28,7 @@ class Wallet extends React.Component {
       tag: 'Alimentação',
       total: 0,
     };
-    this.reset = { ...initial_state };
+    this.reset = { ...initialState };
     this.expenseForm = this.expenseForm.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
     this.handleDropdown = this.handleDropdown.bind(this);
@@ -44,7 +44,7 @@ class Wallet extends React.Component {
     const { expenses } = this.props;
     const totalMoney = expenses.length > 0 ? expenses.map((item) => {
       const moneyInfo = item.exchangeRates[item.currency];
-      const thisValue = (Math.ceil(moneyInfo.ask * item.value * 100) / 100)
+      const thisValue = (Math.ceil(moneyInfo.ask * item.value * 100) / 100);
       return thisValue;
     }) : [0];
     const total = totalMoney.reduce((a, b) => a + b);
@@ -61,18 +61,18 @@ class Wallet extends React.Component {
   async handleExpense() {
     const { isEditing, editExpense, item } = this.props;
     if (!isEditing) {
-  const exchangeRates = await moneyData();
-    const { id, value, description, currency, tag, method } = this.state;
-    const { saveExpense } = this.props;
-    const newExpense = {
-      id, value, description, currency, tag, method, exchangeRates,
-    };
-    saveExpense(newExpense);
-    this.setState((state) => ({
-      ...this.reset,
-      id: state.id + 1,
-    }));
-  }
+      const exchangeRates = await moneyData();
+      const { id, value, description, currency, tag, method } = this.state;
+      const { saveExpense } = this.props;
+      const newExpense = {
+        id, value, description, currency, tag, method, exchangeRates,
+      };
+      saveExpense(newExpense);
+      this.setState((state) => ({
+        ...this.reset,
+        id: state.id + 1,
+      }));
+    }
     if (isEditing) {
       const { id, value, description, currency, method, tag } = this.state;
       const newItem = { ...item, id, value, description, currency, method, tag };
