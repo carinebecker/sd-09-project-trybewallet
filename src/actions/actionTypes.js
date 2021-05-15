@@ -1,3 +1,3 @@
-const SAVE_EMAIL = 'SAVE_EMAIL';
+export const SAVE_EMAIL = 'SAVE_EMAIL';
 
-export default SAVE_EMAIL;
+export const SAVE_EXPENSE_INFO = 'SAVE_EXPENSE_INFO';

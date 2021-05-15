@@ -1,6 +1,20 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-// const initialState = { adição: 0 };
+import { SAVE_EXPENSE_INFO } from '../actions/actionTypes';
 
-// const wallet = (state = initialState, action) => ({ initialState });
+const initialState = {
+  expenses: [],
+  currencies: [],
+};
 
-// export default wallet;
+const wallet = (state = initialState, action) => {
+  const info = action.expenseInfo;
+  switch (action.type) {
+  case SAVE_EXPENSE_INFO:
+
+    return { ...state, expenses: [...state.expenses, info] };
+  default:
+    return state;
+  }
+};
+
+export default wallet;

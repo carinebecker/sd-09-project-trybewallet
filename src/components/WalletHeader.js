@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 class WalletHeader extends React.Component {
   render() {
-    const initialValue = 0;
-    const { userData } = this.props;
+    const { userData, value } = this.props;
     return (
       <header>
         <span data-testid="email-field">
@@ -12,7 +11,7 @@ class WalletHeader extends React.Component {
         </span>
         <p>
           <span data-testid="total-field">
-            {`R$${initialValue}`}
+            {`R$${value}`}
           </span>
           <span data-testid="header-currency-field">BRL</span>
         </p>
@@ -23,9 +22,11 @@ class WalletHeader extends React.Component {
 
 WalletHeader.propTypes = {
   userData: PropTypes.string,
+  value: PropTypes.number,
 };
 WalletHeader.defaultProps = {
   userData: '',
+  value: 0,
 };
 
 export default WalletHeader;

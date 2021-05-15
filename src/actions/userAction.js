@@ -1,4 +1,4 @@
-import SAVE_EMAIL from './actionTypes';
+import * as SAVE_EMAIL from './actionTypes';
 
 const saveEmail = (user) => ({ type: SAVE_EMAIL, user });
 
