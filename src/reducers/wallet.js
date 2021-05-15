@@ -20,6 +20,7 @@ function wallet(state = initialState, action) {
     return {
       ...state,
       expenses: [...state.expenses, expenses],
+      isFetching: false,
     };
   case MONEY_INFO:
     return { ...state, currencies: money, isFetching };

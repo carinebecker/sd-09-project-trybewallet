@@ -5,6 +5,16 @@ import { connect } from 'react-redux';
 import { editedExpense, getMoneyInfo, walletUpdate } from '../actions/index';
 import WalletRegistry from './WalletRegistry';
 import './Wallet.css';
+import moneyData from '../services/api';
+
+const initial_state = {
+  id: 0,
+  value: 0,
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+};
 
 class Wallet extends React.Component {
   constructor() {
@@ -18,7 +28,7 @@ class Wallet extends React.Component {
       tag: 'Alimentação',
       total: 0,
     };
-    this.reset = { ...this.state };
+    this.reset = { ...initial_state };
     this.expenseForm = this.expenseForm.bind(this);
     this.handleExpense = this.handleExpense.bind(this);
     this.handleDropdown = this.handleDropdown.bind(this);
@@ -30,6 +40,17 @@ class Wallet extends React.Component {
     moneyInfo();
   }
 
+  updateTotal() {
+    const { expenses } = this.props;
+    const totalMoney = expenses.length > 0 ? expenses.map((item) => {
+      const moneyInfo = item.exchangeRates[item.currency];
+      const thisValue = (Math.ceil(moneyInfo.ask * item.value * 100) / 100)
+      return thisValue;
+    }) : [0];
+    const total = totalMoney.reduce((a, b) => a + b);
+    this.setState({ total });
+  }
+
   handleDropdown({ target }) {
     const { value, id } = target;
     this.setState({
@@ -37,28 +58,28 @@ class Wallet extends React.Component {
     });
   }
 
-  handleExpense() {
-    const { moneyInfo } = this.props;
-    moneyInfo();
-    const { money, saveExpense } = this.props;
+  async handleExpense() {
+    const { isEditing, editExpense, item } = this.props;
+    if (!isEditing) {
+  const exchangeRates = await moneyData();
+    const { id, value, description, currency, tag, method } = this.state;
+    const { saveExpense } = this.props;
     const newExpense = {
-      ...this.state,
-      exchangeRates: money,
+      id, value, description, currency, tag, method, exchangeRates,
     };
     saveExpense(newExpense);
-    // const { expenses } = this.props;
-    // const totalMoney = expenses.forEach((ex) => {
-    //   console.log(ex);
-    //   const { exchangeRates, currency, value } = ex;
-    //   const { ask } = exchangeRates.find((e) => e.code === currency);
-    //   return (Math.floor(ask * value * 100) / 100);
-    // });
-    // console.log(totalMoney);
-    // const total = totalMoney.reduce((a, b) => a + b);
     this.setState((state) => ({
       ...this.reset,
       id: state.id + 1,
     }));
+  }
+    if (isEditing) {
+      const { id, value, description, currency, method, tag } = this.state;
+      const newItem = { ...item, id, value, description, currency, method, tag };
+      editExpense(newItem);
+      this.setState({ ...this.reset });
+    }
+    this.updateTotal();
   }
 
   input(id, type, testid, maxLength) {
@@ -76,23 +97,15 @@ class Wallet extends React.Component {
   sendButton() {
     const { isEditing } = this.props;
     if (isEditing) {
-      const { id, value, description, currency, method, tag } = this.state;
-      const { item, editExpense } = this.props;
-      const newItem = { ...item, id, value, description, currency, method, tag };
       return (
         <button
-          onClick={ () => {
-            editExpense(newItem);
-            this.setState(() => ({
-              ...this.reset,
-            }));
-          } }
+          onClick={ this.handleExpense }
           type="reset"
         >
           Editar despesa
         </button>);
     }
-    return <button onClick={ this.handleExpense } type="reset">Adicionar Despesa</button>;
+    return <button onClick={ this.handleExpense } type="reset">Adicionar despesa</button>;
   }
 
   expenseForm(money) {
@@ -100,7 +113,7 @@ class Wallet extends React.Component {
     return (
       <form>
         Valor:
-        { this.input('value', 'number', 'value-input', '999999999999') }
+        { this.input('value', 'number', 'value-input') }
         Moeda:
         <select
           id="currency"
@@ -109,8 +122,8 @@ class Wallet extends React.Component {
           value={ currencyState }
         >
           {money.map((each) => (
-            <option key={ each.code } data-testid={ each.code }>
-              { each.code }
+            <option key={ each } data-testid={ each }>
+              { each }
             </option>))}
         </select>
         Método de pagamento:
@@ -148,10 +161,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { money } = this.props;
-    const keys = Object.keys(money);
-    const allKeys = keys.filter((coin) => coin !== 'USDT');
-    const allMoney = allKeys.map((key) => money[key]);
+    const { money, expenses } = this.props;
     const { email, isFetching } = this.props;
     const { total } = this.state;
     return (
@@ -167,7 +177,7 @@ class Wallet extends React.Component {
             BRL
           </p>
         </header>
-        { isFetching ? <p>Loading...</p> : this.expenseForm(allMoney)}
+        { !isFetching && money.length > 0 && this.expenseForm(money)}
         <main>
           <table>
             <tr>
@@ -181,7 +191,7 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
-            <WalletRegistry money={ allMoney } edit={ this.editForm } />
+            <WalletRegistry expenses={ expenses } edit={ this.editForm } />
           </table>
         </main>
       </div>

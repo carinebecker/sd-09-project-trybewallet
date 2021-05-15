@@ -174,6 +174,7 @@ describe('2 - Crie uma página para sua carteira com as seguintes característic
       ];
       
       await waitFor(() => {
+        console.log(valueInput.value);
         expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
       });
       expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense);

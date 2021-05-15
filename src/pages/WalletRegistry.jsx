@@ -8,6 +8,7 @@ class ExpenseList extends React.Component {
   constructor() {
     super();
     this.assignEdit = this.assignEdit.bind(this);
+    this.basicCells = this.basicCells.bind(this);
   }
 
   assignEdit(item) {
@@ -16,41 +17,40 @@ class ExpenseList extends React.Component {
     edit(item);
   }
 
+  basicCells(item) {
+    const { description, tag, method, value } = item;
+    const array = [description, tag, method, value];
+    return (
+      array.map((e, i) => <td key={ i }>{ e }</td>)
+    );
+  }
+
   render() {
-    const { expenses, money, deleteLine } = this.props;
+    const { expenses, deleteLine } = this.props;
     const map = expenses.map((item) => {
-      const moneyInfo = money.find((each) => item.currency === each.code);
+      const moneyInfo = item.exchangeRates[item.currency];
       const moneyName = moneyInfo.name.split('/');
       return (
         <tr key={ item.id }>
-          <td>
-            {item.description}
-          </td>
-          <td>
-            {item.tag}
-          </td>
-          <td>
-            {item.method}
-          </td>
-          <td>
-            {`${item.currency} ${item.value}`}
-          </td>
+          {this.basicCells(item)}
           <td>
             {moneyName[0]}
           </td>
           <td>
-            R$
-            {(Math.floor(moneyInfo.ask * 100) / 100)}
+            {(Math.ceil(moneyInfo.ask * 100) / 100)}
           </td>
           <td>
-            R$
-            {(Math.floor(moneyInfo.ask * item.value * 100) / 100)}
+            {(Math.ceil(moneyInfo.ask * item.value * 100) / 100)}
           </td>
           <td>
-            Real Brasileiro
+            Real
           </td>
           <td>
-            <button onClick={ () => this.assignEdit(item) } type="button">
+            <button
+              data-testid="edit-btn"
+              onClick={ () => this.assignEdit(item) }
+              type="button"
+            >
               Editar
             </button>
             <button
@@ -61,8 +61,7 @@ class ExpenseList extends React.Component {
               Excluir
             </button>
           </td>
-        </tr>
-      );
+        </tr>);
     });
     return map;
   }
@@ -76,13 +75,13 @@ ExpenseList.propTypes = {
   edit: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = (state) => ({
-  expenses: state.wallet.expenses,
-});
+// const mapStateToProps = (state) => ({
+//   expenses: state.wallet.expenses,
+// });
 
 const mapDispatchToProps = (dispatch) => ({
   editForm: (item) => dispatch(editingExpense(item)),
   deleteLine: (expense) => dispatch(deleteExpense(expense)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);
+export default connect(null, mapDispatchToProps)(ExpenseList);

@@ -44,7 +44,8 @@ const sendMoneyInfo = (money) => ({
 export function getMoneyInfo() {
   return (dispatch) => {
     dispatch(requestMoney());
-    moneyData().then((response) => dispatch(sendMoneyInfo(response)));
+    moneyData().then((response) => Object.keys(response).filter((e) => e !== 'USDT'))
+      .then((response) => dispatch(sendMoneyInfo(response)));
   };
 }
 
