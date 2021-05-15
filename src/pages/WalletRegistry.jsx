@@ -34,7 +34,7 @@ class ExpenseList extends React.Component {
         <tr key={ item.id }>
           {this.basicCells(item)}
           <td>
-            {moneyName[0]}
+            {item.currency}
           </td>
           <td>
             {(Math.ceil(moneyInfo.ask * 100) / 100)}
@@ -69,7 +69,7 @@ class ExpenseList extends React.Component {
 
 ExpenseList.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
-  money: PropTypes.arrayOf(PropTypes.object),
+  money: PropTypes.objectOf(PropTypes.object),
   deleteLine: PropTypes.func,
   editForm: PropTypes.func,
   edit: PropTypes.func,

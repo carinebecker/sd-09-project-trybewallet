@@ -42,7 +42,10 @@
   },
   "devDependencies": {
     "@sheerun/mutationobserver-shim": "0.3.3",
+<<<<<<< HEAD
     "eslint": "6.8.0",
+=======
+>>>>>>> a739cf43c5b0b214cd7a3fd601e8b5a02a190fda
     "eslint-config-airbnb": "18.2.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsx-a11y": "6.4.1",

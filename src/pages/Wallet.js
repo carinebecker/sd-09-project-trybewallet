@@ -26,7 +26,6 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      total: 0,
     };
     this.reset = { ...initialState };
     this.expenseForm = this.expenseForm.bind(this);
@@ -52,13 +51,13 @@ class Wallet extends React.Component {
   }
 
   handleDropdown({ target }) {
-    const { value, id } = target;
+    const { value, name } = target;
     this.setState({
-      [id]: value,
+      [name]: value,
     });
   }
 
-  async handleExpense() {
+    handleExpense() {
     const { isEditing, editExpense, item } = this.props;
     if (!isEditing) {
       const exchangeRates = await moneyData();
@@ -82,14 +81,26 @@ class Wallet extends React.Component {
     this.updateTotal();
   }
 
-  input(id, type, testid, maxLength) {
+  input(id, type, testid) {
+    const { value } = this.state;
+    return (<input
+      name={ id }
+      value={ value }
+      type={ type }
+      data-testid={ testid }
+      // maxLength={ maxLength }
+      onChange={ this.handleDropdown }
+    />);
+  }
+
+  inputDois(id, type, testid) {
     const { state } = this;
     return (<input
-      id={ id }
+      name={ id }
       value={ state[id] }
       type={ type }
       data-testid={ testid }
-      maxLength={ maxLength }
+      // maxLength={ maxLength }
       onChange={ this.handleDropdown }
     />);
   }
@@ -151,7 +162,7 @@ class Wallet extends React.Component {
           <option>Saúde</option>
         </select>
         Descrição:
-        { this.input('description', 'text', 'description-input', '50') }
+        { this.inputDois('description', 'text', 'description-input', '50') }
         { this.sendButton() }
       </form>);
   }
@@ -163,7 +174,8 @@ class Wallet extends React.Component {
   render() {
     const { money, expenses } = this.props;
     const { email, isFetching } = this.props;
-    const { total } = this.state;
+    const { value } = this.state;
+    console.log(value);
     return (
       <div>
         <header>
@@ -171,7 +183,7 @@ class Wallet extends React.Component {
             {`Email: ${email}`}
           </p>
           <p data-testid="total-field">
-            {`Despesas totais: R$ ${total} `}
+            {`Despesas totais: R$ ${0} `}
           </p>
           <p data-testid="header-currency-field">
             BRL
