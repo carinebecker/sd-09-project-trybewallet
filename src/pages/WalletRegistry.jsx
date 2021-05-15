@@ -26,8 +26,9 @@ class ExpenseList extends React.Component {
   }
 
   render() {
-    const { expenses, deleteLine } = this.props;
-    const map = expenses.map((item) => {
+    const { expenses, deleteLine, updateTotal } = this.props;
+    updateTotal();
+    return expenses.map((item) => {
       const moneyInfo = item.exchangeRates[item.currency];
       return (
         <tr key={ item.id }>
@@ -62,7 +63,6 @@ class ExpenseList extends React.Component {
           </td>
         </tr>);
     });
-    return map;
   }
 }
 

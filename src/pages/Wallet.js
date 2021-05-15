@@ -33,6 +33,7 @@ class Wallet extends React.Component {
     this.handleExpense = this.handleExpense.bind(this);
     this.handleDropdown = this.handleDropdown.bind(this);
     this.editForm = this.editForm.bind(this);
+    this.updateTotal = this.updateTotal.bind(this);
   }
 
   componentDidMount() {
@@ -203,11 +204,14 @@ class Wallet extends React.Component {
               <th>Moeda de conversão</th>
               <th>Editar/Excluir</th>
             </tr>
-            <WalletRegistry expenses={ expenses } edit={ this.editForm } />
+            <WalletRegistry
+              updateTotal={ this.updateTotal }
+              expenses={ expenses }
+              edit={ this.editForm }
+            />
           </table>
         </main>
-      </div>
-    );
+      </div>);
   }
 }
 
