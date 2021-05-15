@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteExpense as deleteExpenseAction } from '../actions';
+import {
+  deleteExpense as deleteExpenseAction,
+  editExpense as editExpenseAction,
+} from '../actions';
 
 class ExpenseTable extends React.Component {
   constructor() {
     super();
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   deleteExpense({ target }) {
@@ -14,6 +18,11 @@ class ExpenseTable extends React.Component {
     const newExpensesList = expenses
       .filter((expense) => expense.description !== target.value);
     deleteExpense(newExpensesList);
+  }
+
+  handleClick(expense) {
+    const { editExpense } = this.props;
+    editExpense(expense);
   }
 
   render() {
@@ -43,6 +52,14 @@ class ExpenseTable extends React.Component {
               <td>Real</td>
               <button
                 type="button"
+                data-testid="edit-btn"
+                value={ i.description }
+                onClick={ () => this.handleClick(i) }
+              >
+                Editar
+              </button>
+              <button
+                type="button"
                 data-testid="delete-btn"
                 value={ i.description }
                 onClick={ this.deleteExpense }
@@ -57,17 +74,19 @@ class ExpenseTable extends React.Component {
   }
 }
 
-const mapStateToProps = ({ wallet }) => ({
-  expenses: wallet.expenses,
+const mapStateToProps = ({ wallet: { expenses } }) => ({
+  expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   deleteExpense: (expenses) => dispatch(deleteExpenseAction(expenses)),
+  editExpense: (expense) => dispatch(editExpenseAction(expense)),
 });
 
 ExpenseTable.propTypes = {
   expenses: PropTypes.string.isRequired,
   deleteExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseTable);

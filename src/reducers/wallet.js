@@ -1,5 +1,7 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { FETCH_CURRENCY, ADD_EXPENSES, DELETE_EXPENSE } from '../actions';
+import {
+  FETCH_CURRENCY, ADD_EXPENSE, DELETE_EXPENSE, EDIT_EXPENSE, EDIT_EXPENSE_SAVE,
+} from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -7,9 +9,9 @@ const INITIAL_STATE = {
   total: 0,
 };
 
-function addExpense(state = {}, actions = {}) {
+function addExpense(state = {}, action = {}) {
   const expenses = state.expenses.concat([{
-    id: state.expenses.length, ...actions.expense,
+    id: state.expenses.length, ...action.expense,
   }]);
   return {
     ...state,
@@ -22,19 +24,37 @@ function addExpense(state = {}, actions = {}) {
   };
 }
 
-function wallet(state = INITIAL_STATE, actions) {
-  switch (actions.type) {
+function wallet(state = INITIAL_STATE, action) {
+  switch (action.type) {
   case FETCH_CURRENCY:
     return {
       ...state,
-      currencies: actions.currencies,
+      currencies: action.currencies,
     };
 
-  case ADD_EXPENSES:
-    return addExpense(state, actions);
+  case ADD_EXPENSE:
+    return addExpense(state, action);
 
   case DELETE_EXPENSE:
-    return { ...state, expenses: [...actions.expenses] };
+    return { ...state,
+      expenses: [...action.expenses],
+    };
+
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      isEditing: action.isEditing,
+      expense: action.expense,
+    };
+
+  case EDIT_EXPENSE_SAVE:
+    return { ...state,
+      expenses: [
+        action.expense,
+        ...state.expenses.filter((item) => item.id !== action.expense.id),
+      ],
+      isEditing: action.isEditing,
+    };
 
   default:
     return state;
