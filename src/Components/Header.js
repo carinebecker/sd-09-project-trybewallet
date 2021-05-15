@@ -26,11 +26,11 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  email: PropTypes.string.isrequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
 });
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps)(Header);
