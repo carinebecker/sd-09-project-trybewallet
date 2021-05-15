@@ -25,7 +25,7 @@ class ExpenseTable extends React.Component {
       <table>
         <tbody>
           <tr>
-              {fields.map((field) => <th key={ field }>{field}</th>)}
+            {fields.map((field) => <th key={ field }>{field}</th>)}
           </tr>
           {expenses.map((i) => (
             <tr key={ i.id }>

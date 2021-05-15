@@ -6,7 +6,6 @@ export const FETCH_ERROR = 'FETCH_ERROR';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
-
 export const doLogin = ({ email, password }) => ({
   type: LOGIN,
   email,
