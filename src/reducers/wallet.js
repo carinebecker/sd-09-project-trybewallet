@@ -1,5 +1,5 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { FETCH_CURRENCY, ADD_EXPENSES } from '../actions';
+import { FETCH_CURRENCY, ADD_EXPENSES, DELETE_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -32,6 +32,9 @@ function wallet(state = INITIAL_STATE, actions) {
 
   case ADD_EXPENSES:
     return addExpense(state, actions);
+
+  case DELETE_EXPENSE:
+    return { ...state, expenses: [...actions.expenses] };
 
   default:
     return state;
