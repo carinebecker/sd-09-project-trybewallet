@@ -26,6 +26,7 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      total: 0,
     };
     this.reset = { ...initialState };
     this.expenseForm = this.expenseForm.bind(this);
@@ -51,13 +52,13 @@ class Wallet extends React.Component {
   }
 
   handleDropdown({ target }) {
-    const { value, name } = target;
+    const { value, id } = target;
     this.setState({
-      [name]: value,
+      [id]: value,
     });
   }
 
-    handleExpense() {
+  async handleExpense() {
     const { isEditing, editExpense, item } = this.props;
     if (!isEditing) {
       const exchangeRates = await moneyData();
@@ -84,7 +85,7 @@ class Wallet extends React.Component {
   input(id, type, testid) {
     const { value } = this.state;
     return (<input
-      name={ id }
+      id={ id }
       value={ value }
       type={ type }
       data-testid={ testid }
@@ -96,7 +97,7 @@ class Wallet extends React.Component {
   inputDois(id, type, testid) {
     const { state } = this;
     return (<input
-      name={ id }
+      id={ id }
       value={ state[id] }
       type={ type }
       data-testid={ testid }
@@ -162,7 +163,7 @@ class Wallet extends React.Component {
           <option>Saúde</option>
         </select>
         Descrição:
-        { this.inputDois('description', 'text', 'description-input', '50') }
+        { this.inputDois('description', 'text', 'description-input') }
         { this.sendButton() }
       </form>);
   }
@@ -174,8 +175,7 @@ class Wallet extends React.Component {
   render() {
     const { money, expenses } = this.props;
     const { email, isFetching } = this.props;
-    const { value } = this.state;
-    console.log(value);
+    const { total } = this.state;
     return (
       <div>
         <header>
@@ -183,7 +183,7 @@ class Wallet extends React.Component {
             {`Email: ${email}`}
           </p>
           <p data-testid="total-field">
-            {`Despesas totais: R$ ${0} `}
+            {`Despesas totais: R$ ${total} `}
           </p>
           <p data-testid="header-currency-field">
             BRL

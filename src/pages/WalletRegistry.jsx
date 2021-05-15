@@ -29,12 +29,11 @@ class ExpenseList extends React.Component {
     const { expenses, deleteLine } = this.props;
     const map = expenses.map((item) => {
       const moneyInfo = item.exchangeRates[item.currency];
-      const moneyName = moneyInfo.name.split('/');
       return (
         <tr key={ item.id }>
           {this.basicCells(item)}
           <td>
-            {item.currency}
+            {moneyInfo.name.split('/')[0]}
           </td>
           <td>
             {(Math.ceil(moneyInfo.ask * 100) / 100)}
