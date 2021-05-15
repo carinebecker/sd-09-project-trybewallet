@@ -93,4 +93,4 @@ const mapDispatchToProps = (dispatch) => ({
   saveUserState: (email, password) => dispatch(setUser(email, password)),
 });
 
-export default connect(mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
