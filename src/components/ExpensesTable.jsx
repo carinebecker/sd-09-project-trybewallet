@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { deleteExpense, isEditing } from '../actions/index';
 
 class ExpensesTable extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.renderTableBody = this.renderTableBody.bind(this);
   }
@@ -27,7 +28,7 @@ class ExpensesTable extends Component {
   }
 
   renderTableBody() {
-    const { deleteDispatcher, expenses, isEditOnDispatcher } = this.props;
+    const { deleteDispatcher, expenses, isEditingDispatcher } = this.props;
     return expenses
       .map(({ id, currency, description, tag, method, value, exchangeRates }) => (
         <tr key={ id } className="body-row">
@@ -43,7 +44,7 @@ class ExpensesTable extends Component {
             <button
               type="button"
               data-testid="edit-btn"
-              onClick={ isEditOnDispatcher }
+              onClick={ () => isEditingDispatcher(id) }
             >
               Editar
             </button>
@@ -83,7 +84,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteDispatcher: (id) => dispatch(deleteExpense(id)),
-  isEditOnDispatcher: () => dispatch(isEditing()),
+  isEditingDispatcher: (currExpense) => dispatch(isEditing(currExpense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

@@ -26,11 +26,10 @@ class Wallet extends React.Component {
           </span>
           <span data-testid="header-currency-field">BRL</span>
         </header>
-        <ExpensesForm />
         {
-          isEditing
-            ? <EditExpense />
-            : ''
+          !isEditing
+            ? <ExpensesForm />
+            : <EditExpense />
         }
         <ExpensesTable />
       </div>

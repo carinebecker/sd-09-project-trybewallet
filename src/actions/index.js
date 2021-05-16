@@ -32,4 +32,8 @@ export const deleteExpense = (payload) => ({
 });
 
 export const IS_EDITING = 'IS_EDITING';
-export const isEditing = () => ({ type: IS_EDITING, isEditing });
+export const isEditing = (currEdit) => ({
+  type: IS_EDITING,
+  isEditing,
+  currentEdit: currEdit,
+});
