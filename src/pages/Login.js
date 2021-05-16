@@ -5,16 +5,32 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = { email: '', password: '' };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkFormats = this.checkFormats.bind(this);
+    this.state = { email: '', password: '', shouldRedirect: false };
   }
 
   handleChange({ target: { type, value } }) {
     this.setState({ [type]: value });
   }
 
-  render() {
+  handleSubmit() {
+    const { submit } = this.props;
+    const { email } = this.state;
+    submit(email);
+    this.setState({ shouldRedirect: true });
+  }
+
+  checkFormats() {
     const { email, password } = this.state;
-    return (
+    const emailFormat = /^[\w.]+@[a-z]+\.\w{2,3}$/g.test(email);
+    const passwordFormat = /[\w\D]{6}/g.test(password);
+    return emailFormat && passwordFormat;
+  }
+
+  render() {
+    const { email, password, shouldRedirect } = this.state;
+    return shouldRedirect ? (<Redirect to="/carteira" />) : (
       <div>
         <div>
           <input
@@ -35,7 +51,8 @@ class Login extends Component {
         </div>
         <button
           type="submit"
-          onClick={ () => (<Redirect to="/carteira" />) }
+          onClick={ () => (this.handleSubmit) }
+          disabled={ !this.checkFormats() }
         >
           Entrar
         </button>
@@ -44,4 +61,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = { submit: func }.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({ submit: (email) => dispatch(login(email)) });
+
+export default connect(null, mapDispatchToProps)(Login);
