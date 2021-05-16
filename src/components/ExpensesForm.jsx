@@ -205,8 +205,4 @@ const mapDispatchToProps = (dispatch) => ({
   expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
 });
 
-const mapStateToProps = (state) => ({
-  expensesState: state.wallet.expenses,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);
+export default connect(null, mapDispatchToProps)(ExpensesForm);

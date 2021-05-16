@@ -18,6 +18,7 @@ const expenses = (state = INITIAL_EXPENSES_STATE, {
   payload,
   currEdit,
 }) => {
+  console.log(`reducer: ${currEdit}`);
   switch (type) {
   case PREPEND_EXPENSES:
     return {

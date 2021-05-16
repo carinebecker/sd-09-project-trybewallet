@@ -32,6 +32,7 @@ class EditExpense extends Component {
 
   componentDidMount() {
     this.populateCurrencies();
+    this.initialState();
   }
 
   populateCurrencies() {
@@ -42,12 +43,13 @@ class EditExpense extends Component {
   }
 
   initialState() {
+    const { expense } = this.props;
     this.setState({
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      value: expense.value,
+      description: expense.description,
+      currency: expense.currency,
+      method: expense.method,
+      tag: expense.tag,
     });
   }
 
@@ -74,6 +76,7 @@ class EditExpense extends Component {
   }
 
   descriptionInput() {
+    const { description } = this.state;
     return (
       <label htmlFor="description-input">
         Descrição da despesa:
@@ -82,6 +85,7 @@ class EditExpense extends Component {
           data-testid="description-input"
           id="description-input"
           name="description"
+          value={ description }
           onChange={ this.handleChange }
         />
       </label>
@@ -164,7 +168,6 @@ class EditExpense extends Component {
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
     const { expenseDispatcher } = this.props;
-    this.setState({ id: id + 1 });
     expenseDispatcher(data);
     this.initialState();
   }
@@ -200,7 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  expensesState: state.wallet.expenses,
+  expense: state.wallet.currentEdit,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditExpense);

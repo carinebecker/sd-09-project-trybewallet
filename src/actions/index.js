@@ -35,5 +35,5 @@ export const IS_EDITING = 'IS_EDITING';
 export const isEditing = (currEdit) => ({
   type: IS_EDITING,
   isEditing,
-  currentEdit: currEdit,
+  currEdit,
 });
