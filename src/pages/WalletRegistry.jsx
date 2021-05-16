@@ -26,8 +26,9 @@ class ExpenseList extends React.Component {
   }
 
   render() {
-    const { expenses, deleteLine, updateTotal } = this.props;
+    const { expenses, deleteLine, updateTotal, total } = this.props;
     updateTotal();
+    console.log(total);
     return expenses.map((item) => {
       const moneyInfo = item.exchangeRates[item.currency];
       return (
@@ -37,10 +38,10 @@ class ExpenseList extends React.Component {
             {moneyInfo.name.split('/')[0]}
           </td>
           <td>
-            {(Math.ceil(moneyInfo.ask * 100) / 100)}
+            {parseFloat(moneyInfo.ask).toFixed(2)}
           </td>
           <td>
-            {(Math.ceil(moneyInfo.ask * item.value * 100) / 100)}
+            {parseFloat(moneyInfo.ask * item.value).toFixed(2)}
           </td>
           <td>
             Real

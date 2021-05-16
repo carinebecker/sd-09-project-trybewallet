@@ -190,7 +190,7 @@ class Wallet extends React.Component {
             BRL
           </p>
         </header>
-        { !isFetching && money.length > 0 && this.expenseForm(money)}
+        { !isFetching && this.expenseForm(money)}
         <main>
           <table>
             <tr>
@@ -208,6 +208,7 @@ class Wallet extends React.Component {
               updateTotal={ this.updateTotal }
               expenses={ expenses }
               edit={ this.editForm }
+              total={ total }
             />
           </table>
         </main>
@@ -224,7 +225,6 @@ Wallet.propTypes = {
   item: PropTypes.shape({ id: PropTypes.number }),
   isEditing: PropTypes.bool,
   editExpense: PropTypes.func,
-  // expenses: PropTypes.arrayOf(PropTypes.object),
 }.isRequired;
 
 Wallet.defaultProps = {
