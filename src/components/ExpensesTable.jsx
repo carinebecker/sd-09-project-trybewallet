@@ -14,7 +14,8 @@ class ExpensesTable extends Component {
   }
 
   handleEdit(id) {
-    const { editExpenseDispatcher } = this.props;
+    const { editExpenseDispatcher, isEditingDispatcher } = this.props;
+    isEditingDispatcher(true);
     editExpenseDispatcher(id);
   }
 

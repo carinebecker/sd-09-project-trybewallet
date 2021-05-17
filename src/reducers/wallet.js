@@ -33,7 +33,7 @@ const expenses = (state = INITIAL_EXPENSES_STATE, action) => {
   case EDIT_EXPENSE:
     return {
       ...state,
-      editData: state.expenses.find((exp) => action.currEdit === exp.id),
+      editData: state.expenses.find((exp) => action.payload === exp.id),
     };
   default:
     return state;

@@ -221,7 +221,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getExchanges: (exchange) => dispatch(fetchExchanges(exchange)),
   expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
-  isEditingDispatcher: () => dispatch(isEditingExpense()),
+  isEditingDispatcher: (payload) => dispatch(isEditingExpense(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);
