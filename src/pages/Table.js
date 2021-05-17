@@ -21,6 +21,7 @@ class Table extends React.Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
+        {/* Vai mapear e renderizar os resultados do componente TableRow */}
         <tbody>
           {expenses.map((expense) => (<TableRow
             key={ expense.id }

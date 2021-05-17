@@ -12,7 +12,8 @@ const INITIAL_STATE = {
   total: 0.00,
   isEditing: false,
 };
-
+// Acrescenta elemento novo ao estado inicial
+// Baseado no tipo vai fazer coisas diferentes.
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case AGROUP_CURRENCIES:
@@ -35,6 +36,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       isEditing: true,
     });
   case FINISH_EDIT:
+    // Vai adicionar ao estado o retorno do map de expenses, deixando isEditing como false
     return ({
       ...state,
       expenses: state.expenses.map((expense) => {

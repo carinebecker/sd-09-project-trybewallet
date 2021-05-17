@@ -15,6 +15,7 @@ class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // Validação de email e senha, alterando alterando o estado
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value }, () => {
       const { email, password } = this.state;
@@ -27,6 +28,7 @@ class Login extends React.Component {
       }
     });
   }
+  // Envia o usuário para a pagina de carteira após o click no botão Entrar, quando a validação é feita.
 
   handleSubmit(e) {
     e.preventDefault();
@@ -65,6 +67,7 @@ class Login extends React.Component {
     );
   }
 }
+
 const mapDispatchToProps = (dispatch) => ({
   loginActionProp: (email) => dispatch(loginAction(email)),
 });

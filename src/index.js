@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import store from './store/index';
 
+// Provider é responsável por prover a Store para a aplicação
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={ store }>

@@ -9,6 +9,7 @@ class TableRow extends React.Component {
     this.renderEditButton = this.renderEditButton.bind(this);
   }
 
+  // Pega os dados da moeda: nome e conversão atual
   currencyInfos(currency, exchangeRates) {
     const currenciesArray = Object.values(exchangeRates)
       .find((foundCurrency) => foundCurrency.code === currency);
@@ -18,6 +19,7 @@ class TableRow extends React.Component {
     });
   }
 
+  // Função que vai renderizar o botão de editar despesa.
   renderEditButton(expense) {
     const { editExpense } = this.props;
     return (
@@ -32,13 +34,13 @@ class TableRow extends React.Component {
   }
 
   // Função que vai habilitar novamente o formAddExpense ao clicar no botão editar
-
   render() {
     const { expense, deleteExp, subExpensesToRedux } = this.props;
     const { id, description, tag, method, value, currency, exchangeRates } = expense;
     const { nameCurrency, conversionCurrency,
     } = this.currencyInfos(currency, exchangeRates);
     const valueExpense = (value * conversionCurrency).toFixed(2);
+    // Renderiza as informações( passadas por props ) de acordo com o preenchimento do formulário
     return (
       <tr>
         <td>{description}</td>
@@ -74,6 +76,7 @@ TableRow.propTypes = {
   editExpense: PropTypes.func.isRequired,
 }.isRequired;
 
+// Tem acesso a store e vai enviar a ação para alterar o estado
 const mapDispatchToProps = (dispatch) => ({
   deleteExp: (id) => dispatch(deleteExpense(id)),
   subExpensesToRedux: (value) => dispatch(subtractExpenses(value)),

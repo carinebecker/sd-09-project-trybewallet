@@ -12,6 +12,7 @@ class Wallet extends React.Component {
     this.sumTotal = this.sumTotal.bind(this);
   }
 
+  // Soma do Header
   sumTotal() {
     let total = 0;
     const { expenses } = this.props;

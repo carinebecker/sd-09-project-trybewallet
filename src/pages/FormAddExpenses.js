@@ -123,20 +123,23 @@ FormAddExpense.propTypes = {
   sumExpensesToRedux: PropTypes.func,
   currencies: PropTypes.arrayOf(),
 }.isRequired;
-// MapState - leitura do estado via props
 
+// MapState - leitura do estado via props
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
 });
 
-// Manda tudo pra store
+// é a responsável por disparar - fazer o dispatch de - uma ação para o reducer
 const mapDispatchToProps = (dispatch) => ({
   addExpenseToRedux: (expenses) => dispatch(addExpense(expenses)),
   agroupCurrenciesToRedux: (currencies) => dispatch(agroupCurrencies(currencies)),
   sumExpensesToRedux: (value) => dispatch(sumExpenses(value)),
 });
 
+// É o connect que dá acesso ao store( estado global) do Redux
+// conecta o componente com o estado global
 export default connect(mapStateToProps, mapDispatchToProps)(FormAddExpense);
 
-// Consultei repositório do colega Layo Kaminski
+// Consultei repositório do colega Layo Kaminski, e, peguei a ideia de fazer do Select(dropdown)
+// Um componente e renderizá-lo no Formulário

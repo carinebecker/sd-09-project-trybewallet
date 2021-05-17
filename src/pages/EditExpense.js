@@ -19,6 +19,7 @@ class EditExpense extends React.Component {
     this.renderCurrency = this.renderCurrency.bind(this);
   }
 
+  // Atualiza o estado
   handleChange({ target }) {
     const { value, name } = target;
     this.setState({
@@ -26,6 +27,7 @@ class EditExpense extends React.Component {
     });
   }
 
+  // Manda os dados atualizados para o estado.
   handleClick() {
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const { sendEditExpense } = this.props;
@@ -41,6 +43,7 @@ class EditExpense extends React.Component {
     sendEditExpense(expense);
   }
 
+  // Renderiza o dropdown da moeda. Não consegui usar o componente Select. Ver melhor depois
   renderCurrency() {
     const { currencies } = this.props;
     const { currency } = this.state;
