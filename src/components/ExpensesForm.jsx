@@ -2,12 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import requestAPI from '../api/requestAPI';
-import { prependExpenses, fetchExchanges } from '../actions';
+import { prependExpenses, fetchExchanges, isEditingExpense } from '../actions';
 
 class ExpensesForm extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       currencies: [],
       id: 0,
@@ -21,14 +20,15 @@ class ExpensesForm extends Component {
 
     this.populateCurrencies = this.populateCurrencies.bind(this);
     this.currencyinput = this.currencyinput.bind(this);
-    this.descriptionInput = this.descriptionInput.bind(this);
-    this.expenseValueInput = this.expenseValueInput.bind(this);
+    this.createInput = this.createInput.bind(this);
     this.methodInput = this.methodInput.bind(this);
     this.tagInput = this.tagInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.submitEdit = this.submitEdit.bind(this);
     this.initialState = this.initialState.bind(this);
     this.populateExchangeRates = this.populateExchangeRates.bind(this);
+    this.renderButton = this.renderButton.bind(this);
   }
 
   componentDidMount() {
@@ -64,32 +64,16 @@ class ExpensesForm extends Component {
     this.setState({ [name]: value });
   }
 
-  expenseValueInput() {
-    const { value } = this.state;
+  createInput(name, labelText, value, type) {
     return (
-      <label htmlFor="value-input">
-        Valor:
+      <label htmlFor={ `${name}input` }>
+        {labelText }
         <input
-          type="number"
-          data-testid="value-input"
-          id="value-input"
-          name="value"
+          type={ type }
+          data-testid={ `${name}input` }
+          id={ `${name}input` }
+          name={ name }
           value={ value }
-          onChange={ this.handleChange }
-        />
-      </label>
-    );
-  }
-
-  descriptionInput() {
-    return (
-      <label htmlFor="description-input">
-        Descrição da despesa:
-        <input
-          type="text"
-          data-testid="description-input"
-          id="description-input"
-          name="description"
           onChange={ this.handleChange }
         />
       </label>
@@ -165,8 +149,12 @@ class ExpensesForm extends Component {
     );
   }
 
-  async handleClick(event) {
-    event.preventDefault();
+  submitEdit() {
+    const { isEditingDispatcher } = this.props;
+    isEditingDispatcher(false);
+  }
+
+  async handleClick() {
     await this.populateExchangeRates();
     const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
@@ -176,20 +164,44 @@ class ExpensesForm extends Component {
     this.initialState();
   }
 
+  renderButton(text, onClick) {
+    return (
+      <button type="button" onClick={ onClick }>
+        { text }
+      </button>
+    );
+  }
+
   render() {
+    const { value, description } = this.state;
+    const { isEditing } = this.props;
+
     return (
       <header>
         <form className="expenses-form">
           <div className="expenses-fields">
-            { this.expenseValueInput() }
+            { this.createInput('value', 'Valor:', value, 'number') }
             { this.currencyinput() }
             { this.methodInput() }
             { this.tagInput() }
-            { this.descriptionInput() }
+            { this.createInput(
+              'description',
+              'Descrição da despesa:',
+              description,
+              'text',
+            )}
           </div>
-          <button type="submit" onClick={ (event) => this.handleClick(event) }>
-            Adicionar despesa
-          </button>
+          {
+            isEditing
+              ? this.renderButton(
+                'Editar despesa',
+                this.submitEdit,
+              )
+              : this.renderButton(
+                'Adicionar despesa',
+                this.handleClick,
+              )
+          }
         </form>
       </header>
     );
@@ -198,11 +210,18 @@ class ExpensesForm extends Component {
 
 ExpensesForm.propTypes = {
   expensesDispatcher: PropTypes.func,
+  isEditing: PropTypes.bool,
 }.isRequired;
+
+const mapStateToProps = (state) => ({
+  editData: state.wallet.editData,
+  isEditing: state.wallet.isEditing,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getExchanges: (exchange) => dispatch(fetchExchanges(exchange)),
   expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
+  isEditingDispatcher: () => dispatch(isEditingExpense()),
 });
 
-export default connect(null, mapDispatchToProps)(ExpensesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

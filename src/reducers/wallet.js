@@ -2,39 +2,38 @@
 import {
   PREPEND_EXPENSES,
   DELETE_EXPENSE,
-  IS_EDITING,
+  IS_EDITING_EXPENSE,
+  EDIT_EXPENSE,
 } from '../actions/index';
 
 const INITIAL_EXPENSES_STATE = {
   expenses: [],
   isEditing: false,
-  currentEdit: {},
+  editData: {},
 };
 
 // https://medium.com/swlh/few-ways-to-update-a-state-array-in-redux-reducer-f2621ae8061
-const expenses = (state = INITIAL_EXPENSES_STATE, {
-  type,
-  expense,
-  payload,
-  currEdit,
-}) => {
-  console.log(`reducer: ${currEdit}`);
-  switch (type) {
+const expenses = (state = INITIAL_EXPENSES_STATE, action) => {
+  switch (action.type) {
   case PREPEND_EXPENSES:
     return {
       ...state,
-      expenses: [...state.expenses, expense],
+      expenses: [...state.expenses, action.expense],
     };
   case DELETE_EXPENSE:
     return {
       ...state,
-      expenses: state.expenses.filter((currExpense) => currExpense.id !== payload),
+      expenses: state.expenses.filter((currExpense) => currExpense.id !== action.payload),
     };
-  case IS_EDITING:
+  case IS_EDITING_EXPENSE:
     return {
       ...state,
-      isEditing: !state.isEditing,
-      currentEdit: state.expenses.find((exp) => currEdit === exp.id),
+      isEditing: action.payload,
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      editData: state.expenses.find((exp) => action.currEdit === exp.id),
     };
   default:
     return state;

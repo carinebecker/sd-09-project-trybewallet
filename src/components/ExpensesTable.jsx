@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, isEditing } from '../actions/index';
+import { deleteExpense, isEditingExpense, editExpense } from '../actions/index';
 
 class ExpensesTable extends Component {
   constructor(props) {
@@ -9,13 +9,21 @@ class ExpensesTable extends Component {
 
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.renderTableBody = this.renderTableBody.bind(this);
+    this.renderButton = this.renderButton.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleEdit(id) {
-    console.log(`handleEdit: ${id}`);
-    const { isEditingDispatcher } = this.props;
-    isEditingDispatcher(id);
+    const { editExpenseDispatcher } = this.props;
+    editExpenseDispatcher(id);
+  }
+
+  renderButton(text, testId, onClick) {
+    return (
+      <button type="button" data-testid={ testId } onClick={ onClick }>
+        { text }
+      </button>
+    );
   }
 
   renderTableHeader() {
@@ -48,20 +56,8 @@ class ExpensesTable extends Component {
           <td>{ Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
           <td>Real</td>
           <td>
-            <button
-              type="button"
-              data-testid="edit-btn"
-              onClick={ () => this.handleEdit(id) }
-            >
-              Editar
-            </button>
-            <button
-              type="button"
-              data-testid="delete-btn"
-              onClick={ () => deleteDispatcher(id) }
-            >
-              Excluir
-            </button>
+            { this.renderButton('Editar', 'edit-btn', () => this.handleEdit(id)) }
+            { this.renderButton('Excluir', 'delete-btn', () => deleteDispatcher(id)) }
           </td>
         </tr>
       ));
@@ -91,7 +87,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteDispatcher: (id) => dispatch(deleteExpense(id)),
-  isEditingDispatcher: (currExpense) => dispatch(isEditing(currExpense)),
+  isEditingDispatcher: (payload) => dispatch(isEditingExpense(payload)),
+  editExpenseDispatcher: (id) => dispatch(editExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
