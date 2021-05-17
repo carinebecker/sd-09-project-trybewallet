@@ -9,7 +9,7 @@ class ExpensesTable extends Component {
 
     this.renderTableHeader = this.renderTableHeader.bind(this);
     this.renderTableBody = this.renderTableBody.bind(this);
-    this.renderButton = this.renderButton.bind(this);
+    this.createButton = this.createButton.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
   }
 
@@ -19,7 +19,7 @@ class ExpensesTable extends Component {
     editExpenseDispatcher(id);
   }
 
-  renderButton(text, testId, onClick) {
+  createButton(text, testId, onClick) {
     return (
       <button type="button" data-testid={ testId } onClick={ onClick }>
         { text }
@@ -57,8 +57,8 @@ class ExpensesTable extends Component {
           <td>{ Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
           <td>Real</td>
           <td>
-            { this.renderButton('Editar', 'edit-btn', () => this.handleEdit(id)) }
-            { this.renderButton('Excluir', 'delete-btn', () => deleteDispatcher(id)) }
+            { this.createButton('Editar', 'edit-btn', () => this.handleEdit(id)) }
+            { this.createButton('Excluir', 'delete-btn', () => deleteDispatcher(id)) }
           </td>
         </tr>
       ));

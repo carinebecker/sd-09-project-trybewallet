@@ -7,7 +7,10 @@ import { prependExpenses, fetchExchanges, isEditingExpense } from '../actions';
 class ExpensesForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    const { editData, isEditing } = this.props;
+    if (isEditing === true) {
+      this.state = { editData };
+    } this.state = {
       currencies: [],
       id: 0,
       value: '',
@@ -28,7 +31,7 @@ class ExpensesForm extends Component {
     this.submitEdit = this.submitEdit.bind(this);
     this.initialState = this.initialState.bind(this);
     this.populateExchangeRates = this.populateExchangeRates.bind(this);
-    this.renderButton = this.renderButton.bind(this);
+    this.createButton = this.createButton.bind(this);
   }
 
   componentDidMount() {
@@ -164,7 +167,7 @@ class ExpensesForm extends Component {
     this.initialState();
   }
 
-  renderButton(text, onClick) {
+  createButton(text, onClick) {
     return (
       <button type="button" onClick={ onClick }>
         { text }
@@ -175,7 +178,7 @@ class ExpensesForm extends Component {
   render() {
     const { value, description } = this.state;
     const { isEditing } = this.props;
-
+    console.log(this.state);
     return (
       <header>
         <form className="expenses-form">
@@ -193,11 +196,11 @@ class ExpensesForm extends Component {
           </div>
           {
             isEditing
-              ? this.renderButton(
+              ? this.createButton(
                 'Editar despesa',
                 this.submitEdit,
               )
-              : this.renderButton(
+              : this.createButton(
                 'Adicionar despesa',
                 this.handleClick,
               )
