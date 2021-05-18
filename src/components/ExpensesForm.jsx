@@ -21,7 +21,7 @@ class ExpensesForm extends Component {
     };
 
     this.populateCurrencies = this.populateCurrencies.bind(this);
-    this.currencyinput = this.currencyinput.bind(this);
+    this.currencyInput = this.currencyInput.bind(this);
     this.createInput = this.createInput.bind(this);
     this.methodInput = this.methodInput.bind(this);
     this.tagInput = this.tagInput.bind(this);
@@ -63,7 +63,10 @@ class ExpensesForm extends Component {
   populateCurrencies() {
     requestAPI().then((result) => {
       const entries = Object.entries(result);
-      this.setState({ currencies: entries });
+      console.log(entries[0]);
+      const filteredCurrencies = entries.filter((value) => (
+        value[0] !== 'USDT')).map((curr) => curr[0]);
+      this.setState({ currencies: filteredCurrencies });
     });
   }
 
@@ -98,7 +101,7 @@ class ExpensesForm extends Component {
     );
   }
 
-  currencyinput() {
+  currencyInput() {
     const { currencies } = this.state;
     return (
       <label htmlFor="currency-input">
@@ -111,17 +114,13 @@ class ExpensesForm extends Component {
         >
           {
             currencies.map((value) => (
-              value[0] === 'USDT'
-                ? ''
-                : (
-                  <option
-                    key={ value[0] }
-                    value={ value[0] }
-                    data-testid={ value[0] }
-                  >
-                    { value[0] }
-                  </option>
-                )
+              <option
+                key={ value }
+                value={ value }
+                data-testid={ value }
+              >
+                { value }
+              </option>
             ))
           }
         </select>
@@ -205,7 +204,7 @@ class ExpensesForm extends Component {
           <form className="expenses-form">
             <div className="expenses-fields">
               { this.createInput('value', 'Valor:', value, 'number') }
-              { this.currencyinput() }
+              { this.currencyInput() }
               { this.methodInput() }
               { this.tagInput() }
               { this.createInput(
