@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import requestAPI from '../api/requestAPI';
 import ExpensesTable from './ExpensesTable';
-import { prependExpenses, fetchExchanges, isEditingExpense } from '../actions';
+import { addExpense, fetchExchanges, isEditingExpense, editExpense } from '../actions';
 
 class ExpensesForm extends Component {
   constructor(props) {
@@ -51,7 +51,6 @@ class ExpensesForm extends Component {
       tag,
       exchangeRates,
     });
-    console.log(expense);
   }
 
   async populateExchangeRates() {
@@ -169,8 +168,11 @@ class ExpensesForm extends Component {
   }
 
   submitEdit() {
-    const { isEditingDispatcher } = this.props;
+    const { isEditingDispatcher, editExpenseDispatcher } = this.props;
+    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const data = { id, value, description, currency, method, tag, exchangeRates };
     isEditingDispatcher(false);
+    editExpenseDispatcher(data);
     this.initialState();
   }
 
@@ -180,7 +182,8 @@ class ExpensesForm extends Component {
       lastId, id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
     const { expenseDispatcher } = this.props;
-    this.setState({ id: lastId, lastId: lastId + 1 });
+    this.setState({ lastId: lastId + 1 });
+    this.setState({ id: lastId });
     expenseDispatcher(data);
     this.initialState();
   }
@@ -238,8 +241,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getExchanges: (exchange) => dispatch(fetchExchanges(exchange)),
-  expenseDispatcher: (expense) => dispatch(prependExpenses(expense)),
+  expenseDispatcher: (expense) => dispatch(addExpense(expense)),
   isEditingDispatcher: (payload) => dispatch(isEditingExpense(payload)),
+  editExpenseDispatcher: (payload) => dispatch(editExpense(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesForm);

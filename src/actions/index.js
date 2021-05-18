@@ -7,9 +7,9 @@ export const getUserEmail = (email) => ({
 });
 
 // https://medium.com/swlh/few-ways-to-update-a-state-array-in-redux-reducer-f2621ae8061
-export const PREPEND_EXPENSES = 'PREPEND_EXPENSES';
-export const prependExpenses = (data) => ({
-  type: PREPEND_EXPENSES,
+export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const addExpense = (data) => ({
+  type: ADD_EXPENSE,
   expense: data,
 });
 
@@ -34,5 +34,11 @@ export const deleteExpense = (payload) => ({
 export const IS_EDITING_EXPENSE = 'IS_EDITING_EXPENSE';
 export const isEditingExpense = (payload) => ({
   type: IS_EDITING_EXPENSE,
+  payload,
+});
+
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const editExpense = (payload) => ({
+  type: EDIT_EXPENSE,
   payload,
 });
