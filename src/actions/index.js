@@ -36,9 +36,3 @@ export const isEditingExpense = (payload) => ({
   type: IS_EDITING_EXPENSE,
   payload,
 });
-
-export const EDIT_EXPENSE = 'EDIT_EXPENSE';
-export const editExpense = (payload) => ({
-  type: EDIT_EXPENSE,
-  payload,
-});

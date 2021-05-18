@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import requestAPI from '../api/requestAPI';
+import ExpensesTable from './ExpensesTable';
 import { prependExpenses, fetchExchanges, isEditingExpense } from '../actions';
 
 class ExpensesForm extends Component {
   constructor(props) {
     super(props);
-    const { editData, isEditing } = this.props;
-    if (isEditing === true) {
-      this.state = { editData };
-    } this.state = {
+    this.state = {
       currencies: [],
+      lastId: 1,
       id: 0,
       value: '',
       description: '',
@@ -32,10 +31,27 @@ class ExpensesForm extends Component {
     this.initialState = this.initialState.bind(this);
     this.populateExchangeRates = this.populateExchangeRates.bind(this);
     this.createButton = this.createButton.bind(this);
+    this.getEditValues = this.getEditValues.bind(this);
   }
 
   componentDidMount() {
     this.populateCurrencies();
+  }
+
+  getEditValues(editId) {
+    const { expenses } = this.props;
+    const expense = expenses.find((exp) => editId === exp.id);
+    const { id, value, description, currency, method, tag, exchangeRates } = expense;
+    this.setState({
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates,
+    });
+    console.log(expense);
   }
 
   async populateExchangeRates() {
@@ -155,14 +171,15 @@ class ExpensesForm extends Component {
   submitEdit() {
     const { isEditingDispatcher } = this.props;
     isEditingDispatcher(false);
+    this.initialState();
   }
 
   async handleClick() {
     await this.populateExchangeRates();
-    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const { lastId, id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
     const { expenseDispatcher } = this.props;
-    this.setState({ id: id + 1 });
+    this.setState({ id: lastId, lastId: lastId + 1 });
     expenseDispatcher(data);
     this.initialState();
   }
@@ -178,35 +195,31 @@ class ExpensesForm extends Component {
   render() {
     const { value, description } = this.state;
     const { isEditing } = this.props;
-    console.log(this.state);
     return (
-      <header>
-        <form className="expenses-form">
-          <div className="expenses-fields">
-            { this.createInput('value', 'Valor:', value, 'number') }
-            { this.currencyinput() }
-            { this.methodInput() }
-            { this.tagInput() }
-            { this.createInput(
-              'description',
-              'Descrição da despesa:',
-              description,
-              'text',
-            )}
-          </div>
-          {
-            isEditing
-              ? this.createButton(
-                'Editar despesa',
-                this.submitEdit,
-              )
-              : this.createButton(
-                'Adicionar despesa',
-                this.handleClick,
-              )
-          }
-        </form>
-      </header>
+      <>
+        <header>
+          <form className="expenses-form">
+            <div className="expenses-fields">
+              { this.createInput('value', 'Valor:', value, 'number') }
+              { this.currencyinput() }
+              { this.methodInput() }
+              { this.tagInput() }
+              { this.createInput(
+                'description',
+                'Descrição da despesa:',
+                description,
+                'text',
+              )}
+            </div>
+            {
+              isEditing
+                ? this.createButton('Editar despesa', this.submitEdit)
+                : this.createButton('Adicionar despesa', this.handleClick)
+            }
+          </form>
+        </header>
+        <ExpensesTable getValues={ this.getEditValues } />
+      </>
     );
   }
 }
@@ -217,6 +230,7 @@ ExpensesForm.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
   editData: state.wallet.editData,
   isEditing: state.wallet.isEditing,
 });

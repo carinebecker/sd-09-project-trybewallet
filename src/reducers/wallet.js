@@ -3,13 +3,11 @@ import {
   PREPEND_EXPENSES,
   DELETE_EXPENSE,
   IS_EDITING_EXPENSE,
-  EDIT_EXPENSE,
 } from '../actions/index';
 
 const INITIAL_EXPENSES_STATE = {
   expenses: [],
   isEditing: false,
-  editData: {},
 };
 
 // https://medium.com/swlh/few-ways-to-update-a-state-array-in-redux-reducer-f2621ae8061
@@ -29,11 +27,6 @@ const expenses = (state = INITIAL_EXPENSES_STATE, action) => {
     return {
       ...state,
       isEditing: action.payload,
-    };
-  case EDIT_EXPENSE:
-    return {
-      ...state,
-      editData: state.expenses.find((exp) => action.payload === exp.id),
     };
   default:
     return state;

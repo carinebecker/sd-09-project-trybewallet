@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense, isEditingExpense, editExpense } from '../actions/index';
+import { deleteExpense, isEditingExpense } from '../actions/index';
 
 class ExpensesTable extends Component {
   constructor(props) {
@@ -14,9 +14,9 @@ class ExpensesTable extends Component {
   }
 
   handleEdit(id) {
-    const { editExpenseDispatcher, isEditingDispatcher } = this.props;
+    const { getValues, isEditingDispatcher } = this.props;
     isEditingDispatcher(true);
-    editExpenseDispatcher(id);
+    getValues(id);
   }
 
   createButton(text, testId, onClick) {
@@ -89,7 +89,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   deleteDispatcher: (id) => dispatch(deleteExpense(id)),
   isEditingDispatcher: (payload) => dispatch(isEditingExpense(payload)),
-  editExpenseDispatcher: (id) => dispatch(editExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);
