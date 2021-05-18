@@ -89,7 +89,7 @@ class ExpensesForm extends Component {
         {labelText }
         <input
           type={ type }
-          data-testid={ `${name}input` }
+          data-testid={ `${name}-input` }
           id={ `${name}input` }
           name={ name }
           value={ value }
