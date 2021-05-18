@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPrice, saveExpense } from '../actions';
 
-const paymentMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-const tagInput1 = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+const Alimentacao = 'Alimentação';
 
-const currencyInput = 'currency-input';
-const methodInput = 'method-input';
-const tagInput = 'tag-input';
+const paymentMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+const tagInput1 = [Alimentacao, 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+
+const currencyInput = 'currency';
+const methodInput = 'method';
+const tagInput = 'tag';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -22,8 +24,7 @@ class Wallet extends React.Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: 'Alimentação',
-      exchangeRates: {},
+      tag: Alimentacao,
     };
   }
 
@@ -33,29 +34,31 @@ class Wallet extends React.Component {
   }
 
   handleChange({ target: { name, value } }) {
-    console.log(name, value);
     this.setState({
       [name]: value,
     });
   }
 
-  async handleClick() {
-    await fetchPrice();
-    const { saveExpenseKey, currencies } = this.props;
-    await this.setState({
-      exchangeRates: currencies,
-    });
+  handleClick() {
+    const { saveExpenseKey, fetchPriceKey } = this.props;
+    fetchPriceKey();
     saveExpenseKey(this.state);
     this.setState((prevState) => ({
       id: prevState.id + 1,
+      value: 0,
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: Alimentacao,
     }));
   }
 
-  dropDown(c, dataTestId) {
+  dropDown(c, name) {
     return (
       <select
-        data-testid={ dataTestId }
+        data-testid={ `${name}-input` }
         onChange={ this.handleChange }
+        name={ name }
       >
         {c.map((info, counter) => (
           <option
@@ -71,11 +74,8 @@ class Wallet extends React.Component {
 
   render() {
     const { email, currencies } = this.props;
-    const currencyKey = Object.keys(currencies);
     const { value, description } = this.state;
-    console.log(currencies);
     if (currencies) {
-      console.log(currencies);
       return (
         <div>
           <header>
@@ -98,7 +98,7 @@ class Wallet extends React.Component {
               onChange={ this.handleChange }
               value={ description }
             />
-            {this.dropDown(currencyKey, currencyInput)}
+            {this.dropDown(currencies, currencyInput)}
             {this.dropDown(paymentMethod, methodInput)}
             {this.dropDown(tagInput1, tagInput)}
             <button
@@ -116,9 +116,11 @@ class Wallet extends React.Component {
 }
 
 const mapStateToProps = (props) => {
+  console.log('');
   return ({
     email: props.user.email,
     currencies: props.wallet.currencies,
+    data: props.wallet.data,
   });
 };
 

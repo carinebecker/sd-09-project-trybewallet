@@ -22,7 +22,6 @@ const receivePriceFail = (error) => ({
 });
 
 export function fetchPrice() {
-  console.log('teste fetchPrice');
   return (dispatch) => (
     fetchAPI()
       .then((data) => dispatch(receivePrice(data)))

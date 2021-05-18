@@ -7,15 +7,17 @@ import {
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  data: {},
 };
 
 function wallet(state = INITIAL_STATE, action) {
-  console.log(state);
   switch (action.type) {
   case RECEIVE_PRICE:
-    return { ...state, currencies: action.data };
+    return { ...state, currencies: Object.keys(action.data), data: action.data };
   case SAVE_EXPENSE:
-    return { ...state, expenses: [...state.expenses, action.data] };
+    return { ...state,
+      expenses: [...state.expenses,
+        { ...action.data, exchangeRates: state.data }] };
   default:
     return state;
   }
