@@ -176,7 +176,8 @@ class ExpensesForm extends Component {
 
   async handleClick() {
     await this.populateExchangeRates();
-    const { lastId, id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const {
+      lastId, id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
     const { expenseDispatcher } = this.props;
     this.setState({ id: lastId, lastId: lastId + 1 });
