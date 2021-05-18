@@ -113,7 +113,7 @@ class Wallet extends React.Component {
       return (
         <button
           onClick={ this.handleExpense }
-          type="reset"
+          type="button"
         >
           Editar despesa
         </button>);
@@ -174,7 +174,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { money, expenses } = this.props;
+    const { money } = this.props;
     const { email, isFetching } = this.props;
     const { total } = this.state;
     return (
@@ -206,9 +206,7 @@ class Wallet extends React.Component {
             </tr>
             <WalletRegistry
               updateTotal={ this.updateTotal }
-              expenses={ expenses }
               edit={ this.editForm }
-              total={ total }
             />
           </table>
         </main>

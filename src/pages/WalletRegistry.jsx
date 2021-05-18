@@ -21,18 +21,19 @@ class ExpenseList extends React.Component {
     const { description, tag, method, value } = item;
     const array = [description, tag, method, value];
     return (
-      array.map((e, i) => <td key={ i }>{ e }</td>)
+      array.map((e) => <td key={ Math.random() }>{ e }</td>)
     );
   }
 
   render() {
-    const { expenses, deleteLine, updateTotal, total } = this.props;
-    updateTotal();
-    console.log(total);
+    const { expenses, deleteLine } = this.props;
+    // updateTotal();
+    console.log(expenses[0]);
     return expenses.map((item) => {
       const moneyInfo = item.exchangeRates[item.currency];
+      console.log(item.description);
       return (
-        <tr key={ item.id }>
+        <tr key={ Math.random() }>
           {this.basicCells(item)}
           <td>
             {moneyInfo.name.split('/')[0]}
@@ -75,13 +76,13 @@ ExpenseList.propTypes = {
   edit: PropTypes.func,
 }.isRequired;
 
-// const mapStateToProps = (state) => ({
-//   expenses: state.wallet.expenses,
-// });
+const mapStateToProps = (state) => ({
+  expenses: state.wallet.expenses,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   editForm: (item) => dispatch(editingExpense(item)),
   deleteLine: (expense) => dispatch(deleteExpense(expense)),
 });
 
-export default connect(null, mapDispatchToProps)(ExpenseList);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);

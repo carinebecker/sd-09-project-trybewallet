@@ -15,6 +15,7 @@ const initialState = {
 
 function wallet(state = initialState, action) {
   const { type, isFetching, money, expenses, isEditing, item } = action;
+  console.log(expenses);
   switch (type) {
   case WALLET_INFO:
     return {
@@ -40,8 +41,12 @@ function wallet(state = initialState, action) {
       }
       return false;
     });
-    state.expenses[expense.index] = expenses;
-    return { ...state, isEditing: false };
+    const newState = {};
+    Object.assign(newState, state);
+    newState.expenses[expense.index] = expenses;
+    newState.isEditing = false;
+    console.log(expense.index);
+    return newState;
   }
   default:
     return state;
