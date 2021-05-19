@@ -5,6 +5,7 @@ export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const RECEIVE_PRICE = 'RECEIVE_PRICE';
 export const RECEIVE_PRICE_FAIL = 'RECEIVE_PRICE_FAIL';
 export const SAVE_EXPENSE = 'SAVE_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const saveEmail = (email) => ({
   type: SAVE_EMAIL,
@@ -32,4 +33,9 @@ export function fetchPrice() {
 export const saveExpense = (data) => ({
   type: SAVE_EXPENSE,
   data,
+});
+
+export const deleteExpense = (id) => ({
+  type: DELETE_EXPENSE,
+  id,
 });

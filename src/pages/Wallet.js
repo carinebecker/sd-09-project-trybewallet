@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPrice, saveExpense } from '../actions';
+import { fetchPrice, saveExpense, deleteExpense } from '../actions';
 
 const Alimentacao = 'Alimentação';
 
@@ -50,6 +50,12 @@ class Wallet extends React.Component {
     ));
   }
 
+  handleDelete(i) {
+    console.log(i)
+    const { deleteExpenseKey } = this.props;
+    deleteExpenseKey(i);
+  }
+
   createBody(e) {
     return e.map((expense, index) => {
       const { description, tag, method, value, currency,
@@ -78,7 +84,7 @@ class Wallet extends React.Component {
               data-testid="delete-btn"
               type="button"
               id={ id }
-              onClick={ () => this.handleClick(id) }
+              onClick={ () => this.handleDelete(id) }
             >
               Deletar
             </button>
@@ -130,7 +136,7 @@ class Wallet extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.createBody(e)}
+          {e.length && this.createBody(e)}
         </tbody>
       </table>
     );
@@ -204,6 +210,7 @@ const mapStateToProps = (props) => {
 const mapDispatchToProps = (dispatch) => ({
   fetchPriceKey: () => dispatch(fetchPrice()),
   saveExpenseKey: (obj) => dispatch(saveExpense(obj)),
+  deleteExpenseKey: (id) => dispatch(deleteExpense(id)),
 });
 
 Wallet.propTypes = {
