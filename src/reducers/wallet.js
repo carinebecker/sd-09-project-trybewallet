@@ -8,7 +8,7 @@ export default function wallet(state = initialState, action) {
   case 'SET_EXPENSES':
     return { ...state, expenses: action.expenses };
 
-  case 'SET_EXPENSE':
+  case 'ADD_EXPENSE':
     return { ...state, expenses: [...state.expenses, action.expense] };
 
   case 'SET_EDIT':

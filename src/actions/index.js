@@ -1,13 +1,5 @@
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import reducer from '../reducers';
-
-const store = createStore(
-  reducer,
-  composeWithDevTools(
-    applyMiddleware(thunk),
-  ),
-);
-
-export default store;
+export const login = (email) => ({ type: 'LOGIN', email });
+export const setCurrencies = (currencies) => ({ type: 'SET_CURRENCIES', currencies });
+export const setExpenses = (expenses) => ({ type: 'SET_EXPENSES', expenses });
+export const addExpense = (expense) => ({ type: 'ADD_EXPENSE', expense });
+export const setEdit = (condition, expense) => ({ type: 'SET_EDIT', condition, expense });
