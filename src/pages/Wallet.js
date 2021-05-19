@@ -51,7 +51,6 @@ class Wallet extends React.Component {
   }
 
   handleDelete(i) {
-    console.log(i)
     const { deleteExpenseKey } = this.props;
     deleteExpenseKey(i);
   }
