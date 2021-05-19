@@ -11,6 +11,7 @@ const tagInput1 = [Alimentacao, 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 const currencyInput = 'currency';
 const methodInput = 'method';
 const tagInput = 'tag';
+let expensesTotal = 0;
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -72,15 +73,27 @@ class Wallet extends React.Component {
     );
   }
 
+  totalSumExpenses(e) {
+    return e.reduce((total, expense) => {
+      const tempValue = expense.exchangeRates[expense.currency].ask;
+      return total + (tempValue * expense.value);
+    }, 0);
+  }
+
   render() {
-    const { email, currencies } = this.props;
+    const { email, currencies, expenses } = this.props;
     const { value, description } = this.state;
+
+    if (expenses.length) {
+      expensesTotal = this.totalSumExpenses(expenses);
+    }
+
     if (currencies) {
       return (
         <div>
           <header>
             <p data-testid="email-field">{email}</p>
-            <p data-testid="total-field">{value}</p>
+            <p data-testid="total-field">{expensesTotal}</p>
             <p data-testid="header-currency-field">BRL</p>
           </header>
           <form>
@@ -120,7 +133,7 @@ const mapStateToProps = (props) => {
   return ({
     email: props.user.email,
     currencies: props.wallet.currencies,
-    data: props.wallet.data,
+    expenses: props.wallet.expenses,
   });
 };
 
