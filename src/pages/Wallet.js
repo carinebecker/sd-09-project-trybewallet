@@ -13,6 +13,10 @@ const methodInput = 'method';
 const tagInput = 'tag';
 let expensesTotal = 0;
 
+const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
+  'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
+  'Editar/Excluir'];
+
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +41,50 @@ class Wallet extends React.Component {
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
+    });
+  }
+
+  createTable(array) {
+    return array.map((item, i) => (
+      <th key={ i }>{item}</th>
+    ));
+  }
+
+  createBody(e) {
+    return e.map((expense, index) => {
+      const { description, tag, method, value, currency, 
+        exchangeRates, id } = expense;
+      const { ask, name } = exchangeRates[currency];
+      return (
+        <tr key={ index }>
+          <td>{description}</td>
+          <td>{tag}</td>
+          <td>{method}</td>
+          <td>{value}</td>
+          <td>{name}</td>
+          <td>{parseFloat(ask).toFixed(2)}</td>
+          <td>{(parseFloat(ask) * value).toFixed(2)}</td>
+          <td>Real</td>
+          <td>
+            <button
+              data-testid="edit-btn"
+              type="button"
+              id={ id }
+              onClick={ () => this.handleEditClick(id) }
+            >
+              Editar
+            </button>
+            <button
+              data-testid="delete-btn"
+              type="button"
+              id={ id }
+              onClick={ () => this.handleClick(id) }
+            >
+              Deletar
+            </button>
+          </td>
+        </tr>
+      );
     });
   }
 
@@ -70,6 +118,21 @@ class Wallet extends React.Component {
           </option>
         ))}
       </select>
+    );
+  }
+
+  tableExpenses(e) {
+    return (
+      <table>
+        <thead>
+          <tr>
+            {this.createTable(headerTable)}
+          </tr>
+        </thead>
+        <tbody>
+          {this.createBody(e)}
+        </tbody>
+      </table>
     );
   }
 
@@ -121,6 +184,7 @@ class Wallet extends React.Component {
               Adicionar despesa
             </button>
           </form>
+          {this.tableExpenses(expenses)}
         </div>
       );
     }
