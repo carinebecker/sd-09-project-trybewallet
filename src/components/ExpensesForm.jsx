@@ -9,9 +9,8 @@ class ExpensesForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currencies: [],
-      lastId: 1,
       id: 0,
+      currencies: [],
       value: '',
       description: '',
       currency: 'USD',
@@ -177,12 +176,10 @@ class ExpensesForm extends Component {
 
   async handleClick() {
     await this.populateExchangeRates();
-    const {
-      lastId, id, value, description, currency, method, tag, exchangeRates } = this.state;
+    const { id, value, description, currency, method, tag, exchangeRates } = this.state;
     const data = { id, value, description, currency, method, tag, exchangeRates };
     const { expenseDispatcher } = this.props;
-    this.setState({ lastId: lastId + 1 });
-    this.setState({ id: lastId });
+    this.setState({ id: id + 1 });
     expenseDispatcher(data);
     this.initialState();
   }
