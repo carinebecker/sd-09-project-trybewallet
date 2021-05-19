@@ -52,7 +52,7 @@ class Wallet extends React.Component {
 
   createBody(e) {
     return e.map((expense, index) => {
-      const { description, tag, method, value, currency, 
+      const { description, tag, method, value, currency,
         exchangeRates, id } = expense;
       const { ask, name } = exchangeRates[currency];
       return (
