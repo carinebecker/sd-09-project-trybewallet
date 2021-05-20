@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userEmail } from '../actions/index';
+import { userEmail } from '../actions/Login';
 
 // Requisito resolvido com auxílio de revisão de colegas.
 
