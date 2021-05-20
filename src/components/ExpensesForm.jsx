@@ -10,7 +10,10 @@ class ExpensesForm extends Component {
     super(props);
     this.state = {
       id: 0,
-      currencies: [],
+      currencies: [
+        'USD', 'CAD', 'EUR', 'GBP', 'ARS',
+        'BTC', 'LTC', 'JPY', 'CHF', 'AUD',
+        'CNY', 'ILS', 'ETH', 'XRP'],
       value: '',
       description: '',
       currency: 'USD',
@@ -62,7 +65,6 @@ class ExpensesForm extends Component {
   populateCurrencies() {
     requestAPI().then((result) => {
       const entries = Object.entries(result);
-      console.log(entries[0]);
       const filteredCurrencies = entries.filter((value) => (
         value[0] !== 'USDT')).map((curr) => curr[0]);
       this.setState({ currencies: filteredCurrencies });

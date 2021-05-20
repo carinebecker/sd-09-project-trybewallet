@@ -52,9 +52,9 @@ class ExpensesTable extends Component {
           <td>{ tag }</td>
           <td>{ method }</td>
           <td>{ value }</td>
-          <td>{ exchangeRates[currency].name.replace(/(.*)\/(.*)/g, '$1')}</td>
+          <td>{ exchangeRates[currency].name.replace(/(.*)\/(.*)/g, '$1') }</td>
           <td>{ Number(exchangeRates[currency].ask).toFixed(2) }</td>
-          <td>{ Number(exchangeRates[currency].ask * value).toFixed(2)}</td>
+          <td>{ Number(exchangeRates[currency].ask * value).toFixed(2) }</td>
           <td>Real</td>
           <td>
             { this.createButton('Editar', 'edit-btn', () => this.handleEdit(id)) }
