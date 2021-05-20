@@ -25,6 +25,7 @@ const initialState = {
   editor: false,
 };
 
+// Tive auxilio da Nathália Veneziano, pois tive algumas dificuldades. 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
