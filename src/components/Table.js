@@ -12,7 +12,7 @@ class Table extends Component {
 
   renderExpenses() {
     const { expenses, deleteItems, activateBtn } = this.props;
-    return (expenses && expenses.map((objects, index) => (
+    return (expenses.map((objects, index) => (
       <tr key={ objects.id }>
         <td>{objects.description}</td>
         <td>{objects.tag}</td>
