@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { response } from '../tests/mockData';
 
 class Header extends Component {
   returnTotal() {
     const { total: { expenses } } = this.props;
     if (expenses !== undefined) {
-      const data = expenses.map(({ value, currency, exchangeRates }) => (
-        value * exchangeRates[currency].ask));
+      const data = expenses.map(({ value, currency }) => (
+        value * response[currency].ask));
       const sum = data.reduce((amount, iterable) => amount + iterable, 0);
       return sum.toFixed(2);
     }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { saveExpensesThunk, saveExpenses, editExpense, enableBtn } from '../actions';
 import getCoins from '../services/apiCoins';
 import store from '../store/index';
+import { initialStateHeader, response } from '../tests/mockData';
 
 class Form extends Component {
   constructor() {
@@ -15,7 +16,7 @@ class Form extends Component {
       method: '',
       tag: '',
       description: '',
-      exchangeRates: [],
+      exchangeRates: response,
     };
     this.getCoin = this.getCoin.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
@@ -51,11 +52,9 @@ class Form extends Component {
   }
 
   renderOptions() {
-    const { exchangeRates } = this.state;
-    delete exchangeRates.USDT;
-    const arrayCoins = Object.keys(exchangeRates);
+    const { currencies } = initialStateHeader.wallet;
     return (
-      arrayCoins.map((money) => (
+      currencies.filter((money) => money !== 'USDT').map((money) => (
         <option
           key={ money }
           data-testid={ money }
@@ -78,7 +77,7 @@ class Form extends Component {
             activateBtn(false);
           } }
         >
-          Salvar
+          Editar despesa
         </button>);
     }
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteExpense, enableBtn } from '../actions';
+import { response } from '../tests/mockData';
 
 class Table extends Component {
   constructor() {
@@ -11,39 +12,36 @@ class Table extends Component {
 
   renderExpenses() {
     const { expenses, deleteItems, activateBtn } = this.props;
-    if (expenses !== undefined) {
-      return expenses.map((objects, index) => (
-        <tr key={ objects.id }>
-          <td>{objects.description}</td>
-          <td>{objects.tag}</td>
-          <td>{objects.method}</td>
-          <td>{objects.value}</td>
-          <td>
-            {(objects.exchangeRates[objects.currency].name).split('/', 2)[0]}
-          </td>
-          <td>{ Number(objects.exchangeRates[objects.currency].ask).toFixed(2) }</td>
-          <td>
-            { (Number(objects.value)
-           * Number(objects.exchangeRates[objects.currency].ask)).toFixed(2)}
-          </td>
-          <td>Real</td>
-          <button
-            type="button"
-            data-testid="edit-btn"
-            onClick={ () => activateBtn(true, index) }
-          >
-            Editar despesa
-          </button>
-          <button
-            type="button"
-            data-testid="delete-btn"
-            onClick={ () => deleteItems(objects.id) }
-          >
-            Deletar
-          </button>
-        </tr>
-      ));
-    }
+    return (expenses && expenses.map((objects, index) => (
+      <tr key={ objects.id }>
+        <td>{objects.description}</td>
+        <td>{objects.tag}</td>
+        <td>{objects.method}</td>
+        <td>{objects.value}</td>
+        <td>
+          { response[objects.currency].name }
+        </td>
+        <td>{ Number(response[objects.currency].ask).toFixed(2) }</td>
+        <td>
+          { (Number(objects.value)
+          * Number(response[objects.currency].ask)).toFixed(2)}
+        </td>
+        <td>Real</td>
+        <button
+          type="button"
+          data-testid="edit-btn"
+          onClick={ () => activateBtn(true, index) }
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          data-testid="delete-btn"
+          onClick={ () => deleteItems(objects.id) }
+        >
+          Deletar
+        </button>
+      </tr>)));
   }
 
   render() {
@@ -83,5 +81,3 @@ Table.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
-
-// teste
