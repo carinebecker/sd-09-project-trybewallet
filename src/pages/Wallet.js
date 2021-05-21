@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import get from '../services/api';
-import { walletThunk } from '../actions';
+import { walletThunk, updateExpenseAction } from '../actions';
 import Select from '../components/Select';
 import Table from '../components/Table';
 
@@ -12,6 +12,8 @@ class Wallet extends Component {
     this.handleApi = this.handleApi.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.save = this.save.bind(this);
+    this.update = this.update.bind(this);
+    this.edit = this.edit.bind(this);
     this.total = this.total.bind(this);
     this.state = {
       currencies: [],
@@ -19,16 +21,25 @@ class Wallet extends Component {
         id: 0,
         value: 0,
         description: '',
-        currency: '',
-        method: '',
-        tag: '',
+        currency: 'default',
+        method: 'default',
+        tag: 'default',
         exchangeRates: {},
       },
+      isEditing: false,
     };
   }
 
   componentDidMount() {
     this.handleApi();
+  }
+
+  componentDidUpdate() {
+    const { expenseEdit } = this.props;
+    const { isEditing } = this.state;
+    if(expenseEdit !== undefined && isEditing === false) {
+      this.edit();
+    }
   }
 
   async handleApi() {
@@ -56,6 +67,15 @@ class Wallet extends Component {
     });
   }
 
+  edit() {
+    const { expenseEdit } = this.props;
+
+    this.setState({
+      expenses: expenseEdit,
+      isEditing: true,
+    })
+  }
+
   save() {
     const { saveExpenses } = this.props;
     const { expenses } = this.state;
@@ -65,10 +85,16 @@ class Wallet extends Component {
     }));
   }
 
+  update() {
+    const { updateExp } = this.props; // DispatchToProps
+    const { expenses } = this.state;
+    updateExp(expenses.id, expenses);
+  }
+
   render() {
     const { email } = this.props;
     const sum = this.total();
-    const { currencies, expenses: { value, description } } = this.state;
+    const { currencies, expenses: { value, description, currency, method, tag } } = this.state;
     return (
       <div>
         <h2>Wallet Page</h2>
@@ -82,20 +108,21 @@ class Wallet extends Component {
           id="value"
           value={ value }
           onChange={ (e) => this.handleChange(e.target) }
-        />
+        /><br />
         <input
           data-testid="description-input"
+          placeholder="descrição"
           type="text"
           name="description"
           id="description"
           value={ description }
           onChange={ (e) => this.handleChange(e.target) }
-        />
+        /><br />
         <select
           data-testid="currency-input"
           name="currency"
           id="currency"
-          defaultValue="default"
+          value={ currency }
           onChange={ (e) => this.handleChange(e.target) }
         >
           <option disabled value="default"> -- Selecione uma opção -- </option>
@@ -105,9 +132,12 @@ class Wallet extends Component {
             </option>
           ))}
         </select>
-        <Select handleChange={ this.handleChange } />
+        <Select handleChange={ this.handleChange } method={ method } tag={ tag } />
         <button type="button" onClick={ () => this.save() }>
           Adicionar despesa
+        </button>
+        <button type="button" onClick={ (e) => this.update(e.target.value) }>
+          Salvar Alterações
         </button>
         <Table />
       </div>
@@ -115,13 +145,17 @@ class Wallet extends Component {
   }
 }
 
+// Acessar store como props - this.props
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,
+  expenseEdit: state.wallet.expenseEdit,
 });
 
+// Dispachar actions
 const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (expenses) => dispatch(walletThunk(expenses)),
+  updateExp: (id, expense) => dispatch(updateExpenseAction(id, expense)),
 });
 
 Wallet.propTypes = {

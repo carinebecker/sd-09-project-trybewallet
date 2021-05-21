@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeItem } from '../actions';
+import { editExpenseAction, removeItemAction } from '../actions';
 
 class TableHeader extends Component {
   removeHandler(id) {
     const { removeExpense } = this.props;
     removeExpense(id);
+  }
+
+  editForm(index) {
+    const { editExpense } = this.props; // DispatchToProps
+    const { expenses } = this.props; 
+
+    editExpense(expenses[index]);
   }
 
   render() {
@@ -39,7 +46,13 @@ class TableHeader extends Component {
               <td>{rv(expense.value * expense.exchangeRates[expense.currency].ask)}</td>
               <td>Real</td>
               <td>
-                <button type="button">Editar</button>
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => this.editForm(index) }
+                >
+                  Editar
+                </button>
                 <button
                   type="button"
                   data-testid="delete-btn"
@@ -56,12 +69,16 @@ class TableHeader extends Component {
   }
 }
 
+// Acessar store como props - this.props
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  expenseEdit: state.wallet.expenseEdit,
 });
 
+// Dispachar actions
 const mapDispatchToProps = (dispatch) => ({
-  removeExpense: (id) => dispatch(removeItem(id)),
+  removeExpense: (id) => dispatch(removeItemAction(id)),
+  editExpense: (id) => dispatch(editExpenseAction(id)),
 });
 
 TableHeader.propTypes = {

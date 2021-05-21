@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 export default class Select extends Component {
   render() {
-    const { handleChange } = this.props;
+    const { handleChange, method, tag } = this.props;
     return (
       <div>
         <select
           data-testid="method-input"
           name="method"
           id="method-input"
-          defaultValue="default"
+          value={ method }
           onChange={ (e) => handleChange(e.target) }
         >
           <option disabled value="default"> -- Selecione uma opção -- </option>
@@ -18,12 +18,12 @@ export default class Select extends Component {
           <option value="Cartão de crédito"> Cartão de crédito </option>
           <option value="Cartão de débito"> Cartão de débito </option>
         </select>
-
+        <br />
         <select
           data-testid="tag-input"
           name="tag"
           id="tag"
-          defaultValue="default"
+          value={ tag }
           onChange={ (e) => handleChange(e.target) }
         >
           <option disabled value="default"> -- Selecione uma opção -- </option>
