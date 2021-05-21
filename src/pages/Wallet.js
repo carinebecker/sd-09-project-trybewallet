@@ -59,7 +59,7 @@ class Wallet extends React.Component {
     }
   }
 
-  totalSumExpenses(e) {
+  totalSumExpenses(e = []) {
     return e.reduce((total, expense) => {
       const tempValue = expense.exchangeRates[expense.currency].ask;
       return total + (tempValue * expense.value);

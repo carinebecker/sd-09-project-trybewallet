@@ -27,8 +27,9 @@ function wallet(state = INITIAL_STATE, action) {
       expenses: [...state.expenses.filter(({ id }) => id !== action.id)] };
   case EDIT_EXPENSE:
     return { ...state,
-      expenses: [...state.expenses,
-        { ...action.data, exchangeRates: state.exchangeRatesTemp, id: action.idToEdit }],
+      expenses: [
+        { ...action.data, exchangeRates: state.exchangeRatesTemp, id: action.idToEdit },
+        ...state.expenses],
       exchangeRatesTemp: {} };
   default:
     return state;
