@@ -5,22 +5,22 @@ import { connect } from 'react-redux';
 class WalletTable extends React.Component {
 
   handleConversion(id, exchangeRates, value, currency) {
-    const foundCurrency = Object.values(exchangeRates).filter(
+    console.log(id, exchangeRates, value, currency)
+    const foundCurrency = Object.values(exchangeRates).find(
       (searchingCurrency) => {
-        console.log(searchingCurrency.code)
-        console.log(currency)
         return searchingCurrency.code === currency;
       },
     );
-    const exchangeCurrencyName = foundCurrency[id].name;
-    const exchangeCurrencyAsk = foundCurrency[id].ask;
-    const exchangedValue = foundCurrency[id].ask * value;
+    console.log(foundCurrency)
+    const exchangeCurrencyName = foundCurrency.name;
+    const exchangeCurrencyAsk = foundCurrency.ask;
+    const exchangedValue = foundCurrency.ask * value;
     return { exchangeCurrencyName, exchangeCurrencyAsk, exchangedValue };
   }
 
   handleExchangeInfo() {
     const { expenses } = this.props;
-    expenses.map((expense) => {
+    return expenses.map((expense) => {
       const { id, value, exchangeRates, description, currency, method, tag } = expense;
       const conversion = this.handleConversion(id, exchangeRates, value, currency);
       const { exchangeCurrencyName, exchangeCurrencyAsk, exchangedValue } = conversion;
@@ -35,7 +35,7 @@ class WalletTable extends React.Component {
         fixedExchangedValue,
         'Moeda de conversão': 'Real Brasileiro',
       };
-      console.log(expenses)
+      console.log(allTableData)
       return allTableData;
     });
   }
@@ -54,7 +54,7 @@ class WalletTable extends React.Component {
         </thead>
         <tbody>
           { expenses.length > 0
-            ? Object.values(this.handleExchangeInfo()).map(
+            ? Object.values(this.handleExchangeInfo()[1]).map(
               (item) => <td key={ item }>{item}</td>,
             )
             : ''}
