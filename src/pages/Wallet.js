@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPrice, saveExpense, deleteExpense } from '../actions';
+import { fetchPrice, saveExpense, deleteExpense, editExpense } from '../actions';
 
 const Alimentacao = 'Alimentação';
-
 const paymentMethod = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 const tagInput1 = [Alimentacao, 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-
-const currencyInput = 'currency';
-const methodInput = 'method';
-const tagInput = 'tag';
 let expensesTotal = 0;
-
+const DEFAULT_STATE = {
+  value: 0,
+  description: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: Alimentacao,
+};
 const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
   'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
   'Editar/Excluir'];
@@ -24,12 +25,10 @@ class Wallet extends React.Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
+      editing: false,
+      idToEdit: '',
       id: 0,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: Alimentacao,
+      ...DEFAULT_STATE,
     };
   }
 
@@ -93,18 +92,42 @@ class Wallet extends React.Component {
     });
   }
 
+  saveEditedExpense(idToEdit) {
+    const { editExpenseKey } = this.props;
+    const { id, value, description, currency, method, tag } = this.state;
+    this.handleDelete(idToEdit);
+    editExpenseKey({
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    }, idToEdit);
+  }
+
   handleClick() {
+    const { editing, idToEdit, id, value, description,
+      currency, method, tag } = this.state;
     const { saveExpenseKey, fetchPriceKey } = this.props;
-    fetchPriceKey();
-    saveExpenseKey(this.state);
-    this.setState((prevState) => ({
-      id: prevState.id + 1,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: Alimentacao,
-    }));
+    if (editing) {
+      this.saveEditedExpense(idToEdit);
+      this.setState(() => ({ ...DEFAULT_STATE, id }));
+    } else {
+      fetchPriceKey();
+      saveExpenseKey({
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+      });
+      this.setState((prevState) => ({
+        ...DEFAULT_STATE,
+        id: prevState.id + 1,
+      }));
+    }
   }
 
   dropDown(c, name) {
@@ -150,12 +173,10 @@ class Wallet extends React.Component {
 
   render() {
     const { email, currencies, expenses } = this.props;
-    const { value, description } = this.state;
-
+    const { value, description, editing } = this.state;
     if (expenses.length) {
       expensesTotal = this.totalSumExpenses(expenses);
     }
-
     if (currencies) {
       return (
         <div>
@@ -179,14 +200,14 @@ class Wallet extends React.Component {
               onChange={ this.handleChange }
               value={ description }
             />
-            {this.dropDown(currencies, currencyInput)}
-            {this.dropDown(paymentMethod, methodInput)}
-            {this.dropDown(tagInput1, tagInput)}
+            {this.dropDown(currencies, 'currency')}
+            {this.dropDown(paymentMethod, 'method')}
+            {this.dropDown(tagInput1, 'tag')}
             <button
               type="button"
               onClick={ this.handleClick }
             >
-              Adicionar despesa
+              { !editing ? 'Adicionar despesa' : 'Editar despesa' }
             </button>
           </form>
           {this.tableExpenses(expenses)}
@@ -196,7 +217,6 @@ class Wallet extends React.Component {
     return <p>Loading...</p>;
   }
 }
-
 const mapStateToProps = (props) => {
   console.log('');
   return ({
@@ -205,15 +225,11 @@ const mapStateToProps = (props) => {
     expenses: props.wallet.expenses,
   });
 };
-
 const mapDispatchToProps = (dispatch) => ({
   fetchPriceKey: () => dispatch(fetchPrice()),
   saveExpenseKey: (obj) => dispatch(saveExpense(obj)),
   deleteExpenseKey: (id) => dispatch(deleteExpense(id)),
+  editExpenseKey: (obj, idToEdit) => dispatch(editExpense(obj, idToEdit)),
 });
-
-Wallet.propTypes = {
-  email: PropTypes.string,
-}.isRequired;
-
+Wallet.propTypes = { email: PropTypes.string }.isRequired;
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

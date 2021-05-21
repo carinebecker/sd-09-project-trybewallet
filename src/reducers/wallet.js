@@ -3,6 +3,7 @@ import {
   DELETE_EXPENSE,
   RECEIVE_PRICE,
   SAVE_EXPENSE,
+  EDIT_EXPENSE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -21,7 +22,14 @@ function wallet(state = INITIAL_STATE, action) {
         { ...action.data, exchangeRates: state.data }] };
   case DELETE_EXPENSE:
     return { ...state,
-      expenses: [...state.expenses.filter((expense) => expense.id !== action.id)] };
+      exchangeRatesTemp:
+        state.expenses.filter(({ id }) => id === action.id)[0].exchangeRates,
+      expenses: [...state.expenses.filter(({ id }) => id !== action.id)] };
+  case EDIT_EXPENSE:
+    return { ...state,
+      expenses: [...state.expenses,
+        { ...action.data, exchangeRates: state.exchangeRatesTemp, id: action.idToEdit }],
+      exchangeRatesTemp: {} };
   default:
     return state;
   }

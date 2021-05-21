@@ -6,6 +6,7 @@ export const RECEIVE_PRICE = 'RECEIVE_PRICE';
 export const RECEIVE_PRICE_FAIL = 'RECEIVE_PRICE_FAIL';
 export const SAVE_EXPENSE = 'SAVE_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export const saveEmail = (email) => ({
   type: SAVE_EMAIL,
@@ -38,4 +39,10 @@ export const saveExpense = (data) => ({
 export const deleteExpense = (id) => ({
   type: DELETE_EXPENSE,
   id,
+});
+
+export const editExpense = (obj, idToEdit) => ({
+  type: EDIT_EXPENSE,
+  data: obj,
+  idToEdit,
 });
