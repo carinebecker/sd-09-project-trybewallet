@@ -14,16 +14,13 @@ const DEFAULT_STATE = {
   method: 'Dinheiro',
   tag: Alimentacao,
 };
-const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
-  'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
-  'Editar/Excluir'];
-
+const headerTable = ['Descrição', 'Tag', 'Método de pagamento', 'Valor', 'Moeda',
+  'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão', 'Editar/Excluir'];
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-
     this.state = {
       editing: false,
       idToEdit: '',
@@ -43,53 +40,30 @@ class Wallet extends React.Component {
     });
   }
 
-  createTable(array) {
-    return array.map((item, i) => (
-      <th key={ i }>{item}</th>
-    ));
-  }
-
   handleDelete(i) {
     const { deleteExpenseKey } = this.props;
     deleteExpenseKey(i);
   }
 
-  createBody(e) {
-    return e.map((expense, index) => {
-      const { description, tag, method, value, currency,
-        exchangeRates, id } = expense;
-      const { ask, name } = exchangeRates[currency];
-      return (
-        <tr key={ index }>
-          <td>{description}</td>
-          <td>{tag}</td>
-          <td>{method}</td>
-          <td>{value}</td>
-          <td>{name}</td>
-          <td>{parseFloat(ask).toFixed(2)}</td>
-          <td>{(parseFloat(ask) * value).toFixed(2)}</td>
-          <td>Real</td>
-          <td>
-            <button
-              data-testid="edit-btn"
-              type="button"
-              id={ id }
-              onClick={ () => this.handleEditClick(id) }
-            >
-              Editar
-            </button>
-            <button
-              data-testid="delete-btn"
-              type="button"
-              id={ id }
-              onClick={ () => this.handleDelete(id) }
-            >
-              Deletar
-            </button>
-          </td>
-        </tr>
-      );
-    });
+  handleEditClick(id) {
+    const { idToEdit, editing } = this.state;
+    if (editing && idToEdit !== id) {
+      this.setState({
+        idToEdit: id,
+      });
+    } else {
+      this.setState({
+        editing: !editing,
+        idToEdit: id,
+      });
+    }
+  }
+
+  totalSumExpenses(e) {
+    return e.reduce((total, expense) => {
+      const tempValue = expense.exchangeRates[expense.currency].ask;
+      return total + (tempValue * expense.value);
+    }, 0);
   }
 
   saveEditedExpense(idToEdit) {
@@ -130,6 +104,50 @@ class Wallet extends React.Component {
     }
   }
 
+  createTable(array) {
+    return array.map((item, i) => (
+      <th key={ i }>{item}</th>
+    ));
+  }
+
+  createBody(e) {
+    return e.map((expense, index) => {
+      const { description, tag, method, value, currency,
+        exchangeRates, id } = expense;
+      const { ask, name } = exchangeRates[currency];
+      return (
+        <tr key={ index }>
+          <td>{description}</td>
+          <td>{tag}</td>
+          <td>{method}</td>
+          <td>{value}</td>
+          <td>{name}</td>
+          <td>{parseFloat(ask).toFixed(2)}</td>
+          <td>{(parseFloat(ask) * value).toFixed(2)}</td>
+          <td>Real</td>
+          <td>
+            <button
+              data-testid="edit-btn"
+              type="button"
+              id={ id }
+              onClick={ () => this.handleEditClick(id) }
+            >
+              Editar
+            </button>
+            <button
+              data-testid="delete-btn"
+              type="button"
+              id={ id }
+              onClick={ () => this.handleDelete(id) }
+            >
+              Deletar
+            </button>
+          </td>
+        </tr>
+      );
+    });
+  }
+
   dropDown(c, name) {
     return (
       <select
@@ -162,13 +180,6 @@ class Wallet extends React.Component {
         </tbody>
       </table>
     );
-  }
-
-  totalSumExpenses(e) {
-    return e.reduce((total, expense) => {
-      const tempValue = expense.exchangeRates[expense.currency].ask;
-      return total + (tempValue * expense.value);
-    }, 0);
   }
 
   render() {
@@ -217,14 +228,11 @@ class Wallet extends React.Component {
     return <p>Loading...</p>;
   }
 }
-const mapStateToProps = (props) => {
-  console.log('');
-  return ({
-    email: props.user.email,
-    currencies: props.wallet.currencies,
-    expenses: props.wallet.expenses,
-  });
-};
+const mapStateToProps = (props) => ({
+  email: props.user.email,
+  currencies: props.wallet.currencies,
+  expenses: props.wallet.expenses,
+});
 const mapDispatchToProps = (dispatch) => ({
   fetchPriceKey: () => dispatch(fetchPrice()),
   saveExpenseKey: (obj) => dispatch(saveExpense(obj)),
