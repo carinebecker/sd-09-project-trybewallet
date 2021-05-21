@@ -16,7 +16,6 @@ class Form extends Component {
       tag: '',
       description: '',
       exchangeRates: [],
-      enableBtn: false,
     };
     this.getCoin = this.getCoin.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
