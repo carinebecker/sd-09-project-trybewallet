@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { saveExpensesThunk, saveExpenses } from '../actions';
+import { saveExpensesThunk, saveExpenses, editExpense, enableBtn } from '../actions';
 import getCoins from '../services/apiCoins';
 import store from '../store/index';
 
@@ -16,11 +16,13 @@ class Form extends Component {
       tag: '',
       description: '',
       exchangeRates: [],
+      enableBtn: false,
     };
     this.getCoin = this.getCoin.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.handleInputs = this.handleInputs.bind(this);
     this.saveData = this.saveData.bind(this);
+    this.renderEditBtn = this.renderEditBtn.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +66,24 @@ class Form extends Component {
     );
   }
 
+  renderEditBtn() {
+    const { getKey, edit, activateBtn } = this.props;
+    if (getKey === false) {
+      return (<button type="button" onClick={ this.saveData }>Adicionar despesa</button>);
+    } if (getKey === true) {
+      return (
+        <button
+          type="button"
+          onClick={ () => {
+            edit(this.state);
+            activateBtn(false);
+          } }
+        >
+          Salvar
+        </button>);
+    }
+  }
+
   render() {
     const { value } = this.state;
     return (
@@ -102,19 +122,29 @@ class Form extends Component {
           <option value="Transporte">Transporte</option>
           <option value="Saúde">Saúde</option>
         </select>
-        <button type="button" onClick={ this.saveData }>Adicionar despesa</button>
+        { this.renderEditBtn() }
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  getKey: state.wallet.keyBtn,
+  testestate: state.wallet.expenses,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   saveState: (state) => dispatch(saveExpenses(state)),
   saveNewExpenses: (state) => dispatch(saveExpensesThunk(state)),
+  edit: (state) => dispatch(editExpense(state)),
+  activateBtn: (bool, index) => dispatch(enableBtn(bool, index)),
 });
 
 Form.propTypes = {
   saveNewExpenses: PropTypes.func.isRequired,
+  getKey: PropTypes.bool.isRequired,
+  edit: PropTypes.func.isRequired,
+  activateBtn: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

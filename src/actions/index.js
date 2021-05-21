@@ -1,8 +1,9 @@
 export const CREATE_EMAIL = 'CORRECT_EMAIL';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
 export const SAVE_ATT_EXPENSES = 'SAVE_ATT_EXPENSES';
-export const DRINKDETAILS_ACTION = 'DRINKDETAILS_ACTION';
 export const DELETE_ITEMS = 'DELETE_ITEMS';
+export const ENABLE_BTN = 'ENABLE_BTN';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export const userEmail = (email) => ({
   type: CREATE_EMAIL,
@@ -23,6 +24,17 @@ export const saveAttExpenses = (data, exchangeRates) => ({
 export const deleteExpense = (id) => ({
   type: DELETE_ITEMS,
   id,
+});
+
+export const enableBtn = (bool, index) => ({
+  type: ENABLE_BTN,
+  bool,
+  index,
+});
+
+export const editExpense = (expenses) => ({
+  type: EDIT_EXPENSE,
+  expenses,
 });
 
 export const saveExpensesThunk = (data) => async (dispatch) => {

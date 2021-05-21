@@ -9,7 +9,7 @@ class Wallet extends React.Component {
       <div>
         <Header />
         <Form />
-        <Table />
+        <Table handleKey={ () => this.handleKeyBtn() } />
       </div>
     );
   }
