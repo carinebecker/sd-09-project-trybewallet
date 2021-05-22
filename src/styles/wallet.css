@@ -1,8 +1,8 @@
-header {
+.flexbox {
   align-items: center;
   background-color: antiquewhite;
   display: flex;
-  height: 10vh;
+  height: 15vh;
   justify-content: flex-end;
   width: 100%;
 }
