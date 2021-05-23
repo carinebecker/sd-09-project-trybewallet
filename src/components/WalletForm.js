@@ -20,7 +20,7 @@ class WalletForm extends React.Component {
   createInputDescription(handleChange) {
     return (
       <label htmlFor="description">
-        Descrição
+        Descrição:
         <input
           type="text"
           id="description"

@@ -50,7 +50,7 @@ class Wallet extends React.Component {
       currency, method, tag, exchangeRates } = this.state;
     this.setState((previ) => ({ totalValue: previ.totalValue + Number(value) }));
     this.setState((currentValue) => ({ id: currentValue.id + 1 }));
-    saveExpenses({ id, value, description, currency, method, tag, exchangeRates });
+    saveExpenses({ id, value, currency, method, tag, description, exchangeRates });
   }
 
   render() {

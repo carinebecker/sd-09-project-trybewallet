@@ -1,17 +1,12 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class WalletTable extends React.Component {
-
-  handleConversion(id, exchangeRates, value, currency) {
-    console.log(id, exchangeRates, value, currency)
+  handleConversion(exchangeRates, value, currency) {
     const foundCurrency = Object.values(exchangeRates).find(
-      (searchingCurrency) => {
-        return searchingCurrency.code === currency;
-      },
+      (searchingCurrency) => searchingCurrency.code === currency,
     );
-    console.log(foundCurrency)
     const exchangeCurrencyName = foundCurrency.name;
     const exchangeCurrencyAsk = foundCurrency.ask;
     const exchangedValue = foundCurrency.ask * value;
@@ -21,9 +16,10 @@ class WalletTable extends React.Component {
   handleExchangeInfo() {
     const { expenses } = this.props;
     return expenses.map((expense) => {
-      const { id, value, exchangeRates, description, currency, method, tag } = expense;
-      const conversion = this.handleConversion(id, exchangeRates, value, currency);
+      const { value, exchangeRates, description, currency, method, tag } = expense;
+      const conversion = this.handleConversion(exchangeRates, value, currency);
       const { exchangeCurrencyName, exchangeCurrencyAsk, exchangedValue } = conversion;
+      const fixedCurrencyAsk = parseFloat(exchangeCurrencyAsk).toFixed(2);
       const fixedExchangedValue = exchangedValue.toFixed(2);
       const allTableData = {
         description,
@@ -31,14 +27,17 @@ class WalletTable extends React.Component {
         method,
         value,
         exchangeCurrencyName,
-        exchangeCurrencyAsk,
+        fixedCurrencyAsk,
         fixedExchangedValue,
-        'Moeda de conversão': 'Real Brasileiro',
+        'Moeda de conversão': 'Real',
       };
-      console.log(allTableData)
       return allTableData;
     });
   }
+
+  // deleteButton(e) {
+  //     console.log(e)
+  //   }
 
   render() {
     const tableHeaders = ['Descrição', 'Tag', 'Método de pagamento',
@@ -54,18 +53,29 @@ class WalletTable extends React.Component {
         </thead>
         <tbody>
           { expenses.length > 0
-            ? Object.values(this.handleExchangeInfo()[1]).map(
-              (item) => <td key={ item }>{item}</td>,
-            )
+            ? this.handleExchangeInfo().map((expense) => (
+              <tr key={ expense.id }>
+                {Object.values(expense).map((item) => <td key={ item }>{item}</td>)}
+                <td>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    // onClick={ deleteRow(this.parentNode.parentNode.rowIndex) }
+                  >
+                    Excluir
+                  </button>
+                </td>
+              </tr>
+            ))
             : ''}
         </tbody>
       </table>);
   }
 }
 
-// WalletTable.propTypes = {
-//   expenses: PropTypes.arrayOf(Object).isRequired,
-// };
+WalletTable.propTypes = {
+  expenses: PropTypes.arrayOf(Object).isRequired,
+};
 
 const mapStateToProps = (state) => ({ expenses: state.wallet.expenses });
 
