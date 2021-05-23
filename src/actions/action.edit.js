@@ -1,0 +1,3 @@
+const EDIT_EXPENSES = 'EDIT_EXPENSES';
+
+export default EDIT_EXPENSES;
