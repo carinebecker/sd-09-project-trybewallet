@@ -8,12 +8,12 @@ import { renderWithRouterAndStore } from './testConfig'
 afterEach(() => jest.clearAllMocks());
 
 describe('1 - Crie uma página inicial de login com os seguintes campos e características:', () => {
-  test.skip('A rota para esta página deve ser \'/\'', () => {
+  test('A rota para esta página deve ser \'/\'', () => {
     const { history } = renderWithRouterAndStore(<App />);
     expect(history.location.pathname).toBe('/');
   });
 
-  test.skip('Crie um local para que o usuário insira seu email e senha', () => {
+  test('Crie um local para que o usuário insira seu email e senha', () => {
     renderWithRouterAndStore(<App />, '/');
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');
@@ -22,14 +22,14 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(senha).toBeInTheDocument();
   });
 
-  test.skip('Crie um botão com o texto \'Entrar\'', () => {
+  test('Crie um botão com o texto \'Entrar\'', () => {
     renderWithRouterAndStore(<App />, '/');
 
     const button = screen.getByText(/Entrar/i);
     expect(button).toBeInTheDocument();
   });
 
-  test.skip('Realize as seguintes verificações nos campos de email, senha e botão:', () => {
+  test('Realize as seguintes verificações nos campos de email, senha e botão:', () => {
     renderWithRouterAndStore(<App />);
 
     const button = screen.getByText(/Entrar/i);
@@ -63,7 +63,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(button).toBeEnabled();
   });
 
-  test.skip('Salve o email no estado da aplicação, com a chave email, assim que o usuário logar.', () => {
+  test('Salve o email no estado da aplicação, com a chave email, assim que o usuário logar.', () => {
     const { store } = renderWithRouterAndStore(<App />);
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');
@@ -76,7 +76,7 @@ describe('1 - Crie uma página inicial de login com os seguintes campos e caract
     expect(store.getState().user.email).toBe('alguem@email.com');
   });
 
-  test.skip('A rota deve ser mudada para \'/carteira\' após o clique no botão.', () => {
+  test('A rota deve ser mudada para \'/carteira\' após o clique no botão.', () => {
     const { history } = renderWithRouterAndStore(<App />);
     const email = screen.getByTestId('email-input');
     const senha = screen.getByTestId('password-input');

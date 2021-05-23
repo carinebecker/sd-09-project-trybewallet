@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class WalletTable extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.deleteButton = this.deleteButton.bind(this);
+  // }
+
   handleConversion(exchangeRates, value, currency) {
     const foundCurrency = Object.values(exchangeRates).find(
       (searchingCurrency) => searchingCurrency.code === currency,
@@ -35,8 +40,8 @@ class WalletTable extends React.Component {
     });
   }
 
-  // deleteButton(e) {
-  //     console.log(e)
+  // deleteButton(expense) {
+  //     console.log(expense)
   //   }
 
   render() {
@@ -60,7 +65,7 @@ class WalletTable extends React.Component {
                   <button
                     type="button"
                     data-testid="delete-btn"
-                    // onClick={ deleteRow(this.parentNode.parentNode.rowIndex) }
+                    // onClick={ (expense) => this.deleteButton(expense) }
                   >
                     Excluir
                   </button>
