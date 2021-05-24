@@ -81,8 +81,8 @@ class ExpenseWallet extends React.Component {
           </tr>
         </thead>
         <tbody>
-        {userExpenses.map((expense, index) => (
-            <tr key={ index }>
+          {userExpenses.map((expense, index) => (
+          <tr key={ index }>
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
               <td>{expense.method}</td>
@@ -95,11 +95,10 @@ class ExpenseWallet extends React.Component {
                 {(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
               </td>
               <td>Real</td>
-              <td>
-              </td>
+              <td></td>
             </tr>
           ))}
-      </tbody>
+        </tbody>
       </table>
     );
   }
@@ -171,7 +170,7 @@ class ExpenseWallet extends React.Component {
             {`Despesa Total: ${sumExpenses}`}
           </p>
           <p data-testid="header-currency-field">
-           Moeda padrão: BRL
+            Moeda padrão: BRL
           </p>
         </header>
         <form onSubmit={ this.sentWallet }>

@@ -36,7 +36,7 @@ export default function (state = INITIAL_STATE, action) {
     return registerExpense(state, action);
   case LOAD_CURRENCIES:
     return reciveCurrencies(state, action);
-    default:
+  default:
     return state;
   }
 }
