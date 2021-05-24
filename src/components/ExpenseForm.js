@@ -33,8 +33,9 @@ class ExpenseForm extends Component {
 
   async clickHandler() {
     const { fetch, addExpense, currencies } = this.props;
+    const inputCurrencies = currencies[0];
     await fetch();
-    this.setState({ exchangeRates: currencies });
+    this.setState({ exchangeRates: inputCurrencies });
     addExpense(this.state);
     this.setState({ value: '', description: '' });
   }
