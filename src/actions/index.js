@@ -22,15 +22,11 @@ export const setExchangeRates = (currencies, exchangeRates) => ({
 
 export const getExchangeRates = () => async (dispatch) => {
   const currencyAPI = 'https://economia.awesomeapi.com.br/json/all';
-  const realBrasileiro = -16;
   const exchangeRates = await fetch(currencyAPI)
     .then((response) => response.json())
     .then((json) => json);
   const currencies = Object.keys(exchangeRates)
     .filter((coin) => coin !== 'USDT')
     .map((coin) => coin);
-  Object.keys(exchangeRates).forEach((coin) => {
-    exchangeRates[coin].name = exchangeRates[coin].name.slice(0, realBrasileiro);
-  });
   dispatch(setExchangeRates(currencies, exchangeRates));
 };
