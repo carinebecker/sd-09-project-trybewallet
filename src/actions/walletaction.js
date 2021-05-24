@@ -60,5 +60,3 @@ export const editExpense = ({
 });
 
 export const excludeExpense = (id) => ({ type: EXCLUDE_EXPENSE, id });
-
-
