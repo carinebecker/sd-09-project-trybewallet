@@ -2,6 +2,7 @@
 import { GET_CURRENCIES, ADD_EXPENSES } from '../actions/action.wallet';
 import DELETE_EXPENSES from '../actions/action.delete';
 import EDIT_EXPENSE from '../actions/action.edit';
+import { DO_NOT_REFRESH } from '../actions/doNotRefresh';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -25,6 +26,11 @@ const userWallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: action.expenses,
+      editExpense: null,
+    };
+  case DO_NOT_REFRESH:
+    return {
+      ...state,
       editExpense: null,
     };
   case EDIT_EXPENSE:

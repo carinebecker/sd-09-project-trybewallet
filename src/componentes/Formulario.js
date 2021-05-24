@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchEconomyApi, updateExpenses } from '../actions/wallet';
+import { doNotRefresh, fetchEconomyApi, updateExpenses } from '../actions/wallet';
 
 class Formulario extends Component {
   constructor(props) {
@@ -22,18 +22,13 @@ class Formulario extends Component {
     this.requestCurrencies();
   }
 
-  static getDerivedStateFromProps(props, state) {
+  componentDidUpdate(props, prevState) {
     const { editExpense } = props;
 
-    if (!!editExpense && editExpense.id !== state.id) {
-      return {
-        id: editExpense.id,
-        value: editExpense.value,
-        currency: editExpense.currency,
-        method: editExpense.method,
-        tag: editExpense.tag,
-        description: editExpense.description,
-      };
+    if (!!editExpense && editExpense.id !== prevState.id) {
+      const { dispatchNotRefresh } = this.props;
+      dispatchNotRefresh();
+      this.setState(editExpense);
     }
 
     return null;
@@ -206,6 +201,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchFetchCurrencies: () => dispatch(fetchEconomyApi()),
   dispatchAddExpenses: (expenses) => dispatch(updateExpenses(expenses)),
+  dispatchNotRefresh: () => dispatch(doNotRefresh()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Formulario);

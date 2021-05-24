@@ -2,6 +2,7 @@ import { GET_CURRENCIES, ADD_EXPENSES } from './action.wallet';
 import DELETE_EXPENSES from './action.delete';
 import economyAPI from '../services/index';
 import EDIT_EXPENSE from './action.edit';
+import { DO_NOT_REFRESH } from './doNotRefresh';
 
 const updateCurrencies = (currencies) => ({
   type: GET_CURRENCIES,
@@ -28,4 +29,8 @@ const editExpense = (expense) => ({
   expense,
 });
 
-export { fetchEconomyApi, updateExpenses, deleteExpenses, editExpense };
+const doNotRefresh = () => ({
+  type: DO_NOT_REFRESH,
+});
+
+export { fetchEconomyApi, updateExpenses, deleteExpenses, editExpense, doNotRefresh };
