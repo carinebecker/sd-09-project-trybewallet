@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { editExpenses } from '../actions/wallet';
 
 class Header extends React.Component {
   constructor() {
@@ -41,7 +40,7 @@ class Header extends React.Component {
 }
 Header.propTypes = {
   userEmail: PropTypes.string.isRequired,
-  expenses: PropTypes.number.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -49,8 +48,4 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchEditExpenses: (expenses) => dispatch(editExpenses(expenses)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);

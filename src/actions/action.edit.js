@@ -1,3 +1,3 @@
-const EDIT_EXPENSES = 'EDIT_EXPENSES';
+const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
-export default EDIT_EXPENSES;
+export default EDIT_EXPENSE;

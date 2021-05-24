@@ -6,8 +6,8 @@ import { fetchEconomyApi, updateExpenses } from '../actions/wallet';
 class Formulario extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      id: 0,
       value: 0,
       currency: 'USD',
       method: 'Dinheiro',
@@ -20,6 +20,23 @@ class Formulario extends Component {
 
   componentDidMount() {
     this.requestCurrencies();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { editExpense } = props;
+
+    if (!!editExpense && editExpense.id !== state.id) {
+      return {
+        id: editExpense.id,
+        value: editExpense.value,
+        currency: editExpense.currency,
+        method: editExpense.method,
+        tag: editExpense.tag,
+        description: editExpense.description,
+      };
+    }
+
+    return null;
   }
 
   async requestCurrencies() {
@@ -35,14 +52,13 @@ class Formulario extends Component {
     });
   }
 
-  createExpense() {
-    this.requestCurrencies();
-
-    const { expenses, currencies, dispatchAddExpenses } = this.props;
-    const { value, currency, method, tag, description } = this.state;
-
+  async createExpense() {
+    await this.requestCurrencies();
+    const { expenses } = this.props;
+    const { currencies, dispatchAddExpenses, editExpense } = this.props;
+    const { id, value, currency, method, tag, description } = this.state;
     const expense = {
-      id: expenses.length,
+      id,
       value,
       currency,
       method,
@@ -50,10 +66,16 @@ class Formulario extends Component {
       description,
       exchangeRates: currencies,
     };
+    let newExpenses = [];
+    if (editExpense !== null) {
+      newExpenses = expenses.filter((exp) => exp.id !== editExpense.id);
+    }
+    newExpenses = [...expenses, expense];
 
-    dispatchAddExpenses(expense);
+    dispatchAddExpenses(newExpenses);
 
     this.setState({
+      id: expenses.length === 0 ? 1 : expenses[expenses.length - 1].id + 1,
       value: 0,
       currency: 'USD',
       method: 'Dinheiro',
@@ -124,7 +146,6 @@ class Formulario extends Component {
   render() {
     const { value, description } = this.state;
     const { currencies } = this.props;
-
     return (
       <form>
         <label htmlFor="value-input">
@@ -163,7 +184,7 @@ class Formulario extends Component {
           type="button"
           onClick={ () => this.createExpense() }
         >
-          Adicionar despesa
+          {this.props.editExpense ? 'Editar despesa' : 'Adicionar despesa'}
         </button>
       </form>
     );
@@ -179,6 +200,7 @@ Formulario.propTypes = {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editExpense: state.wallet.editExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({

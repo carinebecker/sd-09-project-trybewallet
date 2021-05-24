@@ -1,6 +1,7 @@
 import { GET_CURRENCIES, ADD_EXPENSES } from './action.wallet';
-import EDIT_EXPENSES from './action.edit';
+import DELETE_EXPENSES from './action.delete';
 import economyAPI from '../services/index';
+import EDIT_EXPENSE from './action.edit';
 
 const updateCurrencies = (currencies) => ({
   type: GET_CURRENCIES,
@@ -17,9 +18,14 @@ const fetchEconomyApi = () => async (dispatch) => {
   return dispatch(updateCurrencies(currencies));
 };
 
-const editExpenses = (expenses) => ({
-  type: EDIT_EXPENSES,
+const deleteExpenses = (expenses) => ({
+  type: DELETE_EXPENSES,
   expenses,
 });
 
-export { fetchEconomyApi, updateExpenses, editExpenses };
+const editExpense = (expense) => ({
+  type: EDIT_EXPENSE,
+  expense,
+});
+
+export { fetchEconomyApi, updateExpenses, deleteExpenses, editExpense };

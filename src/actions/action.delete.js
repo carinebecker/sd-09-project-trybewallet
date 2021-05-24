@@ -1,0 +1,3 @@
+const DELETE_EXPENSES = 'DELETE_EXPENSES';
+
+export default DELETE_EXPENSES;
