@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import {
   createExpense,
   requisitionCoins,
+  excludeExpense,
+  editExpense,
 } from '../actions/walletaction';
 
 class ExpenseWallet extends React.Component {
@@ -18,10 +20,11 @@ class ExpenseWallet extends React.Component {
       noEditing: true,
       idExpenseEdit: '',
     };
-
     this.handleExpense = this.handleExpense.bind(this);
     this.sentWallet = this.sentWallet.bind(this);
-    this.renderTable = this.renderTable.bind(this);
+    this.table = this.table.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.renderSelect = this.renderSelect.bind(this);
   }
 
   componentDidMount() {
@@ -59,8 +62,15 @@ class ExpenseWallet extends React.Component {
     });
   }
 
-  renderTable() {
-    const { userExpenses } = this.props;
+  handleEdit(id) {
+    this.setState({
+      noEditing: false,
+      idExpenseEdit: id,
+    });
+  }
+
+  table() {
+    const { userExpenses, handleExclude } = this.props;
     const spaceHeader = [
       'Descrição',
       'Tag',
@@ -70,6 +80,7 @@ class ExpenseWallet extends React.Component {
       'Câmbio utilizado',
       'Valor convertido',
       'Moeda de conversão',
+      'Editar/Excluir',
     ];
 
     return (
@@ -98,6 +109,24 @@ class ExpenseWallet extends React.Component {
                 {(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
               </td>
               <td>Real</td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => handleExclude(expense.id) }
+                >
+                  Excluir
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => this.handleEdit(expense.id) }
+                >
+                  Editar
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -156,9 +185,8 @@ class ExpenseWallet extends React.Component {
   }
 
   render() {
-    const { value, description } = this.state;
+    const { value, description, noEditing } = this.state;
     const { email, userExpenses } = this.props;
-
     const sumExpenses = userExpenses.reduce(
       (acumulator, expense) => ((acumulator + Number(expense.value)
 * expense.exchangeRates[expense.currency].ask)), 0,
@@ -193,8 +221,9 @@ class ExpenseWallet extends React.Component {
             onChange={ ({ target }) => this.handleExpense(target) }
           />
           {this.renderSelect()}
-          <button type="submit">Adicionar Despesa</button>
-
+          {noEditing ? <button type="submit">Adicionar Despesa</button>
+            : <button type="submit">Editar despesa</button>}
+          {this.table()}
         </form>
       </div>
     );
@@ -210,10 +239,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   renderNewExpense: (expensesUserInput) => dispatch(createExpense(expensesUserInput)),
   carryCurrencies: () => dispatch(requisitionCoins()),
+  handleExclude: (e) => dispatch(excludeExpense(e)),
+  edit: (payload) => dispatch(editExpense(payload)),
 });
 
 ExpenseWallet.propTypes = {
   email: PropTypes.string.isRequerid,
 }.isRequerid;
-
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseWallet);

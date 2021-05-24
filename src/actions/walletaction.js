@@ -2,6 +2,8 @@ import fetchCoins from '../services/api';
 
 export const EXPENSES = 'EXPENSES';
 export const LOAD_CURRENCIES = 'LOAD_CURRENCIES';
+export const EXCLUDE_EXPENSE = 'EXCLUDE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 const wallet = ({ value, description, currency, method, tag, exchangeRates }) => ({
   type: EXPENSES,
@@ -41,3 +43,22 @@ export function createExpense({ value, description, currency, method, tag }) {
     }
   );
 }
+export const editExpense = ({
+  idExpenseEdit,
+  value,
+  description,
+  currency,
+  method,
+  tag }) => ({
+  type: EDIT_EXPENSE,
+  idExpenseEdit,
+  value,
+  description,
+  currency,
+  method,
+  tag,
+});
+
+export const excludeExpense = (id) => ({ type: EXCLUDE_EXPENSE, id });
+
+

@@ -2,6 +2,8 @@
 import {
   EXPENSES,
   LOAD_CURRENCIES,
+  EXCLUDE_EXPENSE,
+  EDIT_EXPENSE,
 } from '../actions/walletaction';
 
 const INITIAL_STATE = {
@@ -25,6 +27,26 @@ function registerExpense(state, action) {
   return { ...state, expenses: actualExpense };
 }
 
+function sendEditExpense(state, action) {
+  const {
+    idExpenseEdit: id,
+    tag,
+    description,
+    currency,
+    method,
+    value,
+  } = action;
+  const expensesExistent = state.expenses;
+  const reciveEdit = { id, tag, description, currency, method, value };
+  const atualExpense = expensesExistent.map((expense) => {
+    if (expense.id !== id) {
+      return expense;
+    }
+    return { ...expense, ...reciveEdit };
+  });
+  return { ...state, expenses: atualExpense };
+}
+
 function reciveCurrencies(state, action) {
   const { currencies } = action.payload;
   return { ...state, currencies };
@@ -36,6 +58,15 @@ export default function (state = INITIAL_STATE, action) {
     return registerExpense(state, action);
   case LOAD_CURRENCIES:
     return reciveCurrencies(state, action);
+  case EDIT_EXPENSE:
+    return sendEditExpense(state, action);
+  case EXCLUDE_EXPENSE: {
+    const newExpenses = state.expenses.filter((expense) => expense.id !== action.id);
+    return {
+      ...state,
+      expenses: newExpenses,
+    };
+  }
   default:
     return state;
   }
