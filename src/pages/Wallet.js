@@ -2,116 +2,113 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-createExpense,
-requisitionCoins,
+  createExpense,
+  requisitionCoins,
 } from '../actions/walletaction';
 
 class ExpenseWallet extends React.Component {
-constructor(props) {
-super(props);
-this.state = {
-currency: 'BRL',
-value: 0,
-description: '',
-method: 'Dinheiro',
-tag: 'Lazer',
-noEditing: true,
-idExpenseEdit: '',
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      currency: 'BRL',
+      value: 0,
+      description: '',
+      method: 'Dinheiro',
+      tag: 'Lazer',
+      noEditing: true,
+      idExpenseEdit: '',
+    };
 
-this.handleExpense = this.handleExpense.bind(this);
-this.sentWallet = this.sentWallet.bind(this);
-this.renderTable = this.renderTable.bind(this);
+    this.handleExpense = this.handleExpense.bind(this);
+    this.sentWallet = this.sentWallet.bind(this);
+    this.renderTable = this.renderTable.bind(this);
 
-}
+  }
 
-componentDidMount() {
-const { carryCurrencies } = this.props;
-carryCurrencies();
-}
+  componentDidMount() {
+    const { carryCurrencies } = this.props;
+    carryCurrencies();
+  }
 
-handleExpense({ name, value }) {
-this.setState({
-[name]: value,
-});
-}
+  handleExpense({ name, value }) {
+    this.setState({
+      [name]: value,
+    });
+  }
 
-sentWallet(event) {
-event.preventDefault();
-const { renderNewExpense, edit } = this.props;
-const {
-currency,
-value,
-description,
-method,
-tag,
-noEditing,
-idExpenseEdit,
-} = this.state;
-if (noEditing) {
-renderNewExpense({ currency, method, value, description, tag });
-} else {
-edit({ idExpenseEdit, currency, method, value, description, tag });
-}
-this.setState({
-value: 0,
-description: '',
-noEditing: true,
-});
-}
+  sentWallet(event) {
+    event.preventDefault();
+    const { renderNewExpense, edit } = this.props;
+    const {
+      currency,
+      value,
+      description,
+      method,
+      tag,
+      noEditing,
+      idExpenseEdit,
+    } = this.state;
+    if (noEditing) {
+      renderNewExpense({ currency, method, value, description, tag });
+    } else {
+      edit({ idExpenseEdit, currency, method, value, description, tag });
+    }
+    this.setState({
+      value: 0,
+      description: '',
+      noEditing: true,
+    });
+  }
 
 
-renderTable() {
-const { userExpenses } = this.props;
+  renderTable() {
+    const { userExpenses } = this.props;
 
-const spaceHeader = [
-'Descrição',
-'Tag',
-'Método de pagamento',
-'Valor',
-'Moeda',
-'Câmbio utilizado',
-'Valor convertido',
-'Moeda de conversão',
-];
+    const spaceHeader = [
+      'Descrição',
+      'Tag',
+      'Método de pagamento',
+      'Valor',
+      'Moeda',
+      'Câmbio utilizado',
+      'Valor convertido',
+      'Moeda de conversão',
+    ];
 
-return (
-<table>
-<thead>
-<tr>
-{spaceHeader.map((space, index) => (
-<th key={ index }>{space}</th>
-))}
-</tr>
-</thead>
-<tbody>
-{userExpenses.map((expense, index) => (
-<tr key={ index }>
-<td>{expense.description}</td>
-<td>{expense.tag}</td>
-<td>{expense.method}</td>
-<td>{expense.value}</td>
-<td>{expense.exchangeRates[expense.currency].name}</td>
-<td>
-{((expense.exchangeRates[expense.currency].ask * 100) / 100).toFixed(2)}
-</td>
-<td>
-{(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
+    return (
+  <table>
+  <thead>
+  <tr>
+  {spaceHeader.map((space, index) => (
+  <th key={ index }>{space}</th> ))}
+          </tr>
+        </thead>
+        <tbody>
+          {userExpenses.map((expense, index) => (
+            <tr key={ index }>
+             <td>{expense.description}</td>
+             <td>{expense.tag}</td>
+             <td>{expense.method}</td>
+             <td>{expense.value}</td>
+             <td>{expense.exchangeRates[expense.currency].name}</td>
+             <td>
+               {((expense.exchangeRates[expense.currency].ask * 100) / 100).toFixed(2)}
+              </td>
+              <td>
+                {(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
 </td>
 <td>Real</td>
 <td>
-
-
 </td>
 </tr>
 ))}
-</tbody>
-</table>
-);
+              </tbody>
+            </table>
+          );
 }
 
-renderSelect() {
-const { tag, currency, method } = this.state;
+    renderSelect() {
+  const { tag, currency, method } = this.state;
 const { globalCurrencies } = this.props;
 return (
 <div>
