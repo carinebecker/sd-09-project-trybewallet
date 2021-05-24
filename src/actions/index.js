@@ -3,6 +3,8 @@ export const SET_EMAIL = 'SET_EMAIL';
 export const NEW_EXPENSE = 'NEW_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const SET_EXCHANGE_RATES = 'SET_EXCHANGE_RATES';
+export const SET_EDITING = 'SET_EDITING';
+export const POST_EDITING = 'POST_EDITING';
 
 export const setEmail = (email) => ({
   type: SET_EMAIL,
@@ -23,6 +25,16 @@ export const setExchangeRates = (currencies, exchangeRates) => ({
   type: SET_EXCHANGE_RATES,
   currencies,
   exchangeRates,
+});
+
+export const setEditing = (id) => ({
+  type: SET_EDITING,
+  id,
+});
+
+export const postEditing = (expense) => ({
+  type: POST_EDITING,
+  expense,
 });
 
 export const getExchangeRates = () => async (dispatch) => {

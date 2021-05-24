@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { func, number, arrayOf, shape } from 'prop-types';
-import { newExpense, getExchangeRates } from '../actions';
+import { newExpense, getExchangeRates, postEditing } from '../actions';
 
 class NewExpense extends Component {
   constructor(props) {
@@ -12,15 +12,36 @@ class NewExpense extends Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
       description: '',
+      editingStart: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleAddExpense = this.handleAddExpense.bind(this);
+    this.handleEditExpense = this.handleEditExpense.bind(this);
   }
 
   async componentDidMount() {
     const { propGetExchangeRates } = this.props;
     await propGetExchangeRates();
+  }
+
+  componentDidUpdate() {
+    this.isEditing();
+  }
+
+  isEditing() {
+    const { editingStart } = this.state;
+    const { editingId, isEditing, expenses } = this.props;
+    if (isEditing && !editingStart) {
+      this.setState({
+        value: expenses[editingId].value,
+        currency: expenses[editingId].currency,
+        method: expenses[editingId].method,
+        tag: expenses[editingId].tag,
+        description: expenses[editingId].description,
+        editingStart: true,
+      });
+    }
   }
 
   handleChange({ target: { name, value } }) {
@@ -189,7 +210,45 @@ class NewExpense extends Component {
     );
   }
 
+  editExpenseButton() {
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={ this.handleEditExpense }
+        >
+          Editar despesa
+        </button>
+      </div>
+    );
+  }
+
+  handleEditExpense() {
+    const {
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    } = this.state;
+    const { propPostEditing, expenses, editingId } = this.props;
+    const edittedExpense = {
+      id: parseFloat(editingId),
+      value,
+      currency,
+      method,
+      tag,
+      description,
+      exchangeRates: expenses[parseFloat(editingId)].exchangeRates,
+    };
+    propPostEditing(edittedExpense);
+    this.setState({
+      editingStart: false,
+    });
+  }
+
   render() {
+    const { isEditing } = this.props;
     return (
       <form className="flexbox">
         {this.valueInput()}
@@ -197,7 +256,7 @@ class NewExpense extends Component {
         {this.methodInput()}
         {this.tagInput()}
         {this.descriptionInput()}
-        {this.addExpenseButton()}
+        {isEditing ? this.editExpenseButton() : this.addExpenseButton()}
       </form>
     );
   }
@@ -215,16 +274,21 @@ const mapStateToProps = ({ wallet: {
   id,
   currencies,
   exchangeRates,
+  isEditing,
+  editingId,
 } }) => ({
   expenses,
   id,
   currencies,
   exchangeRates,
+  isEditing,
+  editingId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   propNewExpense: (expenses) => dispatch(newExpense(expenses)),
   propGetExchangeRates: () => dispatch(getExchangeRates()),
+  propPostEditing: (expense) => dispatch(postEditing(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewExpense);

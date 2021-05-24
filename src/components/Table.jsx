@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { number, arrayOf, shape, func } from 'prop-types';
-import { deleteExpense } from '../actions';
+import { deleteExpense, setEditing } from '../actions';
 
 class Table extends Component {
   constructor(props) {
     super(props);
 
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   buttons(id) {
@@ -15,6 +16,9 @@ class Table extends Component {
       <td>
         <button
           type="button"
+          data-testid="edit-btn"
+          name={ id }
+          onClick={ this.handleEdit }
         >
           Editar
         </button>
@@ -33,6 +37,11 @@ class Table extends Component {
   handleDelete({ target: { name } }) {
     const { propDeleteExpense } = this.props;
     propDeleteExpense(name);
+  }
+
+  handleEdit({ target: { name } }) {
+    const { propSetEditing } = this.props;
+    propSetEditing(name);
   }
 
   render() {
@@ -94,6 +103,7 @@ const mapStateToProps = ({ wallet: { expenses, total } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   propDeleteExpense: (id) => dispatch(deleteExpense(id)),
+  propSetEditing: (id) => dispatch(setEditing(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
