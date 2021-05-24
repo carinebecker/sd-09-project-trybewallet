@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { func, number, arrayOf, shape } from 'prop-types';
 import { newExpense, getExchangeRates, postEditing } from '../actions';
+import Inputs from './Inputs';
 
 class NewExpense extends Component {
   constructor(props) {
@@ -48,119 +49,6 @@ class NewExpense extends Component {
     this.setState({
       [name]: value,
     });
-  }
-
-  valueInput() {
-    const { value } = this.state;
-    return (
-      <div>
-        <label htmlFor="value-input">
-          Valor:
-          <input
-            type="number"
-            name="value"
-            id="value-input"
-            value={ value }
-            data-testid="value-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-      </div>
-    );
-  }
-
-  currencyInput() {
-    const { currency } = this.state;
-    const { currencies } = this.props;
-    return (
-      <div>
-        <label htmlFor="currency-input">
-          Moeda:
-          <select
-            id="currency-input"
-            name="currency"
-            value={ currency }
-            onChange={ this.handleChange }
-            data-testid="currency-input"
-          >
-            {currencies.map((coin) => (
-              <option
-                key={ coin }
-                value={ coin }
-                data-testid={ coin }
-              >
-                { coin }
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  methodInput() {
-    const { method } = this.state;
-    return (
-      <div>
-        <label htmlFor="method-input">
-          Método de pagamento:
-          <select
-            id="method-input"
-            name="method"
-            value={ method }
-            data-testid="method-input"
-            onChange={ this.handleChange }
-          >
-            <option value="Dinheiro">Dinheiro</option>
-            <option value="Cartão de crédito">Cartão de crédito</option>
-            <option value="Cartão de débito">Cartão de débito</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  tagInput() {
-    const { tag } = this.state;
-    return (
-      <div>
-        <label htmlFor="tag-input">
-          Tag:
-          <select
-            id="tag-input"
-            name="tag"
-            value={ tag }
-            data-testid="tag-input"
-            onChange={ this.handleChange }
-          >
-            <option value="Alimentação">Alimentação</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Saúde">Saúde</option>
-          </select>
-        </label>
-      </div>
-    );
-  }
-
-  descriptionInput() {
-    const { description } = this.state;
-    return (
-      <div>
-        <label htmlFor="description-input">
-          Descrição:
-          <input
-            type="text"
-            id="description-input"
-            data-testid="description-input"
-            value={ description }
-            name="description"
-            onChange={ this.handleChange }
-          />
-        </label>
-      </div>
-    );
   }
 
   async handleAddExpense() {
@@ -248,14 +136,25 @@ class NewExpense extends Component {
   }
 
   render() {
-    const { isEditing } = this.props;
+    const { isEditing, currencies } = this.props;
+    const {
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    } = this.state;
     return (
       <form className="flexbox">
-        {this.valueInput()}
-        {this.currencyInput()}
-        {this.methodInput()}
-        {this.tagInput()}
-        {this.descriptionInput()}
+        <Inputs
+          value={ value }
+          currency={ currency }
+          currencies={ currencies }
+          method={ method }
+          tag={ tag }
+          description={ description }
+          handleChange={ this.handleChange }
+        />
         {isEditing ? this.editExpenseButton() : this.addExpenseButton()}
       </form>
     );
