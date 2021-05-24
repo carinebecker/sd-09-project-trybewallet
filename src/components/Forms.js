@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchAPI from '../services/api';
-import { saveForms } from '../actions';
+import { saveFormsThunk } from '../actions';
 import store from '../store/index';
 
 class Forms extends Component {
@@ -74,14 +74,21 @@ class Forms extends Component {
     const { dispatchExpenses } = this.props;
     this.setState({
       id: store.getState().wallet.expenses.length + 1,
+      value: 0,
     });
     dispatchExpenses(this.state);
   }
 
   render() {
+    const { value } = this.state;
     return (
       <div>
-        <input data-testid="value-input" name="value" onChange={ this.saveInputs } />
+        <input
+          data-testid="value-input"
+          name="value"
+          value={ value }
+          onChange={ this.saveInputs }
+        />
         <input
           data-testid="description-input"
           name="description"
@@ -111,7 +118,7 @@ class Forms extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchExpenses: (expenses) => dispatch(saveForms(expenses)),
+  dispatchExpenses: (expenses) => dispatch(saveFormsThunk(expenses)),
 });
 
 export default connect(null, mapDispatchToProps)(Forms);
