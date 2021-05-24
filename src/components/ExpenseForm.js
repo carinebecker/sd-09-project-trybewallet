@@ -42,6 +42,7 @@ class ExpenseForm extends Component {
   render() {
     const { description, value } = this.state;
     const { currencies } = this.props;
+    const inputCurrencies = currencies[0];
     return (
       <form>
         <InputExpenses valueChangeHandler={ this.valueChangeHandler } value={ value } />
@@ -51,7 +52,7 @@ class ExpenseForm extends Component {
           name="currency"
           onChange={ this.valueChangeHandler }
         >
-          {Object.keys(currencies).map((currency) => (
+          {inputCurrencies && Object.keys(inputCurrencies).map((currency) => (
             <option data-testid={ currency } key={ currency } value={ currency }>
               { currency }
             </option>

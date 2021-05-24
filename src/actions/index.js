@@ -35,6 +35,6 @@ export const editExpenseSave = (expense) => ({
 export const fetchAPIcurrencies = () => (
   (dispatch) => (
     fetchAPI().then(
-      (response) => dispatch(fetchCurrency(response)),
+      (response) => dispatch(fetchCurrency([response])),
       (error) => console.log(error),
     )));

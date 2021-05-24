@@ -53,7 +53,7 @@ class FormEdit extends React.Component {
           data-testid="currency-input"
           onChange={ this.handleChange }
         >
-          {Object.keys(currencies).map((currencyInitials, index) => (
+          {(currencies).map((currencyInitials, index) => (
             <option
               key={ index }
               value={ currencyInitials }
