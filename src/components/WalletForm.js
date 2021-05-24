@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class WalletForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.submit = this.submit.bind(this);
+  }
+
   createInputValue(handleChange) {
     return (
       <label htmlFor="value">
@@ -87,8 +92,16 @@ class WalletForm extends React.Component {
     );
   }
 
+  submit() {
+    const { submitFunction } = this.props;
+    Array.from(document.querySelectorAll('input')).forEach((input) => {
+      input.value = '';
+    });
+    submitFunction();
+  }
+
   render() {
-    const { selectCurrency, handleChange, submitFunction } = this.props;
+    const { selectCurrency, handleChange } = this.props;
     const currenciesArray = Object.keys(selectCurrency);
     const paymentArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tagsArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -102,7 +115,7 @@ class WalletForm extends React.Component {
         {this.createSelectTag(tagsArray, handleChange)}
         <button
           type="button"
-          onClick={ submitFunction }
+          onClick={ this.submit }
         >
           Adicionar despesa
         </button>

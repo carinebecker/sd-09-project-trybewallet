@@ -1,5 +1,6 @@
-import { SAVE_EXPENSE_INFO } from './actionTypes';
+import { SAVE_EXPENSE_INFO, ERASE_EXPENSE } from './actionTypes';
 
-const saveExpensesInfo = (expenseInfo) => ({ type: SAVE_EXPENSE_INFO, expenseInfo });
+export const saveExpensesInfo = (expenseInfo) => (
+  { type: SAVE_EXPENSE_INFO, expenseInfo });
 
-export default saveExpensesInfo;
+export const eraseExpensesInfo = (expenseId) => ({ type: ERASE_EXPENSE, expenseId });

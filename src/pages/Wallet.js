@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WalletHeader from '../components/WalletHeader';
 import WalletForm from '../components/WalletForm';
-import saveExpensesInfo from '../actions/expensesAction';
+import { saveExpensesInfo, eraseExpensesInfo } from '../actions/expensesAction';
 import WalletTable from '../components/WalletTable';
 
 class Wallet extends React.Component {
@@ -12,6 +12,8 @@ class Wallet extends React.Component {
     this.apiFetch = this.apiFetch.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitRedux = this.submitRedux.bind(this);
+    this.handleValue = this.handleValue.bind(this);
+    this.deleteRow = this.deleteRow.bind(this);
     this.state = {
       id: 0,
       value: 0,
@@ -43,19 +45,32 @@ class Wallet extends React.Component {
     });
   }
 
+  handleValue(value) {
+    this.setState((previousValue) => ({
+      totalValue: previousValue.totalValue + value }));
+  }
+
   submitRedux() {
     const { saveExpenses } = this.props;
     this.apiFetch();
     const { id, value, description,
       currency, method, tag, exchangeRates } = this.state;
-    this.setState((previ) => ({ totalValue: previ.totalValue + Number(value) }));
+    this.handleValue(Number(value) * parseFloat(exchangeRates[currency].ask));
     this.setState((currentValue) => ({ id: currentValue.id + 1 }));
     saveExpenses({ id, value, currency, method, tag, description, exchangeRates });
+  }
+
+  deleteRow(id, value) {
+    const { eraseRow } = this.props;
+    eraseRow(id);
+    this.setState((previousValue) => ({
+      totalValue: previousValue.totalValue - value }));
   }
 
   render() {
     const { savedEmail } = this.props;
     const { exchangeRates, totalValue } = this.state;
+
     return (
       <div>
         <WalletHeader userData={ savedEmail } value={ totalValue } />
@@ -64,7 +79,9 @@ class Wallet extends React.Component {
           handleChange={ this.handleChange }
           submitFunction={ this.submitRedux }
         />
-        <WalletTable />
+        <WalletTable
+          deleteRow={ this.deleteRow }
+        />
       </div>
     );
   }
@@ -77,11 +94,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (info) => dispatch(saveExpensesInfo(info)),
+  eraseRow: (id) => dispatch(eraseExpensesInfo(id)),
 });
 
 Wallet.propTypes = {
   savedEmail: PropTypes.string,
   saveExpenses: PropTypes.func.isRequired,
+  eraseRow: PropTypes.func.isRequired,
 };
 Wallet.defaultProps = {
   savedEmail: '',
