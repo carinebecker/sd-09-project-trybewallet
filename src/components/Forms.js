@@ -10,13 +10,13 @@ class Forms extends Component {
     super();
     this.handleAPI = this.handleAPI.bind(this);
     this.createCoinOptions = this.createCoinOptions.bind(this);
-    this.handleMathodOption = this.handleMathodOption.bind(this);
+    this.handleMethodOption = this.handleMethodOption.bind(this);
     this.handleTagOption = this.handleTagOption.bind(this);
     this.saveInputs = this.saveInputs.bind(this);
     this.handleCurrencyOption = this.handleCurrencyOption.bind(this);
     this.saveAndDispatch = this.saveAndDispatch.bind(this);
     this.state = {
-      coins: [],
+      exchangeRates: [],
       method: '',
       tag: '',
       value: 0,
@@ -33,20 +33,20 @@ class Forms extends Component {
   async handleAPI() {
     const response = await fetchAPI();
     this.setState({
-      coins: response,
+      exchangeRates: response,
     });
   }
 
   createCoinOptions() {
-    const { coins } = this.state;
-    delete coins.USDT;
-    const arrayOfCoins = Object.keys(coins);
+    const { exchangeRates } = this.state;
+    delete exchangeRates.USDT;
+    const arrayOfCoins = Object.keys(exchangeRates);
     return arrayOfCoins.map((coin) => (
       <option data-testid={ coin } key={ coin }>{ coin }</option>
     ));
   }
 
-  handleMathodOption({ target }) {
+  handleMethodOption({ target }) {
     this.setState({
       method: target.value,
     });
@@ -90,7 +90,7 @@ class Forms extends Component {
         <select data-testid="currency-input" onChange={ this.handleCurrencyOption }>
           { this.createCoinOptions() }
         </select>
-        <select data-testid="method-input" onClick={ this.handleMathodOption }>
+        <select data-testid="method-input" onClick={ this.handleMethodOption }>
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
