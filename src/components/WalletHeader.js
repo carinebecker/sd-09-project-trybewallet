@@ -14,7 +14,7 @@ class WalletHeader extends React.Component {
   }
 
   render() {
-    const { userData, value, stateValue } = this.props;
+    const { userData } = this.props;
     return (
       <header>
         <span data-testid="email-field">
@@ -33,11 +33,11 @@ class WalletHeader extends React.Component {
 
 WalletHeader.propTypes = {
   userData: PropTypes.string,
-  value: PropTypes.number,
+  stateValue: PropTypes.string,
 };
 WalletHeader.defaultProps = {
   userData: '',
-  value: 0,
+  stateValue: 0,
 };
 
 const mapStateToProps = (state) => ({
