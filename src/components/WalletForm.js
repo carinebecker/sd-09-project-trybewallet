@@ -125,27 +125,6 @@ class WalletForm extends React.Component {
 
 WalletForm.propTypes = {
   total: PropTypes.number,
-  expenses: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    value: PropTypes.number,
-    description: PropTypes.string,
-    currency: PropTypes.string,
-    method: PropTypes.string,
-    tag: PropTypes.string,
-    enxangeRates: PropTypes.arrayOf(PropTypes.shape({
-      code: PropTypes.string,
-      codein: PropTypes.string,
-      name: PropTypes.string,
-      high: PropTypes.number,
-      low: PropTypes.number,
-      varBid: PropTypes.number,
-      pctChange: PropTypes.number,
-      bid: PropTypes.number,
-      ask: PropTypes.number,
-      timestamp: PropTypes.number,
-      create_date: PropTypes.string,
-    })),
-  })),
   dispatchTotal: PropTypes.func,
 }.isRequired;
 
