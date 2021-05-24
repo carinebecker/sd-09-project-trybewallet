@@ -60,10 +60,8 @@ class ExpenseWallet extends React.Component {
     });
   }
 
-
   renderTable() {
     const { userExpenses } = this.props;
-
     const spaceHeader = [
       'Descrição',
       'Tag',
@@ -76,14 +74,14 @@ class ExpenseWallet extends React.Component {
     ];
 
     return (
-  <table>
-  <thead>
-  <tr>
-  {spaceHeader.map((space, index) => (
-  <th key={ index }>{space}</th> ))}
+      <table>
+        <thead>
+          <tr>
+            {spaceHeader.map((space, index) => (
+              <th key={ index }>{space}</th>))}
           </tr>
         </thead>
-        <tbody>
+      <tbody>
           {userExpenses.map((expense, index) => (
             <tr key={ index }>
              <td>{expense.description}</td>
