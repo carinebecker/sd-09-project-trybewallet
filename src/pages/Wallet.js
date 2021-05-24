@@ -80,15 +80,21 @@ class ExpenseWallet extends React.Component {
               <th key={ index }>{space}</th>))}
           </tr>
         </thead>
-        <tbody>{userExpenses.map((expense, index) => (
+        <tbody>
+          {userExpenses.map((expense, index) => (
           <tr key={ index }>
             <td>{expense.description}</td>
             <td>{expense.tag}</td>
             <td>{expense.method}</td>
             <td>{expense.value}</td>
-            <td>{expense.exchangeRates[expense.currency].name}</td>
-            <td>{((expense.exchangeRates[expense.currency].ask * 100) / 100).toFixed(2)}</td>
-            <td>{(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
+            <td>
+              {expense.exchangeRates[expense.currency].name}
+            </td>
+            <td>
+              {((expense.exchangeRates[expense.currency].ask * 100) / 100).toFixed(2)}
+            </td>
+            <td>{(expense.value * expense.exchangeRates[expense.currency].ask).toFixed(2)}
+            </td>
             <td>Real</td>
             <td></td>
           </tr>
