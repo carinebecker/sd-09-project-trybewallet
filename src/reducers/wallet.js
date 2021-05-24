@@ -27,16 +27,16 @@ function registerExpense(state, action) {
 
 function reciveCurrencies(state, action) {
   const { currencies } = action.payload;
-    return { ...state, currencies };
+  return { ...state, currencies };
 }
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case EXPENSES:
-      return registerExpense(state, action);
-    case LOAD_CURRENCIES:
-      return reciveCurrencies(state, action);
-      default:
-        return state;
-      };
+  case EXPENSES:
+    return registerExpense(state, action);
+  case LOAD_CURRENCIES:
+    return reciveCurrencies(state, action);
+    default:
+    return state;
+  }
 }
