@@ -1,32 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class Wallet extends React.Component {
+import Header from '../components/Header';
+import ExpenseForm from '../components/ExpenseForm';
+import ExpenseTable from '../components/ExpenseTable';
+import FormEdit from '../components/FormEdit';
+
+class Wallet extends Component {
   render() {
-    const { email } = this.props;
+    const { isEditing } = this.props;
     return (
-      <header>
-        <p data-testid="email-field">
-          E-mail:
-          { email }
-        </p>
-        <p data-testid="total-field">
-          Despesa Total:
-          { 0 }
-        </p>
-        <p data-testid="header-currency-field">BRL</p>
-      </header>
+      <>
+        <Header />
+        { isEditing ? <FormEdit /> : <ExpenseForm /> }
+        <ExpenseTable />
+      </>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  email: state.user.email,
+const mapStateToProps = ({ wallet: { isEditing } }) => ({
+  isEditing,
 });
 
 Wallet.propTypes = {
-  email: PropTypes.string.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Wallet);

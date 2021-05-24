@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
-import user from '../actions';
+import { userLogin } from '../actions';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -92,7 +92,7 @@ class Login extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  userDispatch: (state) => dispatch(user(state)),
+  userDispatch: (state) => dispatch(userLogin(state)),
 });
 
 Login.propTypes = {
