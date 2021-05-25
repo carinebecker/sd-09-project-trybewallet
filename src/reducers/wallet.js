@@ -9,7 +9,7 @@ const INITIAL_WALLET = ({
   expenses: [],
   idCount: 0,
 });
-  
+
 const walletReducer = (state = INITIAL_WALLET, action) => {
   switch (action.type) {
   case USER_CURRENCIES:
@@ -30,5 +30,5 @@ const walletReducer = (state = INITIAL_WALLET, action) => {
     return state;
   }
 };
-  
+
 export default walletReducer;
