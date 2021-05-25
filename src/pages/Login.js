@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userEmail } from '../actions/index';
 
-// Requisito resolvido com auxílio de revisão de colegas.
-
 class Login extends React.Component {
   constructor(props) {
     super(props);
