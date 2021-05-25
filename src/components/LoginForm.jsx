@@ -22,6 +22,8 @@ class LoginForm extends Component {
 
     if (emailValidation.test(email) && password.length >= passwordLength) {
       this.setState({ disabled: false });
+    } else {
+      this.setState({ disabled: true });
     }
   }
 
