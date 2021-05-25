@@ -1,12 +1,9 @@
 const API = 'https://economia.awesomeapi.com.br/json/all';
 
-const getApi = () => (
-  fetch(API)
-    .then((response) => (
-      response
-        .json()
-        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
-    ))
-);
+const getApi = async () => {
+  const response = await fetch(API);
+  const result = response.json();
+  return result;
+};
 
 export default getApi;
