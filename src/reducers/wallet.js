@@ -7,7 +7,7 @@ function walletReducer(state = INITIAL_STATE, action) {
   case 'SET_EXPENSE':
     return { ...state, expenses: [...state.expenses, action.expense] };
   case 'DEL_EXPENSE':
-    return { ...state, expenses: state.expenses.splice(action.index, 1) };
+    return { expenses: state.expenses.filter((item) => item.id !== action.payload) };
   default:
     return state;
   }

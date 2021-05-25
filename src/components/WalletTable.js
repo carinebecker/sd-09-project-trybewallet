@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deleteExpense } from '../actions';
-import './Table.css';
 
 class WalletTable extends React.Component {
   removeExpenseHandler(id) {
-    console.log(id);
     const { removeExpense } = this.props;
     removeExpense(id);
   }
@@ -30,7 +28,7 @@ class WalletTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense, index) => (
+          {expenses.map((expense) => (
             <tr key={ expense.id }>
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
@@ -47,7 +45,7 @@ class WalletTable extends React.Component {
                 <button
                   type="button"
                   data-testid="delete-btn"
-                  onClick={ () => this.removeExpenseHandler(index) }
+                  onClick={ () => this.removeExpenseHandler(expense.id) }
                 >
                   Excluir
                 </button>
