@@ -6,7 +6,7 @@ class SelectOption extends Component {
     const { id, options, onChange, name } = this.props;
     return (
       <label htmlFor={ id }>
-        <select name={ name } data-testid={ id } onChange={ onChange }>
+        <select name={ name } data-testid={ id } id={ id } onChange={ onChange }>
           { options.map((option) => (
             <option
               value={ option }
