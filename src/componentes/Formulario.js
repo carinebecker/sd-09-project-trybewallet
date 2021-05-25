@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { doNotRefresh, fetchEconomyApi, updateExpenses } from '../actions/wallet';
+import { fetchEconomyApi, updateExpenses } from '../actions/wallet';
 
 class Formulario extends Component {
   constructor(props) {
@@ -22,13 +22,18 @@ class Formulario extends Component {
     this.requestCurrencies();
   }
 
-  componentDidUpdate(props, prevState) {
+  static getDerivedStateFromProps(props, state) {
     const { editExpense } = props;
 
-    if (!!editExpense && editExpense.id !== prevState.id) {
-      const { dispatchNotRefresh } = this.props;
-      dispatchNotRefresh();
-      this.setState(editExpense);
+    if (!!editExpense && editExpense.id !== state.id) {
+      return {
+        id: editExpense.id,
+        value: editExpense.value,
+        currency: editExpense.currency,
+        method: editExpense.method,
+        tag: editExpense.tag,
+        description: editExpense.description,
+      };
     }
 
     return null;
@@ -49,7 +54,7 @@ class Formulario extends Component {
 
   async createExpense() {
     await this.requestCurrencies();
-    const { expenses } = this.props;
+    let { expenses } = this.props;
     const { currencies, dispatchAddExpenses, editExpense } = this.props;
     const { id, value, currency, method, tag, description } = this.state;
     const expense = {
@@ -61,13 +66,12 @@ class Formulario extends Component {
       description,
       exchangeRates: currencies,
     };
-    let newExpenses = [];
     if (editExpense !== null) {
-      newExpenses = expenses.filter((exp) => exp.id !== editExpense.id);
+      expenses = expenses.filter((exp) => exp.id !== editExpense.id);
     }
-    newExpenses = [...expenses, expense];
+    expenses = [...expenses, expense];
 
-    dispatchAddExpenses(newExpenses);
+    dispatchAddExpenses(expenses);
 
     this.setState({
       id: expenses.length === 0 ? 1 : expenses[expenses.length - 1].id + 1,
@@ -140,7 +144,7 @@ class Formulario extends Component {
 
   render() {
     const { value, description } = this.state;
-    const { currencies } = this.props;
+    const { currencies, editExpense } = this.props;
     return (
       <form>
         <label htmlFor="value-input">
@@ -179,7 +183,7 @@ class Formulario extends Component {
           type="button"
           onClick={ () => this.createExpense() }
         >
-          {this.props.editExpense ? 'Editar despesa' : 'Adicionar despesa'}
+          {editExpense ? 'Editar despesa' : 'Adicionar despesa'}
         </button>
       </form>
     );
@@ -188,8 +192,8 @@ class Formulario extends Component {
 
 Formulario.propTypes = {
   dispatchAddExpenses: PropTypes.func,
-  expenses: PropTypes.arrayOf(PropTypes.object),
-  currencies: PropTypes.objectOf(PropTypes.string),
+  expenses: PropTypes.objectOf(PropTypes.object),
+  currencies: PropTypes.arrayOf(PropTypes.array),
 }.isRequired;
 
 const mapStateToProps = (state) => ({
@@ -201,7 +205,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchFetchCurrencies: () => dispatch(fetchEconomyApi()),
   dispatchAddExpenses: (expenses) => dispatch(updateExpenses(expenses)),
-  dispatchNotRefresh: () => dispatch(doNotRefresh()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Formulario);

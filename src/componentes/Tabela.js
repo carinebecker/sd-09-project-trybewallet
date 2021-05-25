@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpenses, editExpense } from '../actions/wallet';
+import { deleteExpenses, editExpense, updateExpenses } from '../actions/wallet';
 
 class Tabela extends Component {
   deleteExpense(expenseId) {
@@ -16,6 +16,7 @@ class Tabela extends Component {
     const { expenses, dispatchEditExpense } = this.props;
 
     const updatedExpenses = expenses.filter((expense) => expense.id === expenseId);
+    console.log('--', updatedExpenses);
 
     dispatchEditExpense(updatedExpenses[0]);
   }
@@ -43,7 +44,9 @@ class Tabela extends Component {
         <thead />
         <tbody>
           {expenses.map((expense) => {
+            console.log(expense);
             const exchangeRates = expense.exchangeRates[expense.currency];
+            console.log(exchangeRates);
             return (
               <tr key={ expense.id }>
                 <td>{ expense.description }</td>
@@ -81,7 +84,7 @@ class Tabela extends Component {
 
 Tabela.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object),
-  currencies: PropTypes.arrayOf({}),
+  currencies: PropTypes.arrayOf(PropTypes.object),
 }.isRequired;
 
 const mapStateToProps = (state) => ({
