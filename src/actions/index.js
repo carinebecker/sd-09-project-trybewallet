@@ -7,6 +7,7 @@ export const LOGIN = 'LOGIN';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 export const UPDATE_EXPENSE = 'UPDATE_EXPENSE';
+export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
 
 export const inputAction = (email) => ({
   type: LOGIN,
@@ -29,6 +30,10 @@ const storeWallet = (expenses, exchangeRates) => (
     },
   }
 );
+
+export function currenciesAction(curr) {
+  return { type: SAVE_CURRENCIES, currencies: curr };
+}
 
 export function walletThunk(expenses) {
   return (dispatch) => get()

@@ -40,4 +40,6 @@ export default class Select extends Component {
 
 Select.propTypes = {
   handleChange: PropTypes.func.isRequired,
+  method: PropTypes.func.isRequired,
+  tag: PropTypes.func.isRequired,
 };

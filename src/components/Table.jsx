@@ -11,7 +11,7 @@ class TableHeader extends Component {
 
   editForm(index) {
     const { editExpense } = this.props; // DispatchToProps
-    const { expenses } = this.props; 
+    const { expenses } = this.props;
 
     editExpense(expenses[index]);
   }
@@ -42,7 +42,7 @@ class TableHeader extends Component {
               <td>{expense.method}</td>
               <td>{expense.value}</td>
               <td>{expense.exchangeRates[expense.currency].name}</td>
-              <td>{rv(expense.exchangeRates[expense.currency].ask)}</td>
+              <td>{rv(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
               <td>{rv(expense.value * expense.exchangeRates[expense.currency].ask)}</td>
               <td>Real</td>
               <td>
@@ -61,8 +61,7 @@ class TableHeader extends Component {
                   Excluir
                 </button>
               </td>
-            </tr>
-          ))}
+            </tr>))}
         </tbody>
       </table>
     );
@@ -84,6 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
 TableHeader.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeExpense: PropTypes.func.isRequired,
+  editExpense: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);
