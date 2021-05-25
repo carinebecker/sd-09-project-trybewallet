@@ -52,84 +52,117 @@ class Forms extends Component {
     );
   }
 
-  render() {
+  renderInputValue() {
+    const { value } = this.state;
+    return (
+      <label htmlFor="value">
+        Valor:
+        <input
+          name="value"
+          value={ value }
+          type="text"
+          data-testid="value-input"
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
+  renderInputDescription() {
+    const { description } = this.state;
+    return (
+      <label htmlFor="description">
+        Descrição:
+        <input
+          name="description"
+          value={ description }
+          type="text"
+          data-testid="description-input"
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
+  renderInputMethod() {
+    const { method } = this.state;
+    return (
+      <label htmlFor="method">
+        Pagamento:
+        <select
+          data-testid="method-input"
+          name="method"
+          value={ method }
+          id="method"
+          onChange={ this.handleChange }
+        >
+          {payment.map((pay) => (
+            <option key={ pay }>
+              {pay}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
+  renderInputCurrency() {
     const { currencies } = this.props;
-    const { value, description, currency, method, tag } = this.state;
-    // console.log(this.state);
+    const { currency } = this.state;
+    return (
+      <label htmlFor="currency">
+        Moeda:
+        <select
+          name="currency"
+          value={ currency }
+          onChange={ this.handleChange }
+          id="currency"
+          data-testid="currency-input"
+        >
+          {Object.keys(currencies).map((cur, index) => {
+            if (cur !== 'USDT') {
+              return (
+                <option data-testid={ cur } key={ index }>
+                  {cur}
+                </option>
+              );
+            } return null;
+          })}
+        </select>
+      </label>
+    );
+  }
+
+  renderInputTag() {
+    const { tag } = this.state;
+    return (
+      <label htmlFor="tag">
+        Tipo:
+        <select
+          value={ tag }
+          data-testid="tag-input"
+          onChange={ this.handleChange }
+          name="tag"
+          id="tag"
+        >
+          {categories.map((tg) => (
+            <option key={ tg }>
+              {tg}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
+  render() {
     return (
       <div>
-        <label htmlFor="value">
-          Valor:
-          <input
-            name="value"
-            value={ value }
-            type="text"
-            data-testid="value-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="description">
-          Descrição:
-          <input
-            name="description"
-            value={ description }
-            type="text"
-            data-testid="description-input"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="method">
-          Pagamento:
-          <select
-            data-testid="method-input"
-            name="method"
-            value={ method }
-            id="method"
-            onChange={ this.handleChange }
-          >
-            {payment.map((pay) => (
-              <option key={ pay }>
-                {pay}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="currency">
-          Moeda:
-          <select
-            name="currency"
-            value={ currency }
-            onChange={ this.handleChange }
-            id="currency"
-            data-testid="currency-input"
-          >
-            {Object.keys(currencies).map((cur, index) => {
-              if (cur !== 'USDT') {
-                return (
-                  <option data-testid={ cur } key={ index }>
-                    {cur}
-                  </option>
-                );
-              } return null;
-            })}
-          </select>
-        </label>
-        <label htmlFor="tag">
-          Tipo:
-          <select
-            value={ tag }
-            data-testid="tag-input"
-            onChange={ this.handleChange }
-            name="tag"
-            id="tag"
-          >
-            {categories.map((tg) => (
-              <option key={ tg }>
-                {tg}
-              </option>
-            ))}
-          </select>
-        </label>
+        {this.renderInputValue()}
+        {this.renderInputDescription()}
+        {this.renderInputMethod()}
+        {this.renderInputCurrency()}
+        {this.renderInputTag()}
         {this.renderButtonAddExpense()}
       </div>
     );
