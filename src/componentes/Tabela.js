@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpenses, editExpense, updateExpenses } from '../actions/wallet';
+import { deleteExpenses, editExpense } from '../actions/wallet';
 
 class Tabela extends Component {
   deleteExpense(expenseId) {
@@ -16,7 +16,6 @@ class Tabela extends Component {
     const { expenses, dispatchEditExpense } = this.props;
 
     const updatedExpenses = expenses.filter((expense) => expense.id === expenseId);
-    console.log('--', updatedExpenses);
 
     dispatchEditExpense(updatedExpenses[0]);
   }
