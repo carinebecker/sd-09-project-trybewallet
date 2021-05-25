@@ -1,8 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteExpense } from '../actions';
+import './Table.css';
 
 class WalletTable extends React.Component {
+  removeExpenseHandler(id) {
+    console.log(id);
+    const { removeExpense } = this.props;
+    removeExpense(id);
+  }
+
   render() {
     const { expenses } = this.props;
 
@@ -22,7 +30,7 @@ class WalletTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => (
+          {expenses.map((expense, index) => (
             <tr key={ expense.id }>
               <td>{expense.description}</td>
               <td>{expense.tag}</td>
@@ -36,7 +44,13 @@ class WalletTable extends React.Component {
               </td>
               <td>Real</td>
               <th>
-                <button type="button" data-testid="delete-btn">Excluir</button>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.removeExpenseHandler(index) }
+                >
+                  Excluir
+                </button>
               </th>
             </tr>
           ))}
@@ -47,6 +61,7 @@ class WalletTable extends React.Component {
 }
 
 WalletTable.propTypes = {
+  removeExpense: PropTypes.func,
   expenses: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     value: PropTypes.number,
@@ -70,8 +85,12 @@ WalletTable.propTypes = {
   })),
 }.isRequired;
 
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (id) => dispatch(deleteExpense(id)),
+});
+
 const mapStateToProps = ({ wallet }) => ({
   expenses: wallet.expenses,
 });
 
-export default connect(mapStateToProps, null)(WalletTable);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletTable);

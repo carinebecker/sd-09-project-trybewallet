@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import api from '../services/api';
-import { saveTotalPrice, saveExpenses } from '../actions/index';
+import { saveExpenses } from '../actions/index';
 
 class WalletForm extends React.Component {
   constructor(props) {
@@ -34,14 +34,8 @@ class WalletForm extends React.Component {
   async addNewExpense() {
     const response = await api();
     const { value, description, currency, method, tag, id } = this.state;
-    const { dispatchTotal, total, dispatchExpense } = this.props;
+    const { dispatchExpense } = this.props;
 
-    const newTotal = Number(total) + (Number(value) * response[currency].ask);
-
-    if (value < 1 || description === '') {
-      return;
-    }
-    dispatchTotal(newTotal);
     dispatchExpense({
       id: id + 1,
       value,
@@ -124,17 +118,11 @@ class WalletForm extends React.Component {
 }
 
 WalletForm.propTypes = {
-  total: PropTypes.number,
-  dispatchTotal: PropTypes.func,
+  dispatchExpense: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ wallet }) => ({
-  total: wallet.total,
-});
-
 const mapDispatchToProps = (dispatch) => ({
-  dispatchTotal: (newTotal) => dispatch(saveTotalPrice(newTotal)),
   dispatchExpense: (data) => dispatch(saveExpenses(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);
+export default connect(null, mapDispatchToProps)(WalletForm);
