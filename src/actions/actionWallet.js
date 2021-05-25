@@ -1,9 +1,6 @@
-export const SET_WALLET = 'SET_WALLET';
+export const ADD_EXPENSE = 'ADD_EXPENSE';
 
-export const setWallet = (currencies, expenses) => ({
-  type: SET_WALLET,
-  exchange: {
-    currencies,
-    expenses,
-  },
+export const addExpense = (expense) => ({
+  type: ADD_EXPANSE,
+  payload: expense,
 });
