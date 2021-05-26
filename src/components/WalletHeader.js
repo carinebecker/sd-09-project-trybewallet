@@ -14,7 +14,9 @@ class WalletHeader extends React.Component {
   }
 
   render() {
+    const { stateValue } = this.props;
     const { userData } = this.props;
+    if (!stateValue) return <div>Loading</div>;
     return (
       <header>
         <span data-testid="email-field">

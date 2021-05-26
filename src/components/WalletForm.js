@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+// import { updateExpenseInfo } from '../actions/expensesAction';
 
 class WalletForm extends React.Component {
   constructor(props) {
     super(props);
     this.submit = this.submit.bind(this);
+    this.button = this.button.bind(this);
   }
 
   createInputValue(handleChange) {
@@ -100,12 +103,24 @@ class WalletForm extends React.Component {
     submitFunction();
   }
 
+  button() {
+    const { updateExpense } = this.props;
+    return (
+      <button
+        type="button"
+        data-testid="edit-btn"
+        onClick={ updateExpense }
+      >
+        Editar despesa
+      </button>);
+  }
+
   render() {
-    const { selectCurrency, handleChange } = this.props;
+    const { selectCurrency, handleChange, changeTF, stateValue } = this.props;
     const currenciesArray = Object.keys(selectCurrency);
     const paymentArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tagsArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
-
+    if (!stateValue) return <div>Loading</div>;
     return (
       <form>
         {this.createInputValue(handleChange)}
@@ -119,6 +134,7 @@ class WalletForm extends React.Component {
         >
           Adicionar despesa
         </button>
+        {changeTF === true ? this.button() : ''}
       </form>
     );
   }
@@ -128,6 +144,14 @@ WalletForm.propTypes = {
   selectCurrency: PropTypes.objectOf(Array).isRequired,
   handleChange: PropTypes.func.isRequired,
   submitFunction: PropTypes.func.isRequired,
+  changeTF: PropTypes.bool.isRequired,
+  stateValue: PropTypes.objectOf(Array).isRequired,
+  idEdit: PropTypes.number.isRequired,
+  updateExpense: PropTypes.func.isRequired,
 };
 
-export default WalletForm;
+const mapStateToProps = (state) => ({
+  stateValue: state.wallet.expenses,
+});
+
+export default connect(mapStateToProps, null)(WalletForm);

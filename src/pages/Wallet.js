@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WalletHeader from '../components/WalletHeader';
 import WalletForm from '../components/WalletForm';
-import { saveExpensesInfo, eraseExpensesInfo } from '../actions/expensesAction';
+import {
+  saveExpensesInfo, eraseExpensesInfo, updateExpenseInfo,
+} from '../actions/expensesAction';
 import WalletTable from '../components/WalletTable';
 
 class Wallet extends React.Component {
@@ -14,6 +16,8 @@ class Wallet extends React.Component {
     this.submitRedux = this.submitRedux.bind(this);
     this.handleValue = this.handleValue.bind(this);
     this.deleteRow = this.deleteRow.bind(this);
+    this.changeExpense = this.changeExpense.bind(this);
+    this.updateExpense = this.updateExpense.bind(this);
     this.state = {
       id: 0,
       value: 0,
@@ -23,6 +27,8 @@ class Wallet extends React.Component {
       tag: '',
       exchangeRates: {},
       totalValue: 0,
+      idEdit: 0,
+      changeTF: false,
     };
   }
 
@@ -67,20 +73,42 @@ class Wallet extends React.Component {
       totalValue: previousValue.totalValue - value }));
   }
 
+  changeExpense(id) {
+    this.setState({
+      idEdit: id,
+      changeTF: true });
+  }
+
+  updateExpense() {
+    const { expenses, updateExpenses } = this.props;
+    const { idEdit, value, currency, method, tag, description } = this.state;
+    const exchangeRates = expenses.find((expense) => expense.id === idEdit).exchangeRates;
+    const updatedExpense = { id: idEdit, value, currency, method, tag, description, exchangeRates };
+    const expensesResult = expenses.map((expense) => expense.id === idEdit ? updatedExpense : expense);
+    updateExpenses(expensesResult);
+  }
+
   render() {
     const { savedEmail } = this.props;
-    const { exchangeRates, totalValue } = this.state;
+    const { exchangeRates, totalValue, idEdit, changeTF } = this.state;
 
     return (
       <div>
-        <WalletHeader userData={ savedEmail } value={ totalValue } />
+        <WalletHeader
+          userData={ savedEmail }
+          value={ totalValue }
+        />
         <WalletForm
           selectCurrency={ exchangeRates }
           handleChange={ this.handleChange }
           submitFunction={ this.submitRedux }
+          idEdit={ idEdit }
+          changeTF={ changeTF }
+          updateExpense={ this.updateExpense }
         />
         <WalletTable
           deleteRow={ this.deleteRow }
+          changeExpense={ this.changeExpense }
         />
       </div>
     );
@@ -89,18 +117,20 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   savedEmail: state.user.email,
-  stateValue: state.wallet.expenses,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (info) => dispatch(saveExpensesInfo(info)),
   eraseRow: (id) => dispatch(eraseExpensesInfo(id)),
+  updateExpenses: (upInfo) => dispatch(updateExpenseInfo(upInfo)),
 });
 
 Wallet.propTypes = {
   savedEmail: PropTypes.string,
   saveExpenses: PropTypes.func.isRequired,
   eraseRow: PropTypes.func.isRequired,
+  updateExpenses: PropTypes.func.isRequired,
 };
 Wallet.defaultProps = {
   savedEmail: '',

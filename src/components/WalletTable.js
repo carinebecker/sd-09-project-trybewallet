@@ -3,46 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class WalletTable extends React.Component {
-  handleConversion(exchangeRates, value, currency) {
-    const foundCurrency = Object.values(exchangeRates).find(
-      (searchingCurrency) => searchingCurrency.code === currency,
-    );
-    const exchangeCurrencyName = (foundCurrency.name).split('/')[0];
-    const exchangeCurrencyAsk = parseFloat(foundCurrency.ask);
-    const exchangedValue = exchangeCurrencyAsk * parseFloat(value);
-    return { exchangeCurrencyName, exchangeCurrencyAsk, exchangedValue };
-  }
-
-  handleExchangeInfo() {
-    const { expenses } = this.props;
-
-    return expenses.map((expense) => {
-      const { id, value, exchangeRates, description, currency, method, tag } = expense;
-      const conversion = this.handleConversion(exchangeRates, value, currency);
-      const { exchangeCurrencyName, exchangeCurrencyAsk, exchangedValue } = conversion;
-      const fixedCurrencyAsk = parseFloat(exchangeCurrencyAsk).toFixed(2);
-      const fixedExchangedValue = exchangedValue.toFixed(2);
-      const allTableData = {
-        id,
-        description,
-        tag,
-        method,
-        value,
-        exchangeCurrencyName,
-        fixedCurrencyAsk,
-        fixedExchangedValue,
-        'Moeda de conversão': 'Real',
-      };
-      return allTableData;
-    });
-  }
-
   render() {
     const tableHeaders = ['Descrição', 'Tag', 'Método de pagamento',
       'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
       'Moeda de conversão', 'Editar/Excluir'];
-    const { expenses, deleteRow } = this.props;
-
+    const { expenses, deleteRow, changeExpense } = this.props;
+    if (!expenses) return <div>Loading</div>;
     return (
       <table>
         <thead>
@@ -51,22 +17,36 @@ class WalletTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          { expenses.length > 0
-            ? this.handleExchangeInfo().map((expense) => (
-              <tr key={ expense.id }>
-                {Object.values(expense).map((item) => <td key={ item }>{item}</td>)}
-                <td>
-                  <button
-                    type="button"
-                    data-testid="delete-btn"
-                    onClick={ () => deleteRow(expense.id, expense.fixedExchangedValue) }
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))
-            : ''}
+          { expenses.map(({
+            description, value, method, currency, id, exchangeRates, tag,
+          }) => (
+            <tr key={ id }>
+              <td>{description}</td>
+              <td>{tag}</td>
+              <td>{method}</td>
+              <td>{value}</td>
+              <td>{exchangeRates[currency].name}</td>
+              <td>{parseFloat(exchangeRates[currency].ask).toFixed(2)}</td>
+              <td>{parseFloat(exchangeRates[currency].ask * value).toFixed(2)}</td>
+              <td>Real</td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => deleteRow(id, exchangeRates[currency]) }
+                >
+                  Excluir
+                </button>
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => changeExpense(id) }
+                >
+                  Editar
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>);
   }
@@ -75,6 +55,7 @@ class WalletTable extends React.Component {
 WalletTable.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
   deleteRow: PropTypes.func.isRequired,
+  changeExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ expenses: state.wallet.expenses });
