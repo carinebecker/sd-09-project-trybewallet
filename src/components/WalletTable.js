@@ -44,7 +44,7 @@ class WalletTable extends React.Component {
               data-testid="edit-btn"
               onClick={ () => this.getExpenseToEdit(expense.id) }
             >
-              Editar despesa
+              Editar
             </button>
           </th>
         </tr>
