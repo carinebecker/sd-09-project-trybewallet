@@ -6,7 +6,7 @@ import {
   deleteExpense,
 } from '../actions';
 
-const headerDetails = ['Descrição', 'Tag', 'Método de Pagamento', 'Valor',
+const headerDetails = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
   'Moeda', 'Câmbio utilizado', 'Valor convertido', 'Moeda de conversão',
   'Editar/Excluir'];
 
@@ -30,14 +30,16 @@ class ExpenseTable extends Component {
             const { ask, name } = exchangeRates[currency];
             return (
               <tr key={ expense.description }>
-                <th>{description}</th>
-                <th>{tag}</th>
-                <th>{method}</th>
-                <th>{value}</th>
-                <th>{name}</th>
-                <th>{Number(ask).toFixed(2)}</th>
-                <th>{(Number(ask) * value).toFixed(2)}</th>
-                <th>Real</th>
+                <td>{description}</td>
+                <td>{tag}</td>
+                <td>{method}</td>
+                <td>{value}</td>
+                <td>{name}</td>
+                <td>{Number(ask).toFixed(2)}</td>
+                <td>{(Number(ask) * value).toFixed(2)}</td>
+                <td>Real</td>
+                <td>{this.renderEditButton()}</td>
+                <td>{this.renderDeleteButton(expense.id)}</td>
               </tr>
             );
           })}
@@ -48,12 +50,12 @@ class ExpenseTable extends Component {
 
   buttonEdit() {
     const { editExpenseAction } = this.props;
-    editExpenseAction(this.state);
+    editExpenseAction();
   }
 
-  buttonDelete() {
+  buttonDelete(id) {
     const { deleteExpenseAction } = this.props;
-    deleteExpenseAction(this.state);
+    deleteExpenseAction(id);
   }
 
   renderEditButton() {
@@ -67,14 +69,14 @@ class ExpenseTable extends Component {
     );
   }
 
-  renderDeleteButton() {
+  renderDeleteButton(id) {
     return (
       <button
         type="button"
         data-testid="delete-btn"
-        onClick={ this.buttonDelete }
+        onClick={ this.buttonDelete(id) }
       >
-        Editar
+        Excluir
       </button>
     );
   }
@@ -84,8 +86,6 @@ class ExpenseTable extends Component {
     return (
       <div>
         {this.constructorTable(expenses)}
-        {this.renderEditButton()}
-        {this.renderDeleteButton()}
       </div>
     );
   }

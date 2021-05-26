@@ -1,5 +1,7 @@
 import {
   ADD_EXPENSE,
+  // EDIT_EXPENSE,
+  DELETE_EXPENSE,
   CURRENCIES_VALUES_START,
   CURRENCIES_VALUES_SUCCESS,
   CURRENCIES_VALUES_ERROR,
@@ -21,6 +23,11 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       ...state,
       expenses: [...state.expenses, novaDespesa],
       contadorID: state.contadorID + 1,
+    };
+  }
+  case DELETE_EXPENSE: {
+    return {
+      ...state, expenses: state.expenses.filter((expense) => expense.id !== payload),
     };
   }
   case CURRENCIES_VALUES_START:
