@@ -11,16 +11,16 @@ class WalletForm extends React.Component {
       id: -1,
       value: 0,
       description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
+      currency: '',
+      method: '',
+      tag: '',
       coins: [],
       loading: true,
     };
     this.mapCoins = this.mapCoins.bind(this);
     this.handleInputs = this.handleInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.getExpenseDetailsToEdit = this.getExpenseDetailsToEdit.bind(this);
+    this.getExpenseToEdit = this.getExpenseToEdit.bind(this);
     this.changeButton = this.changeButton.bind(this);
     this.selectAndButtons = this.selectAndButtons.bind(this);
   }
@@ -33,12 +33,12 @@ class WalletForm extends React.Component {
   componentDidUpdate(prevProps) {
     const { expEdit } = this.props;
     if (expEdit !== prevProps.expEdit) {
-      this.getExpenseDetailsToEdit();
+      this.getExpenseToEdit();
     }
   }
 
-  getExpenseDetailsToEdit() {
-    const { expEdit } = this.props;
+  getExpenseToEdit() {
+    const { expEdit = {} } = this.props;
     const { value, description, currency, method, tag } = expEdit;
     this.setState({
       value,
@@ -71,11 +71,11 @@ class WalletForm extends React.Component {
     if (event.target.name === 'Adicionar despesa') {
       dispatchExpense({
         id: id + 1,
-        value,
-        description,
-        currency,
-        method,
-        tag,
+        value: value || 0,
+        description: description || 'nenhuma descrição',
+        currency: currency || 'USD',
+        method: method || 'Dinheiro',
+        tag: tag || 'Alimentação',
         exchangeRates: response,
       });
       this.setState({
