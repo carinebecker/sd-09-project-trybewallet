@@ -12,7 +12,7 @@ class WalletHeader extends Component {
     const { expenses } = this.props;
     let total = 0;
     expenses.forEach((expense) => {
-      total += Number(expense.value) * expense.exchangeRates[expense.currency].ask;
+      total += expense.value * expense.exchangeRates[expense.currency].ask;
     });
     return total;
   }
