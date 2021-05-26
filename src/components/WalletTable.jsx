@@ -45,7 +45,7 @@ class WalletTable extends Component {
             <td>{expense.method}</td>
             <td>{expense.value}</td>
             <td>{expense.exchangeRates[expense.currency].name}</td>
-            <td>{+(expense.exchangeRates[expense.currency].ask)}</td>
+            <td>{(+(expense.exchangeRates[expense.currency].ask)).toFixed(2)}</td>
             <td>
               {(
                 +(expense.value)

@@ -16,11 +16,11 @@ class WalletForm extends Component {
       methods: ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'],
       tags: ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'],
       id: 0,
-      currency: '',
       value: 0,
       description: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       exchangeRates: {},
     };
   }
