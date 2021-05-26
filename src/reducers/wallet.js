@@ -6,6 +6,7 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
+  contadorID: 0,
   currencies: [],
   expenses: [],
   isFetching: false,
@@ -14,10 +15,14 @@ const INITIAL_STATE = {
 
 const wallet = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
-  case ADD_EXPENSE:
+  case ADD_EXPENSE: {
+    const novaDespesa = { ...payload, id: state.contadorID };
     return {
-      ...state, expenses: [...state.expenses, payload],
+      ...state,
+      expenses: [...state.expenses, novaDespesa],
+      contadorID: state.contadorID + 1,
     };
+  }
   case CURRENCIES_VALUES_START:
     return {
       ...state, isFetching: payload.isFetching,

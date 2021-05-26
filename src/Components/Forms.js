@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import getApi from '../services/requestApi';
+
 import {
   fetchCurrenciesValues,
   addExpense,
@@ -37,10 +39,12 @@ class Forms extends Component {
     }));
   }
 
-  handleAdditionalExpense() {
+  async handleAdditionalExpense() {
+    const dataFetch = await getApi();
+    const exchangeRates = Object.keys(dataFetch);
     const { addExpenseAction } = this.props;
     console.log(this.state);
-    addExpenseAction(this.state);
+    addExpenseAction({ ...this.state, exchangeRates });
   }
 
   renderButtonAddExpense() {
