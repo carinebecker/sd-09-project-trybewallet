@@ -1,5 +1,9 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { GET_CURRENCY_ACTION, SET_EXPENSES_ACTION } from '../actions';
+import {
+  GET_CURRENCY_ACTION,
+  SET_EXPENSES_ACTION,
+  SET_FILTER_EXPENSES_ACTION,
+} from '../actions';
 
 const INITIAL_STATE = {
   currency: {},
@@ -17,6 +21,11 @@ export default function currencyReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       expenses: [...state.expenses, action.expenses],
+    };
+  case SET_FILTER_EXPENSES_ACTION:
+    return {
+      ...state,
+      expenses: [...action.filterExpenses],
     };
   default:
     return state;
