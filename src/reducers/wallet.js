@@ -1,33 +1,57 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { GET_CURRENCIES, ADD_EXPENSES } from '../actions/action.wallet';
-import EDIT_EXPENSES from '../actions/action.edit';
+import {
+  ADD_EXPENSE,
+  DELETE_EXPENSE,
+  SET_EXCHANGE_RATES,
+  EDITE_EXPENSE,
+  POST_EDITING,
+} from '../actions/wallet';
 
-const INITIAL_STATE = {
+const INITIAL_WALLET = {
   currencies: [],
   expenses: [],
+  exchangeRates: {},
+  id: 0,
+  total: 0,
+  isEditing: false,
+  editingId: 0,
 };
 
-const userWallet = (state = INITIAL_STATE, action) => {
+// colocar a logica no reducer
+
+export default function wallet(state = INITIAL_WALLET, action) {
+  let newTotal = 0;
+  let newExps = [];
   switch (action.type) {
-  case GET_CURRENCIES:
+  case ADD_EXPENSE:
+    action.expenses.forEach((exp) => {
+      newTotal += exp.value * exp.exchangeRates[exp.currency].ask;
+    });
+    return { ...state, expenses: action.expenses, id: state.id + 1, total: newTotal };
+  case DELETE_EXPENSE:
+    newExps = state.expenses.filter((expense) => expense.id !== parseFloat(action.id));
+    newExps.forEach((exp) => {
+      newTotal += exp.value * exp.exchangeRates[exp.currency].ask;
+    });
+    return { ...state, expenses: newExps, total: newTotal };
+  case POST_EDITING:
+    newExps = state.expenses.map((expenses) => expenses);
+    newExps[newExps.findIndex(
+      (exp) => exp.id === parseFloat(state.editingId),
+    )] = action.expense;
+    newExps.forEach((exp) => {
+      newTotal += exp.value * exp.exchangeRates[exp.currency].ask;
+    });
+    return { ...state, isEditing: false, expenses: newExps, total: newTotal };
+  case SET_EXCHANGE_RATES:
     return {
       ...state,
       currencies: action.currencies,
+      exchangeRates: action.exchangeRates,
     };
-  case EDIT_EXPENSES:
-    return {
-      ...state,
-      expenses: action.expenses,
-    };
-
-  case ADD_EXPENSES:
-    return {
-      ...state,
-      expenses: [...state.expenses, action.expenses],
-    };
+  case EDITE_EXPENSE:
+    return { ...state, isEditing: true, editingId: action.id };
   default:
     return state;
   }
-};
-
-export default userWallet;
+}

@@ -1,5 +1,5 @@
 // Coloque aqui suas actions
-import GET__EMAIL from './actionTypes';
+export const GET__EMAIL = 'GET_EMAIL';
 
 const updateEmail = (email) => ({
   type: GET__EMAIL,

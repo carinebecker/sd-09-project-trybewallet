@@ -1,56 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editExpenses } from '../actions/wallet';
+import { string, number } from 'prop-types';
 
-class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      moeda: 'BRL',
-    };
-    this.convertValue = this.convertValue.bind(this);
-  }
-
-  convertValue(expenses) {
-    const totalExpenses = expenses.reduce(
-      (total, { currency, value, exchangeRates }) => {
-        total += value * exchangeRates[currency].ask;
-        return total;
-      },
-      0.0,
-    );
-
-    return totalExpenses.toFixed(2);
-  }
-
+class Header extends Component {
   render() {
-    const { userEmail, expenses } = this.props;
-    const { moeda } = this.state;
+    const { email, total } = this.props;
+    const init = 0;
     return (
       <header>
-        <p data-testid="email-field">
-          email:
-          {userEmail}
+        <h2 className="header-title" data-testid="email-field">
+          {email}
+        </h2>
+        <p className="header-field" data-testid="total-field">
+          {!total ? init.toFixed(2) : total.toFixed(2)}
         </p>
-        <p data-testid="total-field">{this.convertValue(expenses)}</p>
-        <p data-testid="header-currency-field">{ moeda }</p>
+        <p className="header-field" data-testid="header-currency-field">
+          BRL
+        </p>
       </header>
     );
   }
 }
+
 Header.propTypes = {
-  userEmail: PropTypes.string.isRequired,
-  expenses: PropTypes.number.isRequired,
-};
+  email: string,
+  total: number,
+}.isRequired;
 
-const mapStateToProps = (state) => ({
-  userEmail: state.user.email,
-  expenses: state.wallet.expenses,
+const mapStateToProps = ({ user: { email }, wallet: { total } }) => ({
+  email,
+  total,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchEditExpenses: (expenses) => dispatch(editExpenses(expenses)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, null)(Header);

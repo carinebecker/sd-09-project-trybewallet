@@ -1,189 +1,193 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { fetchEconomyApi, updateExpenses } from '../actions/wallet';
+import { func, number, arrayOf, shape } from 'prop-types';
+import { addExpense, economyAPI, postEditing } from '../actions/wallet';
+import Inputs from './inputs';
 
 class Formulario extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       value: 0,
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
       description: '',
+      editingStart: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleAddExpense = this.handleAddExpense.bind(this);
+    this.handleEditExpense = this.handleEditExpense.bind(this);
   }
 
-  componentDidMount() {
-    this.requestCurrencies();
+  async componentDidMount() {
+    const { propGetApiCurrencie } = this.props;
+    await propGetApiCurrencie();
   }
 
-  async requestCurrencies() {
-    const { dispatchFetchCurrencies } = this.props;
-    await dispatchFetchCurrencies();
+  componentDidUpdate() {
+    this.isEditing();
   }
 
-  handleChange({ target }) {
-    const { value, name } = target;
+  isEditing() {
+    const { editingStart } = this.state;
+    const { editingId, isEditing, expenses } = this.props;
+    if (isEditing && !editingStart) {
+      this.setState({
+        value: expenses[editingId].value,
+        currency: expenses[editingId].currency,
+        method: expenses[editingId].method,
+        tag: expenses[editingId].tag,
+        description: expenses[editingId].description,
+        editingStart: true,
+      });
+    }
+  }
 
+  handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
   }
 
-  createExpense() {
-    this.requestCurrencies();
-
-    const { expenses, currencies, dispatchAddExpenses } = this.props;
-    const { value, currency, method, tag, description } = this.state;
-
-    const expense = {
-      id: expenses.length,
+  async handleAddExpense() {
+    const {
       value,
       currency,
       method,
       tag,
       description,
-      exchangeRates: currencies,
+    } = this.state;
+    const {
+      id,
+      expenses,
+      exchangeRates,
+      propAddExpense,
+      propGetApiCurrencie,
+    } = this.props;
+    await propGetApiCurrencie();
+    const expenseList = expenses.map((expense) => expense);
+    const addNewExpense = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates,
     };
-
-    dispatchAddExpenses(expense);
-
+    expenseList.push(addNewExpense);
+    propAddExpense(expenseList);
     this.setState({
       value: 0,
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
       description: '',
     });
   }
 
-  renderCurrenciesSelect(currencies) {
-    const { currency } = this.state;
+  addButton() {
     return (
-      <select
-        data-testid="currency-input"
-        id="currency-input"
-        value={ currency }
-        name="currency"
-        onChange={ this.handleChange }
-      >
-        { Object.keys(currencies).map((moeda) => (
-          <option
-            key={ moeda }
-            value={ moeda }
-            data-testid={ moeda }
-          >
-            { moeda }
-          </option>
-        )) }
-      </select>
-    );
-  }
-
-  renderMethodSelect() {
-    const { method } = this.state;
-    return (
-      <select
-        data-testid="method-input"
-        id="method-input"
-        value={ method }
-        name="method"
-        onChange={ this.handleChange }
-      >
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Cartão de crédito">Cartão de crédito</option>
-        <option value="Cartão de débito">Cartão de débito</option>
-      </select>
-    );
-  }
-
-  renderTagSelect() {
-    const { tag } = this.state;
-    return (
-      <select
-        data-testid="tag-input"
-        id="tag-input"
-        value={ tag }
-        name="tag"
-        onChange={ this.handleChange }
-      >
-        <option value="Alimentação">Alimentação</option>
-        <option value="Lazer">Lazer</option>
-        <option value="Trabalho">Trabalho</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Saúde">Saúde</option>
-      </select>
-    );
-  }
-
-  render() {
-    const { value, description } = this.state;
-    const { currencies } = this.props;
-
-    return (
-      <form>
-        <label htmlFor="value-input">
-          Valor:
-          <input
-            type="number"
-            data-testid="value-input"
-            value={ value }
-            name="value"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="currency-input">
-          Moeda:
-          { this.renderCurrenciesSelect(currencies) }
-        </label>
-        <label htmlFor="method-input">
-          Método de pagamento:
-          { this.renderMethodSelect() }
-        </label>
-        <label htmlFor="tag-input">
-          Tag:
-          { this.renderTagSelect() }
-        </label>
-        <label htmlFor="description-input">
-          Descrição:
-          <input
-            type="text"
-            data-testid="description-input"
-            value={ description }
-            name="description"
-            onChange={ this.handleChange }
-          />
-        </label>
+      <div>
         <button
           type="button"
-          onClick={ () => this.createExpense() }
+          onClick={ this.handleAddExpense }
         >
           Adicionar despesa
         </button>
+      </div>
+    );
+  }
+
+  editButton() {
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={ this.handleEditExpense }
+        >
+          Editar despesa
+        </button>
+      </div>
+    );
+  }
+
+  handleEditExpense() {
+    const {
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    } = this.state;
+    const { propPostEditing, expenses, editingId } = this.props;
+    const edittedExpense = {
+      id: parseFloat(editingId),
+      value,
+      currency,
+      method,
+      tag,
+      description,
+      exchangeRates: expenses[parseFloat(editingId)].exchangeRates,
+    };
+    propPostEditing(edittedExpense);
+    this.setState({
+      editingStart: false,
+    });
+  }
+
+  render() {
+    const { isEditing, currencies } = this.props;
+    const {
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    } = this.state;
+    return (
+      <form>
+        <Inputs
+          value={ value }
+          currency={ currency }
+          currencies={ currencies }
+          method={ method }
+          tag={ tag }
+          description={ description }
+          handleChange={ this.handleChange }
+        />
+        {isEditing ? this.editButton() : this.addButton()}
       </form>
     );
   }
 }
 
 Formulario.propTypes = {
-  dispatchAddExpenses: PropTypes.func,
-  expenses: PropTypes.arrayOf(PropTypes.object),
-  currencies: PropTypes.objectOf(PropTypes.string),
+  expenses: arrayOf(shape({ id: number })),
+  id: number,
+  propNewExpense: func,
+  propGetExchangeRates: func,
 }.isRequired;
 
-const mapStateToProps = (state) => ({
-  currencies: state.wallet.currencies,
-  expenses: state.wallet.expenses,
+const mapStateToProps = ({ wallet: {
+  expenses,
+  id,
+  currencies,
+  exchangeRates,
+  isEditing,
+  editingId,
+} }) => ({
+  expenses,
+  id,
+  currencies,
+  exchangeRates,
+  isEditing,
+  editingId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchFetchCurrencies: () => dispatch(fetchEconomyApi()),
-  dispatchAddExpenses: (expenses) => dispatch(updateExpenses(expenses)),
+  propAddExpense: (expenses) => dispatch(addExpense(expenses)),
+  propGetApiCurrencie: () => dispatch(economyAPI()),
+  propPostEditing: (expense) => dispatch(postEditing(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Formulario);

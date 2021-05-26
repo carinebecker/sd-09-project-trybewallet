@@ -1,58 +1,91 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { editExpenses } from '../actions/wallet';
+import { number, arrayOf, shape, func } from 'prop-types';
+import { deleteExpense, editeExpense } from '../actions/wallet';
+
+// refatora o botão de deletar e o botão de editar
 
 class Tabela extends Component {
-  deleteExpense(expenseId) {
-    const { expenses, dispatchEditExpenses } = this.props;
+  constructor(props) {
+    super(props);
 
-    const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
 
-    dispatchEditExpenses(updatedExpenses);
+  buttons(id) {
+    return (
+      <td>
+        <button
+          type="button"
+          data-testid="edit-btn"
+          name={ id }
+          onClick={ this.handleEdit }
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          data-testid="delete-btn"
+          name={ id }
+          onClick={ this.handleDelete }
+        >
+          Excluir
+        </button>
+      </td>
+    );
+  }
+
+  handleDelete({ target: { name } }) {
+    const { propDeleteExpense } = this.props;
+    propDeleteExpense(name);
+  }
+
+  handleEdit({ target: { name } }) {
+    const { propEditeExpense } = this.props;
+    propEditeExpense(name);
   }
 
   render() {
     const { expenses } = this.props;
+    const headers = [
+      'Descrição',
+      'Tag',
+      'Método de pagamento',
+      'Valor',
+      'Moeda',
+      'Câmbio utilizado',
+      'Valor convertido',
+      'Moeda de conversão',
+      'Editar/Excluir',
+    ];
     return (
       <table>
         <thead>
           <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
+            { headers.map((th) => (
+              <th key={ th }>{ th }</th>
+            )) }
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => {
-            const exchangeRates = expense.exchangeRates[expense.currency];
-            return (
-              <tr key={ expense.id }>
-                <td>{ expense.description }</td>
-                <td>{ expense.tag }</td>
-                <td>{ expense.method }</td>
-                <td>{ expense.value }</td>
-                <td>{ exchangeRates.name }</td>
-                <td>{ parseFloat(exchangeRates.ask).toFixed(2) }</td>
-                <td>{ (expense.value * exchangeRates.ask).toFixed(2) }</td>
-                <td>Real</td>
-                <button type="button">Editar</button>
-                <button
-                  data-testid="delete-btn"
-                  type="button"
-                  onClick={ () => this.deleteExpense(expense.id) }
-                >
-                  Excluir
-                </button>
-              </tr>
-            );
-          })}
+          { expenses.map((exp) => (
+            <tr key={ exp.id }>
+              <td>{ exp.description }</td>
+              <td>{ exp.tag }</td>
+              <td>{ exp.method }</td>
+              <td>{ exp.value }</td>
+              <td>{ exp.exchangeRates[exp.currency].name }</td>
+              <td>{ parseFloat(exp.exchangeRates[exp.currency].ask).toFixed(2) }</td>
+              <td>
+                { parseFloat(
+                  exp.value * exp.exchangeRates[exp.currency].ask,
+                ).toFixed(2) }
+              </td>
+              <td>Real</td>
+              {this.buttons(exp.id)}
+            </tr>
+          )) }
         </tbody>
       </table>
     );
@@ -60,15 +93,19 @@ class Tabela extends Component {
 }
 
 Tabela.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.object),
+  expenses: arrayOf(shape({ id: number })),
+  total: number,
+  propDeleteExpense: func,
 }.isRequired;
 
-const mapStateToProps = (state) => ({
-  expenses: state.wallet.expenses,
+const mapStateToProps = ({ wallet: { expenses, total } }) => ({
+  expenses,
+  total,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchEditExpenses: (expenses) => dispatch(editExpenses(expenses)),
+  propDeleteExpense: (id) => dispatch(deleteExpense(id)),
+  propEditeExpense: (id) => dispatch(editeExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tabela);
