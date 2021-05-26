@@ -86,9 +86,9 @@ class Wallet extends React.Component {
   updateExpense() {
     const { expenses, updateExpenses } = this.props;
     const { idEdit, value, currency, method, tag, description } = this.state;
-    const exchangeRate = expenses.find(({ id }) => id === idEdit).exchangeRates;
+    const { exchangeRates } = expenses.find(({ id }) => id === idEdit);
     const updatedExpense = {
-      id: idEdit, value, currency, method, tag, description, exchangeRate,
+      id: idEdit, value, currency, method, tag, description, exchangeRates,
     };
     const expensesResult = expenses.map(
       (expense) => (expense.id === idEdit ? updatedExpense : expense),
