@@ -7,8 +7,11 @@ class WalletHeader extends React.Component {
     const { stateValue } = this.props;
     let sumAll = 0;
     stateValue.forEach((item) => {
-      const exchangeAsk = item.exchangeRates[item.currency].ask * parseFloat(item.value);
-      sumAll += exchangeAsk;
+      if (item.exchangeRates[item.currency]) {
+        const exchangeAsk = item.exchangeRates[item.currency].ask
+        * parseFloat(item.value);
+        sumAll += exchangeAsk;
+      }
     });
     return sumAll;
   }

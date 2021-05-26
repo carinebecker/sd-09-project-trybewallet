@@ -8,7 +8,7 @@ class WalletTable extends React.Component {
       'Valor', 'Moeda', 'Câmbio utilizado', 'Valor convertido',
       'Moeda de conversão', 'Editar/Excluir'];
     const { expenses, deleteRow, changeExpense } = this.props;
-    if (!expenses) return <div>Loading</div>;
+    // if (!expenses.length) return <div>Loading</div>;
     return (
       <table>
         <thead>

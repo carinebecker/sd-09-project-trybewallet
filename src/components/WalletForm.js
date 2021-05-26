@@ -116,8 +116,7 @@ class WalletForm extends React.Component {
   }
 
   render() {
-    const { selectCurrency, handleChange, changeTF, stateValue } = this.props;
-    const currenciesArray = Object.keys(selectCurrency);
+    const { currenciesArray, handleChange, changeTF, stateValue } = this.props;
     const paymentArray = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tagsArray = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
     if (!stateValue) return <div>Loading</div>;
@@ -141,17 +140,17 @@ class WalletForm extends React.Component {
 }
 
 WalletForm.propTypes = {
-  selectCurrency: PropTypes.objectOf(Array).isRequired,
+  currenciesArray: PropTypes.objectOf(Array).isRequired,
   handleChange: PropTypes.func.isRequired,
   submitFunction: PropTypes.func.isRequired,
   changeTF: PropTypes.bool.isRequired,
   stateValue: PropTypes.objectOf(Array).isRequired,
-  idEdit: PropTypes.number.isRequired,
   updateExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   stateValue: state.wallet.expenses,
+  currenciesArray: state.wallet.currencies,
 });
 
 export default connect(mapStateToProps, null)(WalletForm);

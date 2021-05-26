@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import WalletHeader from '../components/WalletHeader';
 import WalletForm from '../components/WalletForm';
 import {
-  saveExpensesInfo, eraseExpensesInfo, updateExpenseInfo,
+  saveExpensesInfo, eraseExpensesInfo, updateExpenseInfo, saveCurrencies,
 } from '../actions/expensesAction';
 import WalletTable from '../components/WalletTable';
 
@@ -37,11 +37,13 @@ class Wallet extends React.Component {
   }
 
   async apiFetch() {
+    const { saveCurrency } = this.props;
     const fetchCurrencyApi = await fetch('https://economia.awesomeapi.com.br/json/all').then((response) => response.json());
     delete fetchCurrencyApi.USDT;
     this.setState({
       exchangeRates: fetchCurrencyApi,
     });
+    saveCurrency(Object.keys(fetchCurrencyApi));
   }
 
   handleChange({ target }) {
@@ -61,9 +63,11 @@ class Wallet extends React.Component {
     this.apiFetch();
     const { id, value, description,
       currency, method, tag, exchangeRates } = this.state;
-    this.handleValue(Number(value) * parseFloat(exchangeRates[currency].ask));
-    this.setState((currentValue) => ({ id: currentValue.id + 1 }));
-    saveExpenses({ id, value, currency, method, tag, description, exchangeRates });
+    if (exchangeRates) {
+      this.handleValue(Number(value) * parseFloat(exchangeRates[currency].ask));
+      this.setState((currentValue) => ({ id: currentValue.id + 1 }));
+      saveExpenses({ id, value, currency, method, tag, description, exchangeRates });
+    }
   }
 
   deleteRow(id, value) {
@@ -82,9 +86,13 @@ class Wallet extends React.Component {
   updateExpense() {
     const { expenses, updateExpenses } = this.props;
     const { idEdit, value, currency, method, tag, description } = this.state;
-    const exchangeRates = expenses.find((expense) => expense.id === idEdit).exchangeRates;
-    const updatedExpense = { id: idEdit, value, currency, method, tag, description, exchangeRates };
-    const expensesResult = expenses.map((expense) => expense.id === idEdit ? updatedExpense : expense);
+    const exchangeRate = expenses.find(({ id }) => id === idEdit).exchangeRates;
+    const updatedExpense = {
+      id: idEdit, value, currency, method, tag, description, exchangeRate,
+    };
+    const expensesResult = expenses.map(
+      (expense) => (expense.id === idEdit ? updatedExpense : expense),
+    );
     updateExpenses(expensesResult);
   }
 
@@ -124,6 +132,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveExpenses: (info) => dispatch(saveExpensesInfo(info)),
   eraseRow: (id) => dispatch(eraseExpensesInfo(id)),
   updateExpenses: (upInfo) => dispatch(updateExpenseInfo(upInfo)),
+  saveCurrency: (info) => dispatch(saveCurrencies(info)),
 });
 
 Wallet.propTypes = {
@@ -131,6 +140,8 @@ Wallet.propTypes = {
   saveExpenses: PropTypes.func.isRequired,
   eraseRow: PropTypes.func.isRequired,
   updateExpenses: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf.isRequired,
+  saveCurrency: PropTypes.func.isRequired,
 };
 Wallet.defaultProps = {
   savedEmail: '',
