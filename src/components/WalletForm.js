@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import api from '../services/api';
-import { saveExpenses } from '../actions/index';
+import { editExpenseList, saveExpenses } from '../actions/index';
 
 class WalletForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       id: -1,
-      value: '',
+      value: 0,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -19,7 +19,10 @@ class WalletForm extends React.Component {
     };
     this.mapCoins = this.mapCoins.bind(this);
     this.handleInputs = this.handleInputs.bind(this);
-    this.addNewExpense = this.addNewExpense.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.getExpenseDetailsToEdit = this.getExpenseDetailsToEdit.bind(this);
+    this.changeButton = this.changeButton.bind(this);
+    this.selectAndButtons = this.selectAndButtons.bind(this);
   }
 
   async componentDidMount() {
@@ -27,33 +30,81 @@ class WalletForm extends React.Component {
     this.mapCoins(getcoins);
   }
 
-  handleInputs({ target: { name, value } }) {
-    this.setState({ [name]: value });
+  componentDidUpdate(prevProps) {
+    const { expEdit } = this.props;
+    if (expEdit !== prevProps.expEdit) {
+      this.getExpenseDetailsToEdit();
+    }
   }
 
-  async addNewExpense() {
-    const response = await api();
-    const { value, description, currency, method, tag, id } = this.state;
-    const { dispatchExpense } = this.props;
-
-    dispatchExpense({
-      id: id + 1,
+  getExpenseDetailsToEdit() {
+    const { expEdit } = this.props;
+    const { value, description, currency, method, tag } = expEdit;
+    this.setState({
       value,
       description,
       currency,
       method,
       tag,
-      exchangeRates: response,
     });
+  }
 
-    this.setState({
-      id: id + 1,
-      value: 0,
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-    });
+  changeButton() {
+    const { expEdit = {} } = this.props;
+    let btnName = 'Adicionar despesa';
+    if (Object.keys(expEdit).length) {
+      btnName = 'Editar despesa';
+    }
+    return btnName;
+  }
+
+  handleInputs({ target: { name, value } }) {
+    this.setState({ [name]: value });
+  }
+
+  async handleClick(event) {
+    event.persist();
+    const response = await api();
+    delete response.USDT;
+    const { value, description, currency, method, tag, id } = this.state;
+    const { dispatchExpense, expenses, expEdit, dispatchEditExpenseList } = this.props;
+    if (event.target.name === 'Adicionar despesa') {
+      dispatchExpense({
+        id: id + 1,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: response,
+      });
+      this.setState({
+        id: id + 1,
+        value: 0,
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+      });
+    } else {
+      const newExpense = {
+        id: expEdit.id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: expEdit.exchangeRates,
+      };
+      const saveEditExpenses = expenses.map((exp) => {
+        if (exp.id === expEdit.id) {
+          return newExpense;
+        }
+        return exp;
+      });
+
+      dispatchEditExpenseList(saveEditExpenses);
+    }
   }
 
   mapCoins(coins) {
@@ -63,6 +114,30 @@ class WalletForm extends React.Component {
       coins: arrayCoins,
       loading: false,
     });
+  }
+
+  selectAndButtons() {
+    return (
+      <div>
+        <select name="tag" data-testid="tag-input" onChange={ this.handleInputs }>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+        </select>
+      </div>
+    );
+  }
+
+  methodOptions() {
+    return (
+      <>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartão de crédito">Cartão de crédito</option>
+        <option value="Cartão de débito">Cartão de débito</option>
+      </>
+    );
   }
 
   render() {
@@ -100,18 +175,16 @@ class WalletForm extends React.Component {
           ))}
         </select>
         <select name="method" data-testid="method-input" onChange={ this.handleInputs }>
-          <option value="Dinheiro">Dinheiro</option>
-          <option value="Cartão de crédito">Cartão de crédito</option>
-          <option value="Cartão de débito">Cartão de débito</option>
+          {this.methodOptions()}
         </select>
-        <select name="tag" data-testid="tag-input" onChange={ this.handleInputs }>
-          <option value="Alimentação">Alimentação</option>
-          <option value="Lazer">Lazer</option>
-          <option value="Trabalho">Trabalho</option>
-          <option value="Transporte">Transporte</option>
-          <option value="Saúde">Saúde</option>
-        </select>
-        <button type="submit" onClick={ this.addNewExpense }>Adicionar despesa</button>
+        {this.selectAndButtons()}
+        <button
+          type="submit"
+          name={ this.changeButton() }
+          onClick={ this.handleClick }
+        >
+          {this.changeButton()}
+        </button>
       </div>
     );
   }
@@ -119,10 +192,17 @@ class WalletForm extends React.Component {
 
 WalletForm.propTypes = {
   dispatchExpense: PropTypes.func,
+  dispatchEditExpenseList: PropTypes.func,
 }.isRequired;
+
+const mapStateToProps = (state) => ({
+  expEdit: state.wallet.expenseToEdit,
+  expenses: state.wallet.expenses,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchExpense: (data) => dispatch(saveExpenses(data)),
+  dispatchEditExpenseList: (data) => dispatch(editExpenseList(data)),
 });
 
-export default connect(null, mapDispatchToProps)(WalletForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

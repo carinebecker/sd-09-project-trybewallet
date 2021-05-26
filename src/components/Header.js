@@ -3,6 +3,11 @@ import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.total = this.total.bind(this);
+  }
+
   total() {
     const { expenses } = this.props;
     let sum = 0;

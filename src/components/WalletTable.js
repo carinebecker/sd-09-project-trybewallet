@@ -1,17 +1,58 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpense } from '../actions';
+import { deleteExpense, getExpenseToEdit } from '../actions';
 
 class WalletTable extends React.Component {
+  getExpenseToEdit(id) {
+    const { getExp, expenses } = this.props;
+    const expense = expenses.find((exp) => (exp.id === id));
+    getExp(expense);
+  }
+
   removeExpenseHandler(id) {
     const { removeExpense } = this.props;
     removeExpense(id);
   }
 
-  render() {
+  renderTbody() {
     const { expenses } = this.props;
+    return (
+      expenses.map((expense) => (
+        <tr key={ expense.id }>
+          <td>{expense.description}</td>
+          <td>{expense.tag}</td>
+          <td>{expense.method}</td>
+          <td>{expense.value}</td>
+          <td>{expense.exchangeRates[expense.currency].name}</td>
+          <td>{Number(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
+          <td>
+            {Number(expense.value * expense.exchangeRates[expense.currency].ask)
+              .toFixed(2)}
+          </td>
+          <td>Real</td>
+          <th>
+            <button
+              type="button"
+              data-testid="delete-btn"
+              onClick={ () => this.removeExpenseHandler(expense.id) }
+            >
+              Excluir
+            </button>
+            <button
+              type="button"
+              data-testid="edit-btn"
+              onClick={ () => this.getExpenseToEdit(expense.id) }
+            >
+              Editar despesa
+            </button>
+          </th>
+        </tr>
+      ))
+    );
+  }
 
+  render() {
     return (
       <table>
         <thead>
@@ -28,30 +69,7 @@ class WalletTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => (
-            <tr key={ expense.id }>
-              <td>{expense.description}</td>
-              <td>{expense.tag}</td>
-              <td>{expense.method}</td>
-              <td>{expense.value}</td>
-              <td>{expense.exchangeRates[expense.currency].name}</td>
-              <td>{Number(expense.exchangeRates[expense.currency].ask).toFixed(2)}</td>
-              <td>
-                {Number(expense.value * expense.exchangeRates[expense.currency].ask)
-                  .toFixed(2)}
-              </td>
-              <td>Real</td>
-              <th>
-                <button
-                  type="button"
-                  data-testid="delete-btn"
-                  onClick={ () => this.removeExpenseHandler(expense.id) }
-                >
-                  Excluir
-                </button>
-              </th>
-            </tr>
-          ))}
+          {this.renderTbody()}
         </tbody>
       </table>
     );
@@ -59,6 +77,7 @@ class WalletTable extends React.Component {
 }
 
 WalletTable.propTypes = {
+  getExp: PropTypes.func,
   removeExpense: PropTypes.func,
   expenses: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
@@ -85,6 +104,7 @@ WalletTable.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   removeExpense: (id) => dispatch(deleteExpense(id)),
+  getExp: (id) => dispatch(getExpenseToEdit(id)),
 });
 
 const mapStateToProps = ({ wallet }) => ({
