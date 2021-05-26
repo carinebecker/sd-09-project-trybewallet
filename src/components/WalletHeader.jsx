@@ -12,18 +12,17 @@ class WalletHeader extends Component {
     const { expenses } = this.props;
     let total = 0;
     expenses.forEach((expense) => {
-      total += expense.value * expense.exchangeRates[expense.currency].ask;
+      total += (expense.value * expense.exchangeRates[expense.currency].ask);
     });
-    return total;
+    return parseFloat(total).toFixed(2);
   }
 
   render() {
-    const totalExpenses = this.getExpensesValue();
     const { email } = this.props;
     return (
       <header>
         <p data-testid="email-field">{`Email: ${email}`}</p>
-        <p data-testid="total-field">{ totalExpenses }</p>
+        <p data-testid="total-field">{ this.getExpensesValue() }</p>
         <p data-testid="header-currency-field">BRL</p>
       </header>
     );
