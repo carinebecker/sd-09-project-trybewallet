@@ -8,7 +8,6 @@ class Formulario extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0,
       value: 0,
       currency: 'USD',
       method: 'Dinheiro',
@@ -81,7 +80,6 @@ class Formulario extends Component {
     expenseList.push(addNewExpense);
     propAddExpense(expenseList);
     this.setState({
-      id: expenses.length === 0 ? 1 : expenses[expenses.length - 1].id + 1,
       value: 0,
       description: '',
     });
