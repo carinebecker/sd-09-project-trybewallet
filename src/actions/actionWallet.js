@@ -53,7 +53,9 @@ export const fetchCurrenciesValues = () => async (dispatch) => {
   dispatch(currenciesValues());
   try {
     const getCurrenciesValues = await getApi();
-    dispatch(currenciesValuesSuccess(getCurrenciesValues));
+    delete getCurrenciesValues.USDT;
+    const currencies = Object.keys(getCurrenciesValues);
+    dispatch(currenciesValuesSuccess(currencies));
   } catch (error) {
     dispatch(currenciesValuesError(error));
   }

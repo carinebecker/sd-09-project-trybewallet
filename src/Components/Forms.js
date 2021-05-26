@@ -41,10 +41,10 @@ class Forms extends Component {
 
   async handleAdditionalExpense() {
     const dataFetch = await getApi();
-    const exchangeRates = Object.keys(dataFetch);
     const { addExpenseAction } = this.props;
     console.log(this.state);
-    addExpenseAction({ ...this.state, exchangeRates });
+    addExpenseAction({ ...this.state, exchangeRates: dataFetch });
+    this.setState({ value: 0 });
   }
 
   renderButtonAddExpense() {
@@ -125,7 +125,7 @@ class Forms extends Component {
           id="currency"
           data-testid="currency-input"
         >
-          {Object.keys(currencies).map((cur, index) => {
+          {currencies.map((cur, index) => {
             if (cur !== 'USDT') {
               return (
                 <option data-testid={ cur } key={ index }>
