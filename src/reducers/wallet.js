@@ -16,7 +16,7 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
   case ADD_EXPENSE:
     return {
-      ...state, expenses: [...state.expenses, payload.expense],
+      ...state, expenses: [...state.expenses, payload],
     };
   case CURRENCIES_VALUES_START:
     return {

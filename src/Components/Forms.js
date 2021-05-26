@@ -3,7 +3,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrenciesValues, addExpense } from '../actions';
+import {
+  fetchCurrenciesValues,
+  addExpense,
+} from '../actions';
 
 const categories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 const payment = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
@@ -12,14 +15,14 @@ class Forms extends Component {
     super(props);
 
     this.state = {
-      // id: -1,
       value: 0,
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      // exchangeRates: {},
     };
+
+    this.handleAdditionalExpense = this.handleAdditionalExpense.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -29,23 +32,22 @@ class Forms extends Component {
   }
 
   handleChange({ target: { name, value } }) {
-    const { state } = this.state;
-    this.setState({
-      ...state, [name]: value,
-    });
+    this.setState((prev) => ({
+      ...prev, [name]: value,
+    }));
   }
 
-  handleClick() {
+  handleAdditionalExpense() {
     const { addExpenseAction } = this.props;
-    console.log(addExpenseAction);
-    // addExpenseAction(this.state);
+    console.log(this.state);
+    addExpenseAction(this.state);
   }
 
   renderButtonAddExpense() {
     return (
       <button
         type="button"
-        onClick={ this.handleClick }
+        onClick={ this.handleAdditionalExpense }
       >
         Adicionar despesa
       </button>
@@ -182,6 +184,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Forms);
