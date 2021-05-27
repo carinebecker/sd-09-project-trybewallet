@@ -13,9 +13,7 @@ class ExpenseList extends React.Component {
 
   handlerDeleteExpense(id) {
     const { expenses, deleteExpense } = this.props;
-    const newExpenses = expenses.filter((expense) => {
-      return expense.id !== id;
-    });
+    const newExpenses = expenses.filter((expense) => expense.id !== id);
     deleteExpense(newExpenses);
   }
 
