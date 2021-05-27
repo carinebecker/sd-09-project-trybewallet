@@ -1,10 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropType from 'prop-types';
+import { deleteExpense as deleteExpenseAction } from '../actions';
 
 class ExpenseList extends React.Component {
-  render() {
-    const { expenses } = this.props;
+  constructor(props) {
+    super(props);
+
+    this.handlerDeleteExpense = this.handlerDeleteExpense.bind(this);
+    this.renderTable = this.renderTable.bind(this);
+  }
+
+  handlerDeleteExpense(id) {
+    const { expenses, deleteExpense } = this.props;
+    const newExpenses = expenses.filter((expense) => {
+      return expense.id !== id;
+    });
+    deleteExpense(newExpenses);
+  }
+
+  renderTable(expenses) {
     return (
       <table>
         <thead>
@@ -39,11 +54,26 @@ class ExpenseList extends React.Component {
                 ).toFixed(2) }
               </td>
               <td>Real</td>
-              <td>editandremove</td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.handlerDeleteExpense(expense.id) }
+                >
+                  D
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+    );
+  }
+
+  render() {
+    const { expenses } = this.props;
+    return (
+      this.renderTable(expenses)
     );
   }
 }
@@ -52,8 +82,12 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  deleteExpense: (expenses) => dispatch(deleteExpenseAction(expenses)),
+});
+
 ExpenseList.propTypes = {
   expenses: PropType.arrayOf(Object),
 }.isRequired;
 
-export default connect(mapStateToProps, null)(ExpenseList);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseList);

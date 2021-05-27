@@ -1,5 +1,6 @@
 import {
   SET_EXPENSE,
+  DELETE_EXPENSE,
   REQUEST_CURRENCIES,
   REQUEST_CURRENCIES_SUCCESS,
   REQUEST_CURRENCIES_ERROR,
@@ -13,6 +14,11 @@ const walletReducer = (state = INITAL_STATE, { type, payload }) => {
     return {
       ...state,
       expenses: state.expenses.concat(payload.expense),
+    };
+  case DELETE_EXPENSE:
+    return {
+      ...state,
+      expenses: payload.expenses,
     };
   case REQUEST_CURRENCIES:
     return {

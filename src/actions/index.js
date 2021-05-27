@@ -2,6 +2,7 @@ import getCurrencies from '../services/currenciesAPI';
 
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_EXPENSE = 'SET_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_ERROR = 'REQUEST_CURRENCIES_ERROR';
@@ -17,6 +18,13 @@ export const setExpense = (expense) => ({
   type: SET_EXPENSE,
   payload: {
     expense,
+  },
+});
+
+export const deleteExpense = (expenses) => ({
+  type: DELETE_EXPENSE,
+  payload: {
+    expenses,
   },
 });
 
