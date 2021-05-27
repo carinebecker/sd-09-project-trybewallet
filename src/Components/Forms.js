@@ -149,6 +149,7 @@ class Forms extends Component {
                 <option
                   value={ cur }
                   key={ index }
+                  data-testid={ cur }
                 >
                   {cur}
                 </option>
