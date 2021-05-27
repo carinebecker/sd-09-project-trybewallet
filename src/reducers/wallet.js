@@ -7,13 +7,15 @@ import {
   REQUEST_CURRENCIES_ERROR,
 } from '../actions';
 
-const INITAL_STATE = { currencies: [], expenses: [], editMode: false };
+const INITAL_STATE = {
+  currencies: [], expenses: [], editModeInput: false, editMode: false };
 
 const walletReducer = (state = INITAL_STATE, { type, payload }) => {
   switch (type) {
   case SET_EDIT_MODE:
     return {
       ...state,
+      editModeInput: payload.editModeInput,
       editMode: payload.editMode,
       id: payload.id,
     };

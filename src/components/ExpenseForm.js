@@ -4,6 +4,8 @@ import PropType from 'prop-types';
 import {
   fetchCurrencies as fetchCurrenciesThunk,
   setExpense as setExpenseAction,
+  setEditMode as setEditModeAction,
+  deleteExpense as deleteExpenseAction,
 } from '../actions';
 
 class ExpenseForm extends React.Component {
@@ -18,6 +20,7 @@ class ExpenseForm extends React.Component {
       tag: 'Alimentação',
     };
 
+    this.uptExp = this.uptExp.bind(this);
     this.renderEditMode = this.renderEditMode.bind(this);
     this.renderMethodInput = this.renderMethodInput.bind(this);
     this.renderDescriptionInput = this.renderDescriptionInput.bind(this);
@@ -31,6 +34,10 @@ class ExpenseForm extends React.Component {
   componentDidMount() {
     const { fetchCurrencies } = this.props;
     fetchCurrencies();
+  }
+
+  componentDidUpdate() {
+    this.editExp();
   }
 
   handleChangeInputs({ target: { name, value } }) {
@@ -59,13 +66,36 @@ class ExpenseForm extends React.Component {
   }
 
   editExp() {
-    const { id, expenses, editMode } = this.props;
-    if (editMode) {
+    const { id, expenses, editMode, editModeInput, setEditMode } = this.props;
+    if (editModeInput) {
       const expenseEdit = expenses.find((expense) => expense.id === id);
       this.setState({
         ...expenseEdit,
       });
+      setEditMode({
+        editModeInput: false,
+        editMode,
+        id,
+      });
     }
+  }
+
+  uptExp() {
+    const { expenses, id, deleteExpense, setEditMode } = this.props;
+    const newExpenses = expenses.map((expense) => {
+      if (expense.id === id) {
+        return {
+          ...this.state,
+        };
+      }
+      return expense;
+    });
+    deleteExpense(newExpenses);
+    setEditMode({
+      editModeInput: false,
+      editMode: false,
+      id,
+    });
   }
 
   renderValueInput(value) {
@@ -151,7 +181,7 @@ class ExpenseForm extends React.Component {
     return (
       <div>
         { editMode
-          ? <button type="button" onClick={ this.editExp }>Editar despesa</button>
+          ? <button type="button" onClick={ this.uptExp }>Editar despesa</button>
           : <button type="button" onClick={ this.addExp }>Adicionar despesa</button> }
       </div>
     );
@@ -177,6 +207,7 @@ class ExpenseForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  editModeInput: state.wallet.editModeInput,
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
   editMode: state.wallet.editMode,
@@ -184,6 +215,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  deleteExpense: (expenses) => dispatch(deleteExpenseAction(expenses)),
+  setEditMode: (editMode) => dispatch(setEditModeAction(editMode)),
   setExpense: (expense) => dispatch(setExpenseAction(expense)),
   fetchCurrencies: () => dispatch(fetchCurrenciesThunk()),
 });

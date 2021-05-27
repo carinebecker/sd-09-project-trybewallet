@@ -24,6 +24,7 @@ class ExpenseList extends React.Component {
   handlerEditExpense(id) {
     const { setEditMode } = this.props;
     setEditMode({
+      editModeInput: true,
       editMode: true,
       id,
     });

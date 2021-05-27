@@ -1,5 +1,6 @@
 import getCurrencies from '../services/currenciesAPI';
 
+export const UPDATE_EXPENSE = 'UPDATE_EXPENSE';
 export const SET_EDIT_MODE = 'SET_EDIT_MODE';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_EXPENSE = 'SET_EXPENSE';
@@ -8,9 +9,10 @@ export const REQUEST_CURRENCIES = 'REQUEST_CURRENCIES';
 export const REQUEST_CURRENCIES_SUCCESS = 'REQUEST_CURRENCIES_SUCCESS';
 export const REQUEST_CURRENCIES_ERROR = 'REQUEST_CURRENCIES_ERROR';
 
-export const setEditMode = ({ editMode, id }) => ({
+export const setEditMode = ({ editMode, id, editModeInput }) => ({
   type: SET_EDIT_MODE,
   payload: {
+    editModeInput,
     editMode,
     id,
   },
@@ -25,6 +27,13 @@ export const setEmail = (email) => ({
 
 export const setExpense = (expense) => ({
   type: SET_EXPENSE,
+  payload: {
+    expense,
+  },
+});
+
+export const updateExpense = (expense) => ({
+  type: UPDATE_EXPENSE,
   payload: {
     expense,
   },
