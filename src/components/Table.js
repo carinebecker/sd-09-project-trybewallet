@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setFilterExpensesAction } from '../actions/index';
+import {
+  setFilterExpensesAction,
+  setBooleanEditAction,
+  setEditExpensesAction,
+} from '../actions/index';
 
 class Table extends Component {
   constructor(props) {
@@ -27,6 +31,40 @@ class Table extends Component {
     );
   }
 
+  getButtons(expense) {
+    return (
+      <td>
+        <button
+          type="button"
+          data-testid="edit-btn"
+          onClick={ () => this.editClick({
+            id: expense.id,
+            value: expense.value,
+            description: expense.description,
+            currency: expense.currency,
+            method: expense.method,
+            tag: expense.tag,
+          }) }
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          data-testid="delete-btn"
+          onClick={ () => this.handleClick(expense.id) }
+        >
+          Excluir
+        </button>
+      </td>
+    );
+  }
+
+  editClick(values) {
+    const { setBooleanEditDispatcher, setEditExpensesDispatcher } = this.props;
+    setBooleanEditDispatcher(true);
+    setEditExpensesDispatcher(values);
+  }
+
   handleClick(value) {
     const { expenses, setFilterExpensesDispatcher } = this.props;
     const filteredExpenses = expenses.filter((expense) => expense.id !== value);
@@ -37,7 +75,7 @@ class Table extends Component {
     const { expenses } = this.props;
     return (
       <table>
-        { this.getHeaders() }
+        {this.getHeaders()}
         <tbody>
           {expenses.map((expense) => (
             <tr key={ expense.id }>
@@ -57,16 +95,7 @@ class Table extends Component {
                 ).toFixed(2)}
               </td>
               <td>Real</td>
-              <td>
-                <button type="button">Editar</button>
-                <button
-                  type="button"
-                  data-testid="delete-btn"
-                  onClick={ () => this.handleClick(expense.id) }
-                >
-                  Excluir
-                </button>
-              </td>
+              {this.getButtons(expense)}
             </tr>
           ))}
         </tbody>
@@ -85,6 +114,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setFilterExpensesDispatcher: (expense) => dispatch(setFilterExpensesAction(expense)),
+  setBooleanEditDispatcher: (boolean) => dispatch(setBooleanEditAction(boolean)),
+  setEditExpensesDispatcher: (
+    editExpense,
+  ) => dispatch(setEditExpensesAction(editExpense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

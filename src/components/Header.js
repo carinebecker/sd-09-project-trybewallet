@@ -5,10 +5,8 @@ import { connect } from 'react-redux';
 class Header extends React.Component {
   sumExpenses() {
     const { expenses } = this.props;
-    console.log(expenses);
     let total = 0;
     expenses.forEach((currentValue) => {
-      console.log('teste');
       const currentCurrency = currentValue.exchangeRates[currentValue.currency].ask;
       total += currentValue.value * currentCurrency;
     });

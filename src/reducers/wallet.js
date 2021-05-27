@@ -3,11 +3,16 @@ import {
   GET_CURRENCY_ACTION,
   SET_EXPENSES_ACTION,
   SET_FILTER_EXPENSES_ACTION,
+  SET_EDIT_EXPENSES_ACTION,
+  SET_BOOLEAN_EDIT_ACTION,
+  SET_UPDATE_EXPENSES_ACTION,
 } from '../actions';
 
 const INITIAL_STATE = {
-  currency: {},
+  currencies: [],
   expenses: [],
+  editExpenses: {},
+  booleanEdit: false,
 };
 
 export default function currencyReducer(state = INITIAL_STATE, action) {
@@ -15,7 +20,7 @@ export default function currencyReducer(state = INITIAL_STATE, action) {
   case GET_CURRENCY_ACTION:
     return {
       ...state,
-      currency: action.currency,
+      currencies: action.currency,
     };
   case SET_EXPENSES_ACTION:
     return {
@@ -26,6 +31,21 @@ export default function currencyReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       expenses: [...action.filterExpenses],
+    };
+  case SET_UPDATE_EXPENSES_ACTION:
+    return {
+      ...state,
+      expenses: [...action.updateExpenses],
+    };
+  case SET_EDIT_EXPENSES_ACTION:
+    return {
+      ...state,
+      editExpenses: action.editExpenses,
+    };
+  case SET_BOOLEAN_EDIT_ACTION:
+    return {
+      ...state,
+      booleanEdit: action.booleanEdit,
     };
   default:
     return state;
