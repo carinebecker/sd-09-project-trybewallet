@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropType from 'prop-types';
-import setEmailAction from '../actions/index';
+import { setEmail as setEmailAction } from '../actions/index';
 
 const NUMBER_SIX = 6;
 
