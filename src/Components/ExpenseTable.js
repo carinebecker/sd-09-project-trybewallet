@@ -38,8 +38,10 @@ class ExpenseTable extends Component {
                 <td>{Number(ask).toFixed(2)}</td>
                 <td>{(Number(ask) * value).toFixed(2)}</td>
                 <td>Real</td>
-                <td>{this.renderEditButton()}</td>
-                <td>{this.renderDeleteButton(expense.id)}</td>
+                <td>
+                  {this.renderEditButton()}
+                  {this.renderDeleteButton(expense.id)}
+                </td>
               </tr>
             );
           })}
@@ -64,7 +66,7 @@ class ExpenseTable extends Component {
         type="button"
         onClick={ this.buttonEdit }
       >
-        Editar
+        Editar despesa
       </button>
     );
   }
@@ -74,7 +76,7 @@ class ExpenseTable extends Component {
       <button
         type="button"
         data-testid="delete-btn"
-        onClick={ this.buttonDelete(id) }
+        onClick={ () => this.buttonDelete(id) }
       >
         Excluir
       </button>
