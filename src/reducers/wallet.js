@@ -40,6 +40,7 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
   }
   case UPDATE_EXPENSE: {
     return {
+      ...state,
       expenses: state.expenses.map((expense) => {
         if (expense.id === state.editId) {
           return { ...expense, ...payload };

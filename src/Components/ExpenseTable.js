@@ -64,9 +64,10 @@ class ExpenseTable extends Component {
     return (
       <button
         type="button"
+        data-testid="edit-btn"
         onClick={ () => this.buttonEdit(id) }
       >
-        Editar despesa
+        Editar gasto
       </button>
     );
   }

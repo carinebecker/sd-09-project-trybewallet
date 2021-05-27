@@ -68,7 +68,7 @@ class Forms extends Component {
     return (
       <button
         type="button"
-        onClick={ this.handleAdditionalExpense }
+        onClick={ editor ? this.handleUpdateExpense : this.handleAdditionalExpense }
         data-testid={ editor ? 'edit-btn' : 'add-btn' }
       >
         {editor ? 'Editar despesa' : 'Adicionar despesa'}
@@ -130,9 +130,9 @@ class Forms extends Component {
     );
   }
 
-  renderInputCurrency(currencies, currency) {
-    // const { currencies } = this.props;
-    // const { currency } = this.state;
+  renderInputCurrency() {
+    const { currencies } = this.props;
+    const { currency } = this.state;
     return (
       <label htmlFor="currency">
         Moeda:
@@ -143,15 +143,14 @@ class Forms extends Component {
           id="currency"
           data-testid="currency-input"
         >
-          {currencies.map((currentCurrency, index) => {
-            if (currentCurrency !== 'USDT') {
+          {currencies.map((cur, index) => {
+            if (cur !== 'USDT') {
               return (
                 <option
-                  value={ currentCurrency }
+                  value={ cur }
                   key={ index }
-                  data-testid={ `${currentCurrency}` }
                 >
-                  {currentCurrency}
+                  {cur}
                 </option>
               );
             } return null;
