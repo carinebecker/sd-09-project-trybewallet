@@ -8,13 +8,22 @@ import getApi from '../services/requestApi';
 import {
   fetchCurrenciesValues,
   addExpense,
+  editExpense,
+  updateExpense,
 } from '../actions';
 
 const categories = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 const payment = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+
 class Forms extends Component {
   constructor(props) {
     super(props);
+
+    let change = null;
+    const { editor, expenses, editId } = this.props;
+    if (editor) {
+      change = expenses.find((expense) => expense.id === editId);
+    }
 
     this.state = {
       value: 0,
@@ -22,6 +31,7 @@ class Forms extends Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      ...change,
     };
 
     this.handleAdditionalExpense = this.handleAdditionalExpense.bind(this);
@@ -39,6 +49,11 @@ class Forms extends Component {
     }));
   }
 
+  handleUpdateExpense() {
+    const { updateExpenseAction } = this.props;
+    updateExpenseAction(...this.state);
+  }
+
   async handleAdditionalExpense() {
     const dataFetch = await getApi();
     const { addExpenseAction } = this.props;
@@ -47,13 +62,14 @@ class Forms extends Component {
     this.setState({ value: 0 });
   }
 
-  renderButtonAddExpense() {
+  renderButtonAddExpense(editor) {
     return (
       <button
         type="button"
-        onClick={ this.handleAdditionalExpense }
+        onClick={ editor ? this.handleAdditionalExpense : this.handleUpdateExpense }
+        data-testid={ editor ? 'edit-btn' : 'add-btn' }
       >
-        Adicionar despesa
+        {editor ? 'Editar despesa' : 'Adicionar despesa'}
       </button>
     );
   }
@@ -162,6 +178,7 @@ class Forms extends Component {
   }
 
   render() {
+    const { editor } = this.props;
     return (
       <div>
         {this.renderInputValue()}
@@ -169,26 +186,39 @@ class Forms extends Component {
         {this.renderInputMethod()}
         {this.renderInputCurrency()}
         {this.renderInputTag()}
-        {this.renderButtonAddExpense()}
+        {this.renderButtonAddExpense(editor)}
       </div>
     );
   }
 }
 
+Forms.defaultProps = {
+  editor: false,
+  editId: 0,
+};
+
 Forms.propTypes = {
   fetchCurrencies: PropTypes.func.isRequired,
-  currencies: PropTypes.objectOf({}).isRequired,
   addExpenseAction: PropTypes.func.isRequired,
+  updateExpenseAction: PropTypes.func.isRequired,
+  currencies: PropTypes.objectOf({}).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  editor: PropTypes.bool,
+  editId: PropTypes.number,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCurrencies: () => dispatch(fetchCurrenciesValues()),
   addExpenseAction: (expense) => dispatch(addExpense(expense)),
+  editExpenseAction: (id) => dispatch(editExpense(id)),
+  updateExpenseAction: (expense) => dispatch(updateExpense(expense)),
 });
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
+  editId: state.wallet.editId,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Forms);

@@ -11,7 +11,7 @@ const headerDetails = ['Descrição', 'Tag', 'Método de pagamento', 'Valor',
   'Editar/Excluir'];
 
 class ExpenseTable extends Component {
-  constructorTable() {
+  constructorTable(editExpenseAction, deleteExpenseAction) {
     const { expenses } = this.props;
     return (
       <table>
@@ -39,8 +39,8 @@ class ExpenseTable extends Component {
                 <td>{(Number(ask) * value).toFixed(2)}</td>
                 <td>Real</td>
                 <td>
-                  {this.renderEditButton()}
-                  {this.renderDeleteButton(expense.id)}
+                  {this.renderEditButton(editExpenseAction)}
+                  {this.renderDeleteButton(expense.id, deleteExpenseAction)}
                 </td>
               </tr>
             );

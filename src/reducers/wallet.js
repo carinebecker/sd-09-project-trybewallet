@@ -1,6 +1,7 @@
 import {
   ADD_EXPENSE,
-  // EDIT_EXPENSE,
+  EDIT_EXPENSE,
+  UPDATE_EXPENSE,
   DELETE_EXPENSE,
   CURRENCIES_VALUES_START,
   CURRENCIES_VALUES_SUCCESS,
@@ -8,26 +9,44 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
-  contadorID: 0,
+  counterId: 0,
+  editId: 0,
   currencies: [],
   expenses: [],
   isFetching: false,
+  editor: false,
   error: '',
 };
 
 const wallet = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
   case ADD_EXPENSE: {
-    const novaDespesa = { ...payload, id: state.contadorID };
+    const expenseNew = { ...payload, id: state.counterId };
     return {
       ...state,
-      expenses: [...state.expenses, novaDespesa],
-      contadorID: state.contadorID + 1,
+      expenses: [...state.expenses, expenseNew],
+      counterId: state.counterId + 1,
     };
   }
   case DELETE_EXPENSE: {
     return {
       ...state, expenses: state.expenses.filter((expense) => expense.id !== payload),
+    };
+  }
+  case EDIT_EXPENSE: {
+    return {
+      ...state, editor: true, editId: payload,
+    };
+  }
+  case UPDATE_EXPENSE: {
+    return {
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === state.editId) {
+          return { ...expense, ...payload };
+        }
+        return expense;
+      }),
+      editor: false,
     };
   }
   case CURRENCIES_VALUES_START:
