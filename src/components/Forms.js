@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchAPI from '../services/api';
-import { saveFormsThunk } from '../actions';
+import { saveFormsThunk, sendEdition, editBtn } from '../actions';
 import store from '../store/index';
 
 class Forms extends Component {
@@ -15,6 +15,7 @@ class Forms extends Component {
     this.saveInputs = this.saveInputs.bind(this);
     this.handleCurrencyOption = this.handleCurrencyOption.bind(this);
     this.saveAndDispatch = this.saveAndDispatch.bind(this);
+    this.changeButton = this.changeButton.bind(this);
     this.state = {
       exchangeRates: [],
       method: '',
@@ -79,6 +80,29 @@ class Forms extends Component {
     dispatchExpenses(this.state);
   }
 
+  changeButton() {
+    const { boolean, editedExpense, editButton } = this.props;
+    if (boolean === false) {
+      return (
+        <button type="button" onClick={ this.saveAndDispatch }>
+          Adicionar despesa
+        </button>
+      );
+    } if (boolean === true) {
+      return (
+        <button
+          type="button"
+          onClick={ () => {
+            editedExpense(this.state);
+            editButton(false);
+          } }
+        >
+          Editar despesa
+        </button>
+      );
+    }
+  }
+
   render() {
     const { value } = this.state;
     return (
@@ -109,20 +133,27 @@ class Forms extends Component {
           <option>Transporte</option>
           <option>Saúde</option>
         </select>
-        <button type="button" onClick={ this.saveAndDispatch }>
-          Adicionar despesa
-        </button>
+        { this.changeButton() }
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchExpenses: (expenses) => dispatch(saveFormsThunk(expenses)),
+const mapStateToProps = (state) => ({
+  boolean: state.wallet.key,
 });
 
-export default connect(null, mapDispatchToProps)(Forms);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchExpenses: (expenses) => dispatch(saveFormsThunk(expenses)),
+  editedExpense: (expense) => dispatch(sendEdition(expense)),
+  editButton: (key, index) => dispatch(editBtn(key, index)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Forms);
 
 Forms.propTypes = {
   dispatchExpenses: PropTypes.func.isRequired,
+  boolean: PropTypes.bool.isRequired,
+  editedExpense: PropTypes.arrayOf(Array).isRequired,
+  editButton: PropTypes.bool.isRequired,
 };

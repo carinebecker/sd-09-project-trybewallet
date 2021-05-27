@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteRow } from '../actions/index';
+import { deleteRow, editBtn } from '../actions/index';
 
 class Table extends Component {
   constructor() {
@@ -10,10 +10,10 @@ class Table extends Component {
   }
 
   createInfoTable() {
-    const { expenses, deleteExpense } = this.props;
+    const { expenses, deleteExpense, editButton } = this.props;
     if (expenses) {
       return (
-        expenses.map((row) => (
+        expenses.map((row, index) => (
           <tr key={ row.id }>
             <td>{ row.description }</td>
             <td>{ row.tag }</td>
@@ -25,6 +25,13 @@ class Table extends Component {
               { Number(row.exchangeRates[row.currency].ask * row.value).toFixed(2) }
             </td>
             <td>Real</td>
+            <button
+              data-testid="edit-btn"
+              type="button"
+              onClick={ () => editButton(true, index) }
+            >
+              edit
+            </button>
             <button
               data-testid="delete-btn"
               type="button"
@@ -68,6 +75,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   deleteExpense: (id) => dispatch(deleteRow(id)),
+  editButton: (key, index) => dispatch(editBtn(key, index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
@@ -75,4 +83,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(Table);
 Table.propTypes = {
   expenses: PropTypes.arrayOf(Object).isRequired,
   deleteExpense: PropTypes.func.isRequired,
+  editButton: PropTypes.func.isRequired,
 };

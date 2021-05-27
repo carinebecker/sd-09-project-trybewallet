@@ -23,3 +23,17 @@ export const deleteRow = (id) => ({
   type: DELETE_ROW,
   id,
 });
+
+export const EDIT_BTN = 'EDIT_BTN';
+export const editBtn = (key, index) => ({
+  type: EDIT_BTN,
+  key,
+  index,
+});
+
+export const SEND_EDITION = 'SAVE_EDITION';
+export const sendEdition = (expenses) => ({
+  type: SEND_EDITION,
+  expenses,
+
+});
