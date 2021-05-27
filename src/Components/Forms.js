@@ -36,6 +36,7 @@ class Forms extends Component {
 
     this.handleAdditionalExpense = this.handleAdditionalExpense.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpdateExpense = this.handleUpdateExpense.bind(this);
   }
 
   componentDidMount() {
@@ -51,7 +52,7 @@ class Forms extends Component {
 
   handleUpdateExpense() {
     const { updateExpenseAction } = this.props;
-    updateExpenseAction(...this.state);
+    updateExpenseAction(this.state);
   }
 
   async handleAdditionalExpense() {
