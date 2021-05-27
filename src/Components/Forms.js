@@ -52,6 +52,7 @@ class Forms extends Component {
 
   handleUpdateExpense() {
     const { updateExpenseAction } = this.props;
+    console.log(updateExpenseAction);
     updateExpenseAction(this.state);
   }
 
@@ -63,11 +64,11 @@ class Forms extends Component {
     this.setState({ value: 0 });
   }
 
-  renderButtonAddExpense(editor) {
+  renderButton(editor) {
     return (
       <button
         type="button"
-        onClick={ editor ? this.handleAdditionalExpense : this.handleUpdateExpense }
+        onClick={ this.handleAdditionalExpense }
         data-testid={ editor ? 'edit-btn' : 'add-btn' }
       >
         {editor ? 'Editar despesa' : 'Adicionar despesa'}
@@ -129,9 +130,9 @@ class Forms extends Component {
     );
   }
 
-  renderInputCurrency() {
-    const { currencies } = this.props;
-    const { currency } = this.state;
+  renderInputCurrency(currencies, currency) {
+    // const { currencies } = this.props;
+    // const { currency } = this.state;
     return (
       <label htmlFor="currency">
         Moeda:
@@ -142,11 +143,15 @@ class Forms extends Component {
           id="currency"
           data-testid="currency-input"
         >
-          {currencies.map((cur, index) => {
-            if (cur !== 'USDT') {
+          {currencies.map((currentCurrency, index) => {
+            if (currentCurrency !== 'USDT') {
               return (
-                <option data-testid={ cur } key={ index }>
-                  {cur}
+                <option
+                  value={ currentCurrency }
+                  key={ index }
+                  data-testid={ `${currentCurrency}` }
+                >
+                  {currentCurrency}
                 </option>
               );
             } return null;
@@ -179,15 +184,15 @@ class Forms extends Component {
   }
 
   render() {
-    const { editor } = this.props;
+    const { editor, currencies } = this.props;
     return (
       <div>
         {this.renderInputValue()}
         {this.renderInputDescription()}
         {this.renderInputMethod()}
-        {this.renderInputCurrency()}
+        {this.renderInputCurrency(currencies)}
         {this.renderInputTag()}
-        {this.renderButtonAddExpense(editor)}
+        {this.renderButton(editor)}
       </div>
     );
   }

@@ -39,7 +39,7 @@ class ExpenseTable extends Component {
                 <td>{(Number(ask) * value).toFixed(2)}</td>
                 <td>Real</td>
                 <td>
-                  {this.renderEditButton(editExpenseAction)}
+                  {this.renderEditButton(expense.id, editExpenseAction)}
                   {this.renderDeleteButton(expense.id, deleteExpenseAction)}
                 </td>
               </tr>
@@ -50,9 +50,9 @@ class ExpenseTable extends Component {
     );
   }
 
-  buttonEdit() {
+  buttonEdit(id) {
     const { editExpenseAction } = this.props;
-    editExpenseAction();
+    editExpenseAction(id);
   }
 
   buttonDelete(id) {
@@ -60,11 +60,11 @@ class ExpenseTable extends Component {
     deleteExpenseAction(id);
   }
 
-  renderEditButton() {
+  renderEditButton(id) {
     return (
       <button
         type="button"
-        onClick={ this.buttonEdit }
+        onClick={ () => this.buttonEdit(id) }
       >
         Editar despesa
       </button>
