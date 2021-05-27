@@ -17,3 +17,9 @@ export const saveFormsThunk = (state) => async (dispatch) => {
   const exchange = await response.json();
   return dispatch(saveForms(state, exchange));
 };
+
+export const DELETE_ROW = 'DELETE_ROW';
+export const deleteRow = (id) => ({
+  type: DELETE_ROW,
+  id,
+});
