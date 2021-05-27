@@ -11,13 +11,11 @@ class ExpenseForm extends React.Component {
     super(props);
 
     this.state = {
-      id: 0,
       value: '0',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      exchangeRates: {},
     };
 
     this.renderEditMode = this.renderEditMode.bind(this);
