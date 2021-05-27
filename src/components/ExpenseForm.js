@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropType from 'prop-types';
 import {
   fetchCurrencies as fetchCurrenciesThunk,
-  setExpense as setExpenseAction
+  setExpense as setExpenseAction,
 } from '../actions';
 
 class ExpenseForm extends React.Component {
@@ -73,7 +73,9 @@ class ExpenseForm extends React.Component {
   render() {
     const { value, description } = this.state;
     const { currencies } = this.props;
-    const newCurrencies = Array.isArray(currencies) ? currencies : Object.keys(currencies);
+    const newCurrencies = Array.isArray(
+      currencies,
+    ) ? currencies : Object.keys(currencies);
     return (
       <div>
         <input
