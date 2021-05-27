@@ -12,7 +12,7 @@ class ExpenseForm extends React.Component {
 
     this.state = {
       value: 0,
-      description: 'Teste',
+      description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
@@ -61,6 +61,7 @@ class ExpenseForm extends React.Component {
               value={ currency }
               data-testeid={ currency }
               key={ currency }
+              data-testid={ currency }
             >
               { currency }
             </option>
