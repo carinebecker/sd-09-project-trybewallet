@@ -11,7 +11,7 @@ class ExpenseForm extends React.Component {
     super(props);
 
     this.state = {
-      value: 0,
+      value: '0',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -35,10 +35,11 @@ class ExpenseForm extends React.Component {
 
   handleAddExpense() {
     const { value, description, currency, method, tag } = this.state;
-    const { currencies, expenses, setExpense } = this.props;
+    const { currencies, expenses, setExpense, fetchCurrencies } = this.props;
+    fetchCurrencies();
     const expense = {
       id: expenses.length,
-      value: parseFloat(value),
+      value,
       description,
       currency,
       method,
@@ -46,6 +47,9 @@ class ExpenseForm extends React.Component {
       exchangeRates: currencies,
     };
     setExpense(expense);
+    this.setState({
+      value: 0,
+    });
   }
 
   renderPaymentMethod(newCurrencies) {
@@ -59,7 +63,6 @@ class ExpenseForm extends React.Component {
           newCurrencies.map((currency) => (
             <option
               value={ currency }
-              data-testeid={ currency }
               key={ currency }
               data-testid={ currency }
             >
