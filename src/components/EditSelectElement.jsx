@@ -72,6 +72,7 @@ class EditSelectElement extends React.Component {
             value={ value }
             data-testid="value-input"
             onChange={ this.handleChange }
+            className="input-value"
           />
         </label>
         <label htmlFor="description">
@@ -83,6 +84,7 @@ class EditSelectElement extends React.Component {
             value={ description }
             data-testid="description-input"
             onChange={ this.handleChange }
+            className="input-description"
           />
         </label>
       </>

@@ -23,12 +23,12 @@
 .edit-forms {
   align-items: center;
   color: aliceblue;
-  font-size: 20px;
   display: flex;
+  font-size: 20px;
   justify-content: space-around;
 }
 
-.edit-forms #value {
+.input-value {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -38,11 +38,11 @@
   width: 100px;
 }
 
-.edit-forms #value:focus {
+.input-value:focus {
   box-shadow: 1px 2px 15px white;
 }
 
-.edit-forms #description {
+.input-description {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -52,6 +52,6 @@
   width: 190px;
 }
 
-.edit-forms #description:focus {
+.input-description:focus {
   box-shadow: 1px 2px 15px white;
 }

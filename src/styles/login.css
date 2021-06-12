@@ -12,6 +12,19 @@ form p {
   margin: 0 0 30px;
 }
 
+button span {
+  position: relative;
+  z-index: 2;
+}
+
+button:hover {
+  color: white;
+}
+
+button:hover:after {
+  width: 100%;
+}
+
 .login-context {
   align-items: center;
   display: flex;
@@ -98,11 +111,6 @@ form p {
   width: 160px;
 }
 
-.button span {
-  position: relative;
-  z-index: 2;
-}
-
 .button-entrar:after {
   background: black;
   content: '';
@@ -112,12 +120,4 @@ form p {
   top: 0;
   transition: all 1s;
   width: 0;
-}
-
-.button:hover {
-  color: white;
-}
-
-.button:hover:after {
-  width: 100%;
 }
