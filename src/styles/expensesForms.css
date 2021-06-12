@@ -39,12 +39,12 @@ div select:hover {
 .forms {
   align-items: center;
   color: aliceblue;
-  font-size: 20px;
   display: flex;
+  font-size: 20px;
   justify-content: space-around;
 }
 
-.forms #value {
+#value {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -54,11 +54,11 @@ div select:hover {
   width: 100px;
 }
 
-.forms #value:focus {
+#value:focus {
   box-shadow: 1px 2px 15px white;
 }
 
-.forms #description {
+#description {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -68,6 +68,6 @@ div select:hover {
   width: 190px;
 }
 
-.forms #description:focus {
+#description:focus {
   box-shadow: 1px 2px 15px white;
 }
