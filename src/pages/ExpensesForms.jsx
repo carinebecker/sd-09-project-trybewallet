@@ -62,6 +62,7 @@ class ExpensesForms extends Component {
             value={ dispesaAtual.value }
             data-testid="value-input"
             onChange={ this.handleChange }
+            className="input-value"
           />
         </label>
         <label htmlFor="description">
@@ -73,6 +74,7 @@ class ExpensesForms extends Component {
             value={ dispesaAtual.description }
             data-testid="description-input"
             onChange={ this.handleChange }
+            className="input-description"
           />
         </label>
       </>

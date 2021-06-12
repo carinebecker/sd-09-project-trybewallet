@@ -44,7 +44,7 @@ div select:hover {
   justify-content: space-around;
 }
 
-#value {
+.input-value {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -54,11 +54,11 @@ div select:hover {
   width: 100px;
 }
 
-#value:focus {
+.input-value:focus {
   box-shadow: 1px 2px 15px white;
 }
 
-#description {
+.input-description {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -68,6 +68,6 @@ div select:hover {
   width: 190px;
 }
 
-#description:focus {
+.input-description:focus {
   box-shadow: 1px 2px 15px white;
 }
