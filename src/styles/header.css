@@ -1,0 +1,39 @@
+.main-content {
+  color: aliceblue;
+  display: flex;
+  font-family: sans-serif;
+  font-size: x-large;
+  justify-content: space-between;
+  margin: 0 20px 20px;
+  padding: 0 0 20px;
+}
+
+.logotipo {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.logotipo img {
+  border-radius: 70px;
+  height: 90px;
+  width: 100px;
+}
+
+.logotipo p {
+  font-family: sans-serif;
+  font-size: large;
+  margin: 5px 0 0;
+}
+
+.usuario-content {
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  width: 70%;
+}
+
+.prices {
+  display: flex;
+}

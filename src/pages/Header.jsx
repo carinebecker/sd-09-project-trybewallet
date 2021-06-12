@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import '../styles/header.css';
 
 class Header extends Component {
   totalPrice() {
@@ -16,14 +17,24 @@ class Header extends Component {
   render() {
     const { user } = this.props;
     return (
-      <>
-        <p data-testid="email-field">{`Usuário: ${user}`}</p>
-        <p>
-          Dispesas Totais: R$
-          <span data-testid="total-field">{this.totalPrice()}</span>
-        </p>
-        <p data-testid="header-currency-field">BRL</p>
-      </>
+      <div className="main-content">
+        <div className="logotipo">
+          <img src="https://acegif.com/wp-content/gifs/coin-flip-33.gif" alt="casa-moedas" />
+          <p>
+            <strong>Casa de moedas</strong>
+          </p>
+        </div>
+        <div className="usuario-content">
+          <p data-testid="email-field">{`Usuário: ${user}`}</p>
+          <div className="prices">
+            <p>
+              Dispesas Totais: R$
+              <span data-testid="total-field">{this.totalPrice()}</span>
+            </p>
+            <p data-testid="header-currency-field">BRL</p>
+          </div>
+        </div>
+      </div>
     );
   }
 }

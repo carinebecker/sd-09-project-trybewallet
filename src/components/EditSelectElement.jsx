@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { editExpenseAction, editingOldElement } from '../actions';
+import '../styles/editExpenses.css';
 
 class EditSelectElement extends React.Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class EditSelectElement extends React.Component {
         value={ currency }
         onChange={ this.handleChange }
       >
-        {data.map((item) => (
+        {Object.keys(data).map((item) => (
           <option data-testid={ item } key={ item }>{ item }</option>
         ))}
       </select>
@@ -140,18 +141,22 @@ class EditSelectElement extends React.Component {
   render() {
     const { data, dispesaAtual } = this.state;
     return (
-      <form action="">
-        { this.inputsWithLabel(dispesaAtual) }
-        { this.selectMoedas(data, dispesaAtual) }
-        { this.selectTag(dispesaAtual) }
-        { this.paymenteSelect(dispesaAtual) }
-        <button
-          type="button"
-          onClick={ () => this.handleClick(dispesaAtual) }
-        >
-          Editar despesa
-        </button>
-      </form>
+      <div className="editExpense-content">
+        <form action="" className="edit-forms">
+          { this.inputsWithLabel(dispesaAtual) }
+          <div className="select-content">
+            { this.selectMoedas(data, dispesaAtual) }
+            { this.selectTag(dispesaAtual) }
+            { this.paymenteSelect(dispesaAtual) }
+          </div>
+          <button
+            type="button"
+            onClick={ () => this.handleClick(dispesaAtual) }
+          >
+            <strong>Editar despesa</strong>
+          </button>
+        </form>
+      </div>
     );
   }
 }

@@ -1,0 +1,57 @@
+.editExpense-content {
+  background-color: #00294b;
+  width: 100%;
+  padding: 35px 0;
+  margin: auto;
+}
+
+.editExpense-content button {
+  background-color: #29567a;
+  border: none;
+  border-radius: 3px;
+  color: aliceblue;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  height: 40px;
+  width: 170px;
+}
+
+.editExpense-content button:hover {
+  box-shadow: 2px 4px 20px white;
+}
+
+.edit-forms {
+  align-items: center;
+  color: aliceblue;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit-forms label #value{
+  border: none;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-left: 5px;
+  width: 100px;
+}
+
+.edit-forms label #value:focus {
+  box-shadow: 1px 2px 15px white;
+}
+
+.edit-forms label #description{
+  border: none;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-left: 5px;
+  width: 190px;
+}
+
+.edit-forms label #description:focus {
+  box-shadow: 1px 2px 15px white;
+}

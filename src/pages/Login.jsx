@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { dataEmailUser } from '../actions';
+import '../styles/login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -49,10 +50,10 @@ class Login extends React.Component {
     const { email, passWord, isRedirect, validationEmail, validationPW } = this.state;
     if (isRedirect) return <Redirect to="/carteira" />;
     return (
-      <div>
-        <form>
-          <label htmlFor="email">
-            Email:
+      <div className="login-context">
+        <form className="main-context">
+          <p><strong>Login</strong></p>
+          <label htmlFor="email" className="email-context">
             <input
               type="text"
               data-testid="email-input"
@@ -60,24 +61,28 @@ class Login extends React.Component {
               value={ email }
               onChange={ this.handleInput }
               minLength="6"
+              placeholder="Digite seu e-mail aqui"
             />
           </label>
-          <label htmlFor="passWord">
-            Senha:
+          <label htmlFor="passWord" className="password-context">
             <input
-              type="text"
+              type="password"
               data-testid="password-input"
               name="passWord"
               value={ passWord }
               onChange={ this.handleInput }
+              placeholder="Digite sua senha aqui"
             />
           </label>
           <button
             type="button"
+            className={ validationPW ? 'button-entrar' : 'button' }
             onClick={ this.handleclick }
             disabled={ !(validationEmail && validationPW) ? 'disabled' : null }
           >
-            Entrar
+            <span>
+              Entrar
+            </span>
           </button>
         </form>
       </div>

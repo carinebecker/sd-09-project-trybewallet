@@ -1,0 +1,73 @@
+div select {
+  background-color: white;
+  border: none;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 15px;
+  height: 40px;
+  margin: 0 2px;
+  text-align-last: center;
+  width: 130px;
+}
+
+div select:hover {
+  box-shadow: 1px 2px 15px white;
+}
+
+.main-content-forms {
+  background-color: #00294b;
+  width: 100%;
+  padding: 35px 0;
+  margin: auto;
+}
+
+.main-content-forms button {
+  background-color: #29567a;
+  border: none;
+  border-radius: 3px;
+  color: aliceblue;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  height: 40px;
+  width: 170px;
+}
+
+.main-content-forms button:hover {
+  box-shadow: 2px 4px 20px white;
+}
+
+.forms {
+  align-items: center;
+  color: aliceblue;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.forms label #value{
+  border: none;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-left: 5px;
+  width: 100px;
+}
+
+.forms label #value:focus {
+  box-shadow: 1px 2px 15px white;
+}
+
+.forms label #description{
+  border: none;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 20px;
+  height: 40px;
+  margin-left: 5px;
+  width: 190px;
+}
+
+.forms label #description:focus {
+  box-shadow: 1px 2px 15px white;
+}

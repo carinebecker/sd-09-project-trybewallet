@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setExpenseAction, setId, editId, editingOldElement } from '../actions';
+import '../styles/expensesTable.css';
 
 class ExpensesTable extends Component {
   handleClick(id) {
@@ -20,7 +21,7 @@ class ExpensesTable extends Component {
 
   tableHead() {
     return (
-      <thead>
+      <thead className="table-head">
         <tr>
           <th>Descrição</th>
           <th>Tag</th>
@@ -38,7 +39,7 @@ class ExpensesTable extends Component {
 
   tableBody(expenses) {
     return (
-      <tbody>
+      <tbody className="table-body">
         { expenses
           .map(({ id, value, description, currency, method, tag, exchangeRates }) => (
             <tr key={ id }>
@@ -75,7 +76,7 @@ class ExpensesTable extends Component {
   render() {
     const { expenses } = this.props;
     return (
-      <table>
+      <table className="table-content">
         {this.tableHead()}
         {this.tableBody(expenses)}
       </table>

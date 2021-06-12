@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addExpenseThunk } from '../actions';
 import Moedas from '../services/requireApi';
+import '../styles/expensesForms.css';
 
 class ExpensesForms extends Component {
   constructor(props) {
@@ -147,18 +148,22 @@ class ExpensesForms extends Component {
     const { data, dispesaAtual } = this.state;
     const { addExpense } = this.props;
     return (
-      <form action="">
-        { this.inputsWithLabel(dispesaAtual) }
-        { this.selectMoedas(data, dispesaAtual) }
-        { this.selectTag(dispesaAtual) }
-        { this.paymenteSelect(dispesaAtual) }
-        <button
-          type="button"
-          onClick={ () => this.handleClick(dispesaAtual, addExpense) }
-        >
-          Adicionar despesa
-        </button>
-      </form>
+      <div className="main-content-forms">
+        <form action="" className="forms">
+          { this.inputsWithLabel(dispesaAtual) }
+          <div>
+            { this.selectMoedas(data, dispesaAtual) }
+            { this.selectTag(dispesaAtual) }
+            { this.paymenteSelect(dispesaAtual) }
+          </div>
+          <button
+            type="button"
+            onClick={ () => this.handleClick(dispesaAtual, addExpense) }
+          >
+            <strong>Adicionar despesa</strong>
+          </button>
+        </form>
+      </div>
     );
   }
 }

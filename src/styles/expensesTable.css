@@ -1,0 +1,46 @@
+.table-content {
+  background-color: #003663;
+  padding-bottom: 20px;
+  width: 100%;
+}
+
+.table-head {
+  background-color: #003663;
+  color: white;
+  text-align: center;
+  width: 100%;
+}
+
+.table-head th {
+  padding: 0 20px;
+}
+
+.table-head tr {
+  height: 80px;
+}
+
+.table-body {
+  background-color: #003663;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.table-body td {
+  padding: 0 20px;
+}
+
+.table-body button {
+  background-color: #29567a;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+.table-body tr {
+  padding: 0 20px;
+}
