@@ -83,50 +83,65 @@ class ExpensesForms extends Component {
 
   selectMoedas(data, dispesaAtual) {
     return (
-      <select
-        name="currency"
-        id="currency"
-        data-testid="currency-input"
-        value={ dispesaAtual.currency }
-        onChange={ this.handleChange }
-      >
-        {data.map((item) => (
-          <option data-testid={ item } key={ item }>{ item }</option>
-        ))}
-      </select>
+      <>
+        <span>
+          Moeda:
+        </span>
+        <select
+          name="currency"
+          id="currency"
+          data-testid="currency-input"
+          value={ dispesaAtual.currency }
+          onChange={ this.handleChange }
+        >
+          {data.map((item) => (
+            <option data-testid={ item } key={ item }>{ item }</option>
+          ))}
+        </select>
+      </>
     );
   }
 
   selectTag(dispesaAtual) {
     return (
-      <select
-        name="tag"
-        id="tag"
-        data-testid="tag-input"
-        value={ dispesaAtual.tag }
-        onChange={ this.handleChange }
-      >
-        <option value="Alimentação">Alimentação</option>
-        <option value="Lazer">Lazer</option>
-        <option value="Trabalho">Trabalho</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Saúde">Saúde</option>
-      </select>
+      <>
+        <span>
+          tag:
+        </span>
+        <select
+          name="tag"
+          id="tag"
+          data-testid="tag-input"
+          value={ dispesaAtual.tag }
+          onChange={ this.handleChange }
+        >
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+        </select>
+      </>
     );
   }
 
   paymenteSelect(dispesaAtual) {
     return (
-      <select
-        name="method"
-        value={ dispesaAtual.method }
-        data-testid="method-input"
-        onChange={ this.handleChange }
-      >
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Cartão de crédito">Cartão de crédito</option>
-        <option value="Cartão de débito">Cartão de débito</option>
-      </select>
+      <>
+        <span>
+          Método de pagamento:
+        </span>
+        <select
+          name="method"
+          value={ dispesaAtual.method }
+          data-testid="method-input"
+          onChange={ this.handleChange }
+        >
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
+        </select>
+      </>
     );
   }
 
@@ -153,11 +168,9 @@ class ExpensesForms extends Component {
       <div className="main-content-forms">
         <form action="" className="forms">
           { this.inputsWithLabel(dispesaAtual) }
-          <div>
-            { this.selectMoedas(data, dispesaAtual) }
-            { this.selectTag(dispesaAtual) }
-            { this.paymenteSelect(dispesaAtual) }
-          </div>
+          { this.selectMoedas(data, dispesaAtual) }
+          { this.selectTag(dispesaAtual) }
+          { this.paymenteSelect(dispesaAtual) }
           <button
             type="button"
             onClick={ () => this.handleClick(dispesaAtual, addExpense) }
