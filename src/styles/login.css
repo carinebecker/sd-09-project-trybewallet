@@ -2,13 +2,13 @@ body {
   background: url('https://100seguro.com.ar/wp-content/uploads/2020/06/dark-bitcoin-scaled-1.jpg');
   background-size: cover;
   height: 98vh;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 form p {
-  font-size: 40px;
   font-family: sans-serif;
+  font-size: 40px;
   margin: 0 0 30px;
 }
 
@@ -16,21 +16,21 @@ form p {
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   height: 98vh;
+  justify-content: center;
 }
 
 .main-context {
   align-items: center;
   background-image: url('https://100seguro.com.ar/wp-content/uploads/2020/06/dark-bitcoin-scaled-1.jpg');
   background-size: cover;
-  box-shadow: 2px 10px 20px;
   border-radius: 5px;
+  box-shadow: 2px 10px 20px;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   height: 350px;
+  justify-content: center;
   width: 500px;
 }
 
@@ -38,9 +38,9 @@ form p {
   padding: 10px;
 }
 
-.email-context:hover{
+.email-context:hover {
   border-radius: 2px;
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0 0 5px;
   padding: 10px;
 }
 
@@ -56,9 +56,9 @@ form p {
   padding: 10px;
 }
 
-.password-context:hover{
+.password-context:hover {
   border-radius: 2px;
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0 0 5px;
   padding: 10px;
 }
 
@@ -85,39 +85,39 @@ form p {
 
 .button-entrar {
   background-color: #ffffff1c;
-  border: 1px solid #000;
+  border: 1px solid black;
   border-radius: 3px;
-  color: #000;
+  color: black;
   font-family: sans-serif;
   font-size: x-large;
   height: 40px;
   margin: 5px 0 0;
   position: relative;
   text-align: center;
-  transition: all .35s;
+  transition: all 0.35s;
   width: 160px;
 }
 
-button span{
+.button span {
   position: relative;
   z-index: 2;
 }
 
-.button-entrar:after{
-  background: #000;
-  content: "";
-  left: 0;
+.button-entrar:after {
+  background: black;
+  content: '';
   height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  transition: all 1.0s;
+  transition: all 1s;
   width: 0;
 }
 
-button:hover{
-  color: #fff;
+.button:hover {
+  color: white;
 }
 
-button:hover:after{
+.button:hover:after {
   width: 100%;
 }

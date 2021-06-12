@@ -1,8 +1,8 @@
 .editExpense-content {
   background-color: #00294b;
-  width: 100%;
-  padding: 35px 0;
   margin: auto;
+  padding: 35px 0;
+  width: 100%;
 }
 
 .editExpense-content button {
@@ -28,7 +28,7 @@
   justify-content: space-around;
 }
 
-.edit-forms label #value{
+.edit-forms #value {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -38,11 +38,11 @@
   width: 100px;
 }
 
-.edit-forms label #value:focus {
+.edit-forms #value:focus {
   box-shadow: 1px 2px 15px white;
 }
 
-.edit-forms label #description{
+.edit-forms #description {
   border: none;
   border-radius: 3px;
   font-family: sans-serif;
@@ -52,6 +52,6 @@
   width: 190px;
 }
 
-.edit-forms label #description:focus {
+.edit-forms #description:focus {
   box-shadow: 1px 2px 15px white;
 }
