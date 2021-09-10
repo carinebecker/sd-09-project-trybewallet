@@ -1,9 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import LoginForm from '../components/LoginForm';
+import LoginHeader from '../components/LoginHeader';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
   render() {
-    return <div>Login</div>;
+    return (
+      <main>
+        <LoginHeader />
+        <LoginForm />
+      </main>
+    );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};

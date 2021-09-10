@@ -11,3 +11,127 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.login-container {
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-fields input {
+  padding: 8px 16px;
+}
+
+.login-fields button {
+  background-color: green;
+  border: none;
+  border-radius: 4px;
+  color: whitesmoke;
+  cursor: pointer;
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 auto;
+  padding: 8px 16px;
+  text-decoration: underline green;
+}
+
+.login-header {
+  background-color: rgba(60, 99, 130,1.0);
+  border: 0;
+  color: whitesmoke;
+  padding: 16px;
+  text-align: center;
+}
+
+/* EXPENSES FORM */
+header {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.expenses-form {
+  display: flex;
+  background-color: rgba(250, 211, 144,1.0);
+  justify-content: center;
+  width: 100%;
+}
+
+.expenses-fields {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px;
+  flex-direction: row;
+  margin-right: 0; 
+}
+
+.expenses-form label {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 8px;
+}
+
+.expenses-form input, .expenses-form select {
+  padding: 4px 8px;
+  margin-top: 4px;
+  border: none;
+}
+
+.expenses-form button {
+  background-color: rgba(246, 185, 59,1.0);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 16px;
+  padding: 8px 16px;
+  text-transform: uppercase;
+}
+
+/* WALLET */
+.wallet-header {
+  color: whitesmoke;
+  background-color: rgba(10, 61, 98,1.0);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 16px 0;
+  width: 100%;
+}
+
+table {
+  border-spacing: 1px;
+  width: 100%;
+  text-align: center;
+}
+
+.table-header {
+  background-color: rgb(20, 45, 63);
+  color: whitesmoke;
+  margin: 0;
+}
+
+table th, table td {
+  padding: 8px 16px;
+}
+
+.body-row {
+  background-color: whitesmoke;
+  color: rgb(20, 45, 63);
+  margin: 0;
+  padding: 8px 8px;
+}
+
+button {
+  cursor: pointer;
+}
